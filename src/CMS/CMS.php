@@ -5,10 +5,10 @@
  * Time: 23:13
  */
 
-namespace CleanGutter\CMS;
+namespace Kasko\CMS;
 
-use CleanGutter\CMS\Model\Menu\MenuItem;
-use CleanGutter\Entity\CustomerReview;
+use Kasko\CMS\Model\Menu\MenuItem;
+use Kasko\Entity\CustomerReview;
 use Ds\Map;
 
 /**
@@ -16,7 +16,7 @@ use Ds\Map;
  *
  * Facade for the CMS module.
  *
- * @package CleanGutter\CMS
+ * @package Kasko\CMS
  */
 class CMS
 {

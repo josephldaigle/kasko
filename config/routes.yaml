@@ -7,32 +7,32 @@
 # Home
 home:
     path: /
-    controller: CleanGutter\Controller\DefaultController::getHome
+    controller: Kasko\Controller\DefaultController::getHome
     methods: GET
 # FAQ
 frequently-asked-questions:
     path: /commonly-asked-gutter-questions
-    controller: CleanGutter\Controller\DefaultController::getFaq
+    controller: Kasko\Controller\DefaultController::getFaq
     methods: GET
 # About
 about-us:
     path: /about-clean-gutter-co
-    controller: CleanGutter\Controller\DefaultController::getAbout
+    controller: Kasko\Controller\DefaultController::getAbout
     methods: GET
 # Contact
 contact:
     path: /contact-clean-gutter-co
-    controller: CleanGutter\Controller\DefaultController::getContact
+    controller: Kasko\Controller\DefaultController::getContact
     methods: GET
 # Terms of Service
 terms-of-service:
     path: /terms-of-service
-    controller: CleanGutter\Controller\DefaultController::getTermsOfService
+    controller: Kasko\Controller\DefaultController::getTermsOfService
     methods: GET
 # Privacy Policy
 privacy-policy:
     path: /privacy-policy
-    controller: CleanGutter\Controller\DefaultController::getPrivacyPolicy
+    controller: Kasko\Controller\DefaultController::getPrivacyPolicy
     methods: GET
 
 # SEO Controller
@@ -40,7 +40,7 @@ privacy-policy:
 # Sitemap
 get_sitemap:
     path: /sitemap
-    controller: CleanGutter\Controller\SeoController::getSitemapXml
+    controller: Kasko\Controller\SeoController::getSitemapXml
     methods: GET
 # Redirect {.xml} to /sitemap
 get_sitemap_xml:
@@ -56,19 +56,19 @@ get_sitemap_xml:
 # This route MUST be after all pages defined in it's `condition` property
 location_landing-page:
     path: /gutter-cleaning/{location}
-    controller: CleanGutter\Controller\DefaultController::getLandingPage
+    controller: Kasko\Controller\DefaultController::getLandingPage
     condition: 'request.getPathInfo() matches "/gutter-cleaning\\\\|macon|perry|byron|warner-robins|fort-valley/"'
     methods: GET
 
 #kathleen:
 #    path: /kathleen
-#    controller: CleanGutter\Controller\DefaultController::city
+#    controller: Kasko\Controller\DefaultController::city
 #bonaire:
 #    path: /bonaire
-#    controller: CleanGutter\Controller\DefaultController::city
+#    controller: Kasko\Controller\DefaultController::city
 #perry:
 #    path: /perry
-#    controller: CleanGutter\Controller\DefaultController::city
+#    controller: Kasko\Controller\DefaultController::city
 #fort-valley:
 #    path: /fort-valley
-#    controller: CleanGutter\Controller\DefaultController::city
+#    controller: Kasko\Controller\DefaultController::city

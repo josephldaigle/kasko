@@ -1,8 +1,8 @@
 <?php
 
-namespace CleanGutter\Repository;
+namespace Kasko\Repository;
 
-use CleanGutter\Entity\CleanGutter\Entity\FormLead;
+use Kasko\Entity\FormLead;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

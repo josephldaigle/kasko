@@ -58,12 +58,12 @@
     },
     "autoload": {
         "psr-4": {
-            "CleanGutter\\": "src/"
+            "Kasko\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CleanGutter\\Tests\\": "tests/"
+            "Kasko\\Tests\\": "tests/"
         }
     },
     "replace": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CleanGutter;
+namespace Kasko;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

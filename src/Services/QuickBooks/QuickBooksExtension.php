@@ -5,7 +5,7 @@
  * Time: 1:01 PM
  */
 
-namespace CleanGutter\Services\QuickBooks;
+namespace Kasko\Services\QuickBooks;
 
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 /**
  * SymfonyExtension.
  *
- * @package CleanGutter\Services\QuickBooks
+ * @package Kasko\Services\QuickBooks
  */
 class QuickBooksExtension extends Extension
 {

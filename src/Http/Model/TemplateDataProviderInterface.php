@@ -5,7 +5,7 @@
  * Time: 23:40
  */
 
-namespace CleanGutter\Http\Model;
+namespace Kasko\Http\Model;
 
 
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * Describe a class that provides data to the request object, under 'template_data' key.
  *
- * @package CleanGutter\Http\Model
+ * @package Kasko\Http\Model
  */
 interface TemplateDataProviderInterface
 {

@@ -5,9 +5,9 @@
  * Time: 9:28 PM
  */
 
-namespace CleanGutter\Controller;
+namespace Kasko\Controller;
 
-use CleanGutter\Entity\FormLead;
+use Kasko\Entity\FormLead;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 /**
  * QuotesController.
  *
- * @package CleanGutter\Controller
+ * @package Kasko\Controller
  */
 class QuotesController extends AbstractController
 {

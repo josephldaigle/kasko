@@ -5,11 +5,11 @@
  * Time: 21:20
  */
 
-namespace CleanGutter\Services\TemplateData;
+namespace Kasko\Services\TemplateData;
 
 
-use CleanGutter\CMS\CMS;
-use CleanGutter\Http\Model\TemplateDataProviderInterface;
+use Kasko\CMS\CMS;
+use Kasko\Http\Model\TemplateDataProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Note:
  *  This class loads data based on a user's role.
  *
- * @package CleanGutter\Services
+ * @package Kasko\Services
  */
 class HtmlPageDataCompiler implements TemplateDataProviderInterface
 {

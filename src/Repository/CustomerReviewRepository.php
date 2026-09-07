@@ -1,8 +1,8 @@
 <?php
 
-namespace CleanGutter\Repository;
+namespace Kasko\Repository;
 
-use CleanGutter\Entity\CustomerReview;
+use Kasko\Entity\CustomerReview;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

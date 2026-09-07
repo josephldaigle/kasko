@@ -1,6 +1,6 @@
 <?php
 
-namespace CleanGutter\Controller;
+namespace Kasko\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * DefaultController.
  *
- * @package CleanGutter\Controller
+ * @package Kasko\Controller
  */
 class DefaultController extends AbstractController
 {

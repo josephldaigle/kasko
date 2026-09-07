@@ -5,7 +5,7 @@
  * Time: 12:20
  */
 
-namespace CleanGutter\CMS\Model\Menu;
+namespace Kasko\CMS\Model\Menu;
 
 
 /**
@@ -13,7 +13,7 @@ namespace CleanGutter\CMS\Model\Menu;
  *
  * Describe a menu item.
  *
- * @package CleanGutter\CMS\Model\Menu
+ * @package Kasko\CMS\Model\Menu
  */
 interface MenuItemInterface
 {

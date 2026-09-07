@@ -1,7 +1,11 @@
 <?php
 
+<<<<<<< Updated upstream
 use CleanGutter\Kernel;
 use Symfony\Component\Dotenv\Dotenv;
+=======
+use Kasko\Kernel;
+>>>>>>> Stashed changes
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

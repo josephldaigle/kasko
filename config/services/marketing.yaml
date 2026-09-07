@@ -1,7 +1,7 @@
 #services:
-#    CleanGutter\Services\Marketing\InboudLeadRequestFilter:
-#        class: CleanGutter\Http\Event\KernelRequestSubscriber
+#    Kasko\Services\Marketing\InboudLeadRequestFilter:
+#        class: Kasko\Http\Event\KernelRequestSubscriber
 #        arguments:
 #            $logger: '@logger'
 #            $securityService: '@security.csrf.token_manager'
-#            $templateDataProviders: ['@CleanGutter\Services\TemplateData\HtmlPageDataCompiler']
+#            $templateDataProviders: ['@Kasko\Services\TemplateData\HtmlPageDataCompiler']

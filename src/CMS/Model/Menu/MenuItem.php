@@ -5,13 +5,13 @@
  * Time: 22:35
  */
 
-namespace CleanGutter\CMS\Model\Menu;
+namespace Kasko\CMS\Model\Menu;
 
 
 /**
  * MenuItem.
  *
- * @package CleanGutter\CMS\Model\Menu
+ * @package Kasko\CMS\Model\Menu
  */
 class MenuItem implements MenuItemInterface
 {

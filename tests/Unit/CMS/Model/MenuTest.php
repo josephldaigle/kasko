@@ -5,17 +5,17 @@
  * Time: 23:00
  */
 
-namespace CleanGutter\Test\Unit\CMS\Model;
+namespace Kasko\Tests\Unit\CMS\Model;
 
 
-use CleanGutter\CMS\Model\Menu\Menu;
-use CleanGutter\CMS\Model\Menu\MenuItem;
+use Kasko\CMS\Model\Menu\Menu;
+use Kasko\CMS\Model\Menu\MenuItem;
 use PHPUnit\Framework\TestCase;
 
 /**
  * MenuTest.
  *
- * @package CleanGutter\Test\Unit\CMS\Model
+ * @package Kasko\Tests\Unit\CMS\Model
  */
 class MenuTest extends TestCase
 {

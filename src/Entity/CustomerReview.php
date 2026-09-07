@@ -1,11 +1,11 @@
 <?php
 
-namespace CleanGutter\Entity;
+namespace Kasko\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CleanGutter\Repository\CustomerReviewRepository")
+ * @ORM\Entity(repositoryClass="Kasko\Repository\CustomerReviewRepository")
  */
 class CustomerReview
 {

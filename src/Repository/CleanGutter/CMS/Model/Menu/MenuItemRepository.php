@@ -1,8 +1,8 @@
 <?php
 
-namespace CleanGutter\Repository\CleanGutter\CMS\Model\Menu;
+namespace Kasko\Repository\CleanGutter\CMS\Model\Menu;
 
-use CleanGutter\CMS\Model\Menu\MenuItem;
+use Kasko\CMS\Model\Menu\MenuItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

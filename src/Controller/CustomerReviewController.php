@@ -1,6 +1,6 @@
 <?php
 
-namespace CleanGutter\Controller;
+namespace Kasko\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;

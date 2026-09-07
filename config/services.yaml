@@ -16,29 +16,33 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    CleanGutter\:
+    Kasko\:
         resource: '../src/*'
         exclude: '../src/{CMS,DependencyInjection,Entity,Http/Event/KernelRequestSubscriber.php,Migrations,Services/TemplateData/HtmlPageDataCompiler.php,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    CleanGutter\Controller\:
+    Kasko\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    CleanGutter\Services\TemplateData\HtmlPageDataCompiler:
-        class: CleanGutter\Services\TemplateData\HtmlPageDataCompiler
+    Kasko\Services\TemplateData\HtmlPageDataCompiler:
+        class: Kasko\Services\TemplateData\HtmlPageDataCompiler
         arguments:
-            $cms: '@CleanGutter\CMS\CMS'
+            $cms: '@Kasko\CMS\CMS'
 #            $containerParams:
 #                google_place_api_key: '%google_place_api_key%'
 
-    CleanGutter\Http\Event\KernelRequestSubscriber:
-        class: CleanGutter\Http\Event\KernelRequestSubscriber
+    Kasko\Http\Event\KernelRequestSubscriber:
+        class: Kasko\Http\Event\KernelRequestSubscriber
         arguments:
             $logger: '@logger'
             $securityService: '@security.csrf.token_manager'
+<<<<<<< Updated upstream
             $templateDataProviders: ['@CleanGutter\Services\TemplateData\HtmlPageDataCompiler']
+=======
+            $templateDataProviders: ['@Kasko\Services\TemplateData\HtmlPageDataCompiler']
+>>>>>>> Stashed changes

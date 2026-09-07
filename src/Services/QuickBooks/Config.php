@@ -5,7 +5,7 @@
  * Time: 12:46 PM
  */
 
-namespace CleanGutter\Services\QuickBooks;
+namespace Kasko\Services\QuickBooks;
 
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  *
  * Define permissible configuration settings for the QuickBooks API Module.
  *
- * @package CleanGutter\Services\QuickBooks
+ * @package Kasko\Services\QuickBooks
  */
 class Config implements ConfigurationInterface
 {

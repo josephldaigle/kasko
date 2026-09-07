@@ -5,7 +5,7 @@
  * Time: 12:37 PM
  */
 
-namespace CleanGutter\Services\QuickBooks;
+namespace Kasko\Services\QuickBooks;
 
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * Provides access to
  *
- * @package CleanGutter\Services\QuickBooks
+ * @package Kasko\Services\QuickBooks
  */
 class QuickBooks extends Bundle
 {

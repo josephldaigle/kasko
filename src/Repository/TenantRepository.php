@@ -1,8 +1,8 @@
 <?php
 
-namespace CleanGutter\Repository;
+namespace Kasko\Repository;
 
-use CleanGutter\Entity\Tenant;
+use Kasko\Entity\Tenant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

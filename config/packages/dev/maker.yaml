@@ -1,4 +1,4 @@
 # config/packages/dev/maker.yaml
 maker:
   # define default namespace
-    root_namespace: 'CleanGutter'
+    root_namespace: 'Kasko'

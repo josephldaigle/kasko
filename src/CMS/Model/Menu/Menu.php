@@ -5,7 +5,7 @@
  * Time: 16:09
  */
 
-namespace CleanGutter\CMS\Model\Menu;
+namespace Kasko\CMS\Model\Menu;
 
 
 use Ds\Map;
@@ -16,7 +16,7 @@ use Ds\Map;
  *
  * Define a navigation menu.
  *
- * @package CleanGutter\CMS\Model\Menu
+ * @package Kasko\CMS\Model\Menu
  */
 class Menu
 {

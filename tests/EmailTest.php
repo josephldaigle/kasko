@@ -5,14 +5,14 @@
  * Time: 9:37 AM
  */
 
-namespace CleanGutter\Test;
+namespace Kasko\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * EmailTest.
  *
- * @package CleanGutter\Test
+ * @package Kasko\Tests
  */
 class EmailTest extends WebTestCase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace CleanGutter\Security;
+namespace Kasko\Security;
 
-use CleanGutter\Entity\Tenant;
+use Kasko\Entity\Tenant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

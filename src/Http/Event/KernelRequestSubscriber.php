@@ -5,10 +5,10 @@
  * Time: 14:15
  */
 
-namespace CleanGutter\Http\Event;
+namespace Kasko\Http\Event;
 
 
-use CleanGutter\Http\Model\TemplateDataProviderInterface;
+use Kasko\Http\Model\TemplateDataProviderInterface;
 use Ds\Map;
 use Psr\Log\LoggerInterface;
 use SebastianBergmann\GlobalState\RuntimeException;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 /**
  * HtmlRequestSubscriber.
  *
- * @package CleanGutter\Http\Event
+ * @package Kasko\Http\Event
  */
 class KernelRequestSubscriber implements EventSubscriberInterface
 {

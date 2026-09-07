@@ -5,7 +5,7 @@
  * Time: 13:09
  */
 
-namespace CleanGutter\Services\Marketing;
+namespace Kasko\Services\Marketing;
 
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * We want them to receive a default page.
  *
- * @package CleanGutter\Services\Marketing
+ * @package Kasko\Services\Marketing
  */
 class InboundLeadRequestFilter implements EventSubscriberInterface
 {

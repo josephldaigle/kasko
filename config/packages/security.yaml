@@ -4,7 +4,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: CleanGutter\Entity\Tenant
+                class: Kasko\Entity\Tenant
                 property: uuid
         users_in_memory: { memory: null }
     firewalls:
@@ -15,8 +15,12 @@ security:
             anonymous: true
             guard:
                 authenticators:
+<<<<<<< Updated upstream
                     - CleanGutter\Security\LoginFormAuthenticator
             provider: app_user_provider
+=======
+                    - Kasko\Security\LoginFormAuthenticator
+>>>>>>> Stashed changes
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

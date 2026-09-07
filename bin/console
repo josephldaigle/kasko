@@ -1,8 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+<<<<<<< Updated upstream
 use Symfony\Component\Dotenv\Dotenv;
 use CleanGutter\Kernel;
+=======
+use Kasko\Kernel;
+>>>>>>> Stashed changes
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;

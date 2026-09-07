@@ -5,7 +5,7 @@
  * Time: 6:51 PM
  */
 
-namespace CleanGutter\Controller;
+namespace Kasko\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * SeoController.
  *
- * @package CleanGutter\Controller
+ * @package Kasko\Controller
  */
 class SeoController extends AbstractController
 {

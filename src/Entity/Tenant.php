@@ -1,12 +1,12 @@
 <?php
 
-namespace CleanGutter\Entity;
+namespace Kasko\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="CleanGutter\Repository\TenantRepository")
+ * @ORM\Entity(repositoryClass="Kasko\Repository\TenantRepository")
  */
 class Tenant implements UserInterface
 {

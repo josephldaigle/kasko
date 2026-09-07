@@ -2,7 +2,7 @@
 # Stage 1: Node 18 – compile frontend assets
 # node-sass@8 supports Node 14–18; do not upgrade to Node 20+
 # ============================================================
-FROM node:18-bullseye-slim AS assets
+FROM node:18-bookworm-slim AS assets
 
 # node-sass may need to compile native bindings as a fallback
 RUN apt-get update && apt-get install -y python3 make g++ \

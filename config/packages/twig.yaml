@@ -5,8 +5,4 @@ twig:
     exception_controller: null
     globals:
         company_phone: '(478) 283-3355'
-<<<<<<< Updated upstream
-        company_email: 'joe@cleangutterco.com'
-=======
         company_email: 'kasasbury@yahoo.com'
->>>>>>> Stashed changes

@@ -41,8 +41,4 @@ services:
         arguments:
             $logger: '@logger'
             $securityService: '@security.csrf.token_manager'
-<<<<<<< Updated upstream
-            $templateDataProviders: ['@CleanGutter\Services\TemplateData\HtmlPageDataCompiler']
-=======
             $templateDataProviders: ['@Kasko\Services\TemplateData\HtmlPageDataCompiler']
->>>>>>> Stashed changes

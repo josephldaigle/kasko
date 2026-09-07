@@ -13,10 +13,17 @@ h1,h2,h3,h4,h5,h6 {
 
 body {
   font-family: arial, sans-serif;
+  background-color: $kasko-white;
+  color: $kasko-black;
 }
 
 .bg-gray {
   background-color: #d3d3d3;
+}
+
+// Warm cream utility — apply selectively to sections/pages that should feel warm
+.bg-cream {
+  background-color: $kasko-cream;
 }
 
 

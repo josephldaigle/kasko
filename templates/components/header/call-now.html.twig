@@ -1,9 +1,9 @@
 {# twig template #}
-<a class="text-link d-block h-100" href="tel:1-{{ company_phone | replace({'(': '', ') ': ''}) }}">
+<a class="site-header__cta d-block h-100" href="tel:1-{{ company_phone | replace({'(': '', ') ': ''}) }}">
     <div class="h-100 d-flex justify-content-center align-items-center p-2">
         <div class="d-flex align-items-center">
-            <div class="d-flex flex-column align-items-start text-danger"><span class="phone-icon-circle mr-3 flex-shrink-0"><i class="fas fa-phone fa-lg"></i></span></div>
-            <div class="d-flex flex-column align-items-start text-danger">
+            <div class="d-flex flex-column align-items-start"><span class="phone-icon-circle mr-3 flex-shrink-0"><i class="fas fa-phone fa-lg"></i></span></div>
+            <div class="d-flex flex-column align-items-start">
                 <div class="font-weight-bold text-uppercase">Free Quotes</div>
                 <div class="h4 font-weight-bold text-nowrap mb-0">{{ company_phone }}</div>
             </div>

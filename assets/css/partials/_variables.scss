@@ -1,12 +1,25 @@
-/* Site-wide variables */
+/* Site-wide variables — KasKo Construction & Remodeling palette */
+
+// Brand palette
+$kasko-forest:       #183C2B; // primary forest green
+$kasko-forest-2:     #2D5A40; // supporting green
+$kasko-black:        #111111; // near-black
+$kasko-brass:        #C9A34E; // brass / gold accent
+$kasko-brass-dark:   #A8853C; // brass hover
+$kasko-cream:        #F5F3ED; // warm light background
+$kasko-white:        #FFFFFF;
+$kasko-danger:       #C0392B; // semantic error red
+
+// Bootstrap theme colors
 $theme-colors: (
-        "primary": #1b3061,
-        "secondary": #021859,
-        "dark": #000,
-        "light": #fff,
-        "info": #1b3061,
-        "danger": #8D1B23,
-        "gold": #D2AF00,
+        "primary":   $kasko-forest,
+        "secondary": $kasko-black,
+        "dark":      $kasko-black,
+        "light":     $kasko-cream,
+        "info":      $kasko-forest-2,
+        "danger":    $kasko-danger,
+        "warning":   $kasko-brass,
+        "gold":      $kasko-brass,
 );
 
 $h1-font-size: 1.5rem;
@@ -16,9 +29,13 @@ $h4-font-size: 1.1rem;
 $h5-font-size: 1rem;
 $h6-font-size: .90rem;
 
-$navbar-light-color: #1b3061;
-$navbar-light-active-color: #8D1B23;
-$navbar-light-hover-color: #8D1B23;
+// Navbar coloring — dark header
+$navbar-dark-color:         rgba($kasko-white, 0.85);
+$navbar-dark-hover-color:   $kasko-brass;
+$navbar-dark-active-color:  $kasko-brass;
+$navbar-light-color:        $kasko-forest;
+$navbar-light-active-color: $kasko-brass;
+$navbar-light-hover-color:  $kasko-brass;
 
 
 // media breaks

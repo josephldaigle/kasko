@@ -5,9 +5,8 @@
 FROM node:18-bookworm-slim AS assets
 
 # node-sass may need to compile native bindings as a fallback
-RUN apt-get update && apt-get install -y python3 make g++ \
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y python3 make g++ \
     && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /build
 
 COPY package.json yarn.lock ./
@@ -23,7 +22,10 @@ RUN yarn build
 # ============================================================
 FROM php:8.0-fpm-bullseye AS app
 
-RUN apt-get update && apt-get install -y \
+RUN sed -i 's|http://deb.debian.org/debian |http://archive.debian.org/debian |g' /etc/apt/sources.list \
+    && sed -i '/deb.debian.org\/debian-security/d' /etc/apt/sources.list
+
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
         libicu-dev \
         libzip-dev \
         unzip \

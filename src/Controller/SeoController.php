@@ -25,6 +25,6 @@ class SeoController extends AbstractController
 	 */
 	public function getSitemapXml( Request $request )
 	{
-		return $this->file('sitemap.xml', 'Sitemap - www.cleangutterco.com', ResponseHeaderBag::DISPOSITION_INLINE);
+		return $this->file('sitemap.xml', 'Sitemap - www.kaskoconstruction.com', ResponseHeaderBag::DISPOSITION_INLINE);
 	}
 }

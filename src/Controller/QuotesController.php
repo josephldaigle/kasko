@@ -51,9 +51,9 @@ class QuotesController extends AbstractController
 		$entityManager->flush();
 
 		try {
-			$message = (new \Swift_Message('New Gutter Quote Request'))
-				->setFrom('joe@cleangutterco.com')
-				->setTo('joe@cleangutterco.com')
+			$message = (new \Swift_Message('New Quote Request - KasKo Construction'))
+				->setFrom('kasasbury@yahoo.com')
+				->setTo('kasasbury@yahoo.com')
 				->setBody($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]), 'text/html');
 			$mailer->send($message);
 		} catch(\Exception $exception) {

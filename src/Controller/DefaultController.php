@@ -32,22 +32,6 @@ class DefaultController extends AbstractController
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @throws \LogicException
 	 */
-	public function getLandingPage(Request $request)
-	{
-		return $this->render(
-		    'page/marketing/city-landing-page.html.twig',
-            [
-			'controller_name' => 'DefaultController'
-            ]
-        );
-	}
-
-	/**
-	 * @param Request $request
-	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 * @throws \LogicException
-	 */
 	public function getFaq(Request $request)
 	{
     $questions = [

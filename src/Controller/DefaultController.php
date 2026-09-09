@@ -52,44 +52,36 @@ class DefaultController extends AbstractController
 	{
     $questions = [
       [
-        'question' => 'How much does it cost?',
-        'answer' => 'Every home is different, so we provide free quotes rather than one-size-fits-all pricing. We\'ll inspect your gutters and provide a straightforward quote before any work begins.'
+        'question' => 'What types of projects does KasKo take on?',
+        'answer' => 'We handle remodeling, repairs, decks, outdoor living projects, and a variety of residential construction and improvement work. If you\'re not sure whether your project is a fit, give us a call and tell us what you have in mind.'
       ],
       [
-        'question' => 'Is the vacuum really powerful enough?',
-        'answer' => 'Yes. Our commercial-grade vacuum system is powerful enough to remove leaves, pine needles, mud, and even root systems from neglected gutters. <a class="text-link" href="" data-toggle="modal" data-target="#vacuum-vid-modal">See it in action.</a>'
+        'question' => 'What areas do you serve?',
+        'answer' => 'We serve homeowners throughout Middle Georgia. Project location and travel requirements may affect availability for some jobs.'
       ],
       [
-        'question' => 'How do I know my gutters are clean?',
-        'answer' => 'Our equipment includes a high-definition camera that allows us to inspect your gutters as we clean them. We can even record the cleaning so you can see the results for yourself.'
-      ],
-      [
-        'question' => 'Do you have to get on my roof?',
-        'answer' => 'Not usually. Our commercial vacuum system allows us to clean many properties safely from the ground. If roof access is necessary for a particular job, we\'ll discuss that with you before work begins.'
-      ],
-      [
-        'question' => 'Do you clean second and third-story gutters?',
-        'answer' => 'Yes. Our equipment can reach gutters up to three stories high, allowing us to clean many multi-story properties without walking on the roof.'
-      ],
-      [
-        'question' => 'Do you clean commercial properties and apartment buildings?',
-        'answer' => 'Yes. We provide gutter cleaning for both residential and commercial properties throughout Middle Georgia, including apartments and multi-story buildings where our equipment is a good fit.'
+        'question' => 'Do you provide free quotes?',
+        'answer' => 'Yes. Contact us with a few details about your project and we\'ll arrange a time to discuss the work and provide a quote.'
       ],
       [
         'question' => 'Are you insured?',
-        'answer' => 'Yes. We carry general liability insurance through <a class="text-link" href="https://www.hiscox.com/" target="_blank" rel="noopener">Hiscox Insurance Company, Inc.</a>. You can also <a class="text-link" data-toggle="modal" data-target="#insuranceCertModal" href="#insuranceCertModal">view our certificate of insurance.</a>'
+        'answer' => 'Yes. KasKo carries insurance for the work we perform. If you need documentation for your project, just ask.'
       ],
       [
-        'question' => 'Do I need to be home during the service?',
-        'answer' => 'Not usually. As long as we have access to your gutters and there are no loose pets in the work area, we can complete most jobs while you\'re away. We\'ll send your invoice when the work is complete.'
+        'question' => 'How soon can you start my project?',
+        'answer' => 'Scheduling depends on the size of the project, materials, weather, and our current workload. We\'ll discuss timing with you when we review the job rather than promise a date we can\'t keep.'
       ],
       [
-        'question' => 'How often should my gutters be cleaned?',
-        'answer' => 'Most properties should have their gutters cleaned at least once a year. Homes and buildings with heavy tree coverage may need service more frequently. We can recommend a cleaning schedule based on the conditions around your property.'
+        'question' => 'Who purchases the materials?',
+        'answer' => 'KasKo will coordinate purchate and delivery of all materials needed for the project.'
       ],
       [
-        'question' => 'What happens to the debris?',
-        'answer' => 'We remove the gutter debris from your property and dispose of it properly. We won\'t leave piles in your yard or by the curb.'
+        'question' => 'What happens if something changes after work begins?',
+        'answer' => 'Construction sometimes reveals conditions that couldn\'t be seen beforehand, and customers occasionally decide to change the scope. If that happens, we\'ll talk with you about the options and any effect on price or schedule before moving forward with additional work.'
+      ],
+      [
+        'question' => 'How do I get started?',
+        'answer' => 'Call us or submit the quote form with a few details about your project. We\'ll follow up, talk through what you\'re looking to accomplish, and determine the best next step.'
       ]
     ];
 

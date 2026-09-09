@@ -1,8 +1,8 @@
 {# twig template #}
 {% extends 'base.html.twig' %}
 
-{% block page_title %}{{ 'Learn about Clean Gutter Company.' }}{% endblock %}
-{% block page_meta_description %}{{ 'Learn about Clean Gutter Company.' }}{% endblock %}
+{% block page_title %}{{ 'Learn about Kasko Construction, LLC.' }}{% endblock %}
+{% block page_meta_description %}{{ 'Learn about Kasko Construction, LLC.' }}{% endblock %}
 
 {% block page_content %}
 
@@ -18,23 +18,23 @@
             {% include 'components/header/call-now.html.twig' %}
         {% endblock %}
 
-        {% block layout_page_title %}A Better Way to Clean Gutters{% endblock %}
+        {% block layout_page_title %}Built on Good Work and Good Relationships{% endblock %}
 
         {% block layout_main_content %}
 
             <div class="col-12">
 
-                <p>Clean Gutter Company was built around a simple idea: there should be a safer, cleaner way to maintain your gutters.</p>
+                <p>KasKo Construction & Remodeling is a locally owned company serving homeowners throughout Middle Georgia. We handle construction, remodeling, repairs, decks, outdoor living projects, and the kind of improvements that make a home work better for the people who live there.</p>
 
-                <p>That's why we use <a class="text-link" href="" data-toggle="modal" data-target="#vacuum-vid-modal">commercial vacuum equipment</a> that allows us to clean gutters from the ground whenever possible. Our system can reach gutters up to three stories high without anyone walking on your roof.</p>
+                <p>We started KasKo with a simple idea: do good work, communicate clearly, and build a business people are comfortable calling again.</p>
 
-                <p>The equipment is powerful enough to remove leaves, pine needles, mud, and even root systems from neglected gutters. We've seen trees growing in gutters more than once.</p>
+                <p>We know inviting a contractor onto your property requires trust. That's why we believe in straightforward quotes, honest conversations about the work, and keeping our customers informed throughout the project. If something changes, we talk about it. If there's a better way to approach something, we'll tell you.</p>
 
-                <p>But the equipment is only part of the difference. We believe in showing up when we say we will, treating your property with respect, and doing the job right.</p>
+                <p>We also believe the details matter. A project isn't finished just because the construction is complete. How we treat your property, how we communicate along the way, and how you feel about the finished work are all part of the job.</p>
 
-                <p>As a veteran-owned local business, we take pride in providing straightforward, professional service to homeowners and businesses throughout Middle Georgia.</p>
+                <p>We're building KasKo one project and one relationship at a time. Our goal isn't simply to finish your current project&mdash;we want to be the company you call when you're ready for the next one.</p>
 
-                <p>If you're looking for a safer, modern approach to gutter cleaning, <a class="text-link" href="tel:1-{{ company_phone | replace({'(': '', ') ': '-'}) }}">give us a call</a>. We'd appreciate the opportunity to earn your business.</p>
+                <p>Have something in mind? <a class="text-link" href="tel:1-{{ company_phone | replace({'(': '', ') ': '-'}) }}">Give us a call</a>. We'd appreciate the opportunity to take a look, talk through your options, and earn your business.</p>
 
             </div>
 
@@ -48,6 +48,5 @@
 
     {% endembed %}
 
-    {% include 'components/modals/vacuum-video.html.twig' %}
 
 {% endblock %}

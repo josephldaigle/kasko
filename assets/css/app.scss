@@ -21,13 +21,19 @@
     color: $kasko-brass;
 }
 
-.text-link {
+// Forest utility — for action/process accents that previously read as red/rust
+.text-forest,
+.text-green {
     color: $kasko-forest;
+}
+
+.text-link {
+    color: $kasko-black;
     text-decoration: none;
 }
 
 .text-link:hover {
-    color: $kasko-brass;
+    color: $kasko-forest;
 }
 
 // Rotate accordion buttons (icons in top-right corner)
@@ -55,16 +61,16 @@
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: $kasko-forest;
+    color: $kasko-black;
 }
 
 // ==========================================================================
-// PRIMARY CTA — brass with near-black text (restrained)
+// PRIMARY CTA — forest green, white text
 // ==========================================================================
 .btn-cta {
-    background-color: $kasko-brass;
-    border: 1px solid $kasko-brass;
-    color: $kasko-black;
+    background-color: $kasko-forest;
+    border: 1px solid $kasko-forest;
+    color: $kasko-white;
     font-weight: 600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -73,14 +79,14 @@
 
     &:hover,
     &:focus {
-        background-color: $kasko-brass-dark;
-        border-color: $kasko-brass-dark;
-        color: $kasko-black;
+        background-color: $kasko-forest-light;
+        border-color: $kasko-forest-light;
+        color: $kasko-white;
         text-decoration: none;
     }
 
     &:focus {
-        box-shadow: 0 0 0 0.15rem rgba($kasko-brass, 0.35);
+        box-shadow: 0 0 0 0.15rem rgba($kasko-forest, 0.3);
     }
 
     &:disabled {
@@ -89,22 +95,18 @@
 }
 
 // ==========================================================================
-// SITE HEADER — dark, brass-accented
+// SITE HEADER — light background, dark text, gold accent rule
 // ==========================================================================
 .site-header {
-    background-color: $kasko-black;
-    color: $kasko-white;
-    border-bottom: 3px solid $kasko-brass;
+    background-color: $kasko-white;
+    color: $kasko-black;
+    // Gold rule — premium accent under the header. Keep this one.
+    border-bottom: 4px solid $kasko-brass;
     padding: 0.75rem 1rem;
     border-radius: 2px;
 
     a {
-        color: $kasko-white;
-    }
-
-    #logo {
-        // Existing logo asset is dark-on-light; invert so it reads on the dark header.
-        filter: brightness(0) invert(1);
+        color: $kasko-black;
     }
 
     .navbar {
@@ -112,47 +114,49 @@
     }
 
     .navbar-nav .nav-link {
-        color: rgba($kasko-white, 0.85);
+        color: $kasko-black;
         text-transform: uppercase;
         font-size: 0.9rem;
         letter-spacing: 0.04em;
 
         &:hover,
         &:focus {
-            color: $kasko-brass;
+            color: $kasko-forest;
         }
     }
 
     .navbar-nav .nav-item.active > .nav-link,
     .navbar-nav .nav-link.active {
-        color: $kasko-brass;
+        color: $kasko-forest;
     }
 
     .navbar-toggler {
-        border-color: rgba($kasko-white, 0.4);
+        border-color: rgba($kasko-black, 0.25);
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.85)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(17,17,17,0.75)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
     }
 }
 
-// Header phone / FREE QUOTES CTA — brass treatment
+// Header phone / FREE QUOTES CTA — forest green filled circle, black text
 .site-header__cta {
-    color: $kasko-brass;
+    color: $kasko-black;
 
     .phone-icon-circle {
-        border-color: $kasko-brass;
-        color: $kasko-brass;
+        background-color: $kasko-forest;
+        border-color: $kasko-forest;
+        color: $kasko-white;
     }
 
     &:hover {
-        color: lighten($kasko-brass, 8%);
+        color: $kasko-black;
         text-decoration: none;
 
         .phone-icon-circle {
-            border-color: lighten($kasko-brass, 8%);
-            color: lighten($kasko-brass, 8%);
+            background-color: $kasko-forest-light;
+            border-color: $kasko-forest-light;
+            color: $kasko-white;
         }
     }
 }
@@ -168,11 +172,11 @@
     border-radius: 50%;
 }
 
-// Short accent line beneath section headings — now brass
+// Short accent line beneath section headings — forest green
 .heading-accent {
     width: 48px;
     height: 3px;
-    background-color: $kasko-brass;
+    background-color: $kasko-forest;
 }
 
 // Google Map embed
@@ -207,33 +211,29 @@
     background-color: $kasko-white;
 
     h5 {
-        color: $kasko-forest;
+        color: $kasko-black;
     }
 }
 
 // ==========================================================================
-// QUOTE / GET-A-QUOTE CARD — dark forest green treatment
+// QUOTE / GET-A-QUOTE CARD — white surface, forest accents, forest CTA
 // ==========================================================================
 .quote-card {
-    background-color: $kasko-forest;
-    border: 1px solid $kasko-forest;
-    color: $kasko-white;
-    box-shadow: 0 2px 6px rgba($kasko-black, 0.12);
+    background-color: $kasko-white;
+    border: 1px solid rgba($kasko-black, 0.08);
+    color: $kasko-black;
+    box-shadow: 0 2px 6px rgba($kasko-black, 0.06);
 
     h5 {
-        color: $kasko-white;
+        color: $kasko-black;
         font-weight: 700;
         letter-spacing: 0.02em;
         text-transform: uppercase;
     }
 
-    .heading-accent {
-        background-color: $kasko-brass;
-    }
-
     .form-control {
         background-color: $kasko-white;
-        border: 1px solid rgba($kasko-white, 0.6);
+        border: 1px solid rgba($kasko-black, 0.2);
         color: $kasko-black;
 
         &::placeholder {
@@ -242,14 +242,14 @@
 
         &:focus {
             background-color: $kasko-white;
-            border-color: $kasko-brass;
-            box-shadow: 0 0 0 0.15rem rgba($kasko-brass, 0.3);
+            border-color: $kasko-forest;
+            box-shadow: 0 0 0 0.15rem rgba($kasko-forest, 0.2);
             color: $kasko-black;
         }
     }
 
     .invalid-feedback {
-        color: lighten($kasko-danger, 25%);
+        color: $kasko-danger;
     }
 
     .btn-cta {
@@ -258,7 +258,7 @@
 }
 
 // ==========================================================================
-// REVIEWS CARD — clean surface, green typography, brass stars
+// REVIEWS CARD — clean surface, black typography, forest heading accent
 // ==========================================================================
 .reviews-card {
     background-color: $kasko-white;
@@ -266,25 +266,21 @@
     box-shadow: none;
 
     h5 {
-        color: $kasko-forest;
+        color: $kasko-black;
         font-weight: 700;
         letter-spacing: 0.02em;
         text-transform: uppercase;
     }
 
-    .heading-accent {
-        background-color: $kasko-brass;
-    }
-
     // Reviewer icon
     .fa-user-circle {
-        color: $kasko-forest !important;
+        color: $kasko-black !important;
     }
 
-    // Rating stars: use brass instead of yellow
+    // Rating stars stay black on white this pass (per spec, no gold-on-white here)
     .text-gold,
     .fas.fa-star.text-gold {
-        color: $kasko-brass !important;
+        color: $kasko-black !important;
     }
 
     blockquote {
@@ -292,12 +288,12 @@
     }
 
     .blockquote-footer a {
-        color: $kasko-forest;
+        color: $kasko-black;
     }
 }
 
 // ==========================================================================
-// SITE FOOTER — dark, light text, brass accent
+// SITE FOOTER — near-black, light text, gold accents (high contrast here)
 // ==========================================================================
 .site-footer,
 .site-footer .footer {
@@ -328,6 +324,7 @@
         }
     }
 
+    // Footer icons render in gold against the near-black background
     .text-primary,
     i.text-primary {
         color: $kasko-brass !important;
@@ -358,7 +355,7 @@
 
 .footer-section-header {
     font-size: $h6-font-size;
-    color: $kasko-forest;
+    color: $kasko-black;
 }
 
 a#bbblink.sehzbal:hover img,
@@ -438,7 +435,7 @@ a#bbblink.ruhzbul:hover img {
 .rating>label {
     position: relative;
     width: 1em;
-    color: $kasko-brass;
+    color: $kasko-black;
     cursor: pointer;
     z-index: 1;
 }

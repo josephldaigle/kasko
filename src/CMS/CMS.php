@@ -57,11 +57,11 @@ class CMS
             ->setId(0)
             ->setReviewScore(5)
             ->setReviewScale(5)
-            ->setSourceName('Irvine')
-            ->setReviewerLocation('Warner Robins, GA')
-            ->setReviewText('This was the best gutter cleaning I had ever had done. Will use again.')
+            ->setSourceName('Tara')
+            ->setReviewerLocation('Perry, GA')
+            ->setReviewText('Kasko removed six huge trees from my yard, opening the space just in time for summer. Highly professional and will definitely use again.')
             ->setSourceName('Google')
-            ->setSourceUrl('https://goo.gl/maps/PtwEy2SXrMGsr5HG7');
+            ->setSourceUrl('');
 
 		$reviews[] = (new CustomerReview())
             ->setId(0)
@@ -69,9 +69,9 @@ class CMS
             ->setReviewScale(5)
             ->setReviewerName('Collena')
             ->setReviewerLocation('Warner Robins, GA')
-            ->setReviewText('Clean Gutter Co was very professional, communicative, and prompt. Their work ethic was exceptional. I had just had a bad experience with a different contractor so was kind of leery of hiring another. Joe called me back within an appropriate amount of time, came and gave me a very reasonable estimate and did the work. Bada Bing Bada Boom. I would most definitely recommend them. Great job.')
+            ->setReviewText('Kasko built a beautiful deck for us. They were very professional and did a great job. I would highly recommend them.')
             ->setSourceName('Google')
-            ->setSourceUrl('https://goo.gl/maps/AsWe3UmvEKQcP3dX8');
+            ->setSourceUrl('');
 
 		return $reviews;
 	}

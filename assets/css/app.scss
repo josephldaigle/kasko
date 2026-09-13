@@ -95,18 +95,18 @@
 }
 
 // ==========================================================================
-// SITE HEADER — light background, dark text, gold accent rule
+// SITE HEADER — forest green background, white nav text, gold accents
 // ==========================================================================
 .site-header {
-    background-color: $kasko-white;
-    color: $kasko-black;
-    // Gold rule — premium accent under the header. Keep this one.
+    background-color: $kasko-forest;
+    color: $kasko-white;
+    // Gold rule — premium accent under the header.
     border-bottom: 4px solid $kasko-brass;
     padding: 0.75rem 1rem;
     border-radius: 2px;
 
     a {
-        color: $kasko-black;
+        color: $kasko-white;
     }
 
     .navbar {
@@ -114,49 +114,65 @@
     }
 
     .navbar-nav .nav-link {
-        color: $kasko-black;
+        color: $kasko-white;
         text-transform: uppercase;
         font-size: 1rem;
         letter-spacing: 0.04em;
+        border-bottom: 2px solid transparent;
 
         &:hover,
         &:focus {
-            color: $kasko-forest;
+            color: $kasko-white;
+            border-bottom-color: $kasko-brass;
         }
     }
 
     .navbar-nav .nav-item.active > .nav-link,
     .navbar-nav .nav-link.active {
-        color: $kasko-forest;
+        color: $kasko-white;
+        border-bottom-color: $kasko-brass;
     }
 
     .navbar-toggler {
-        border-color: rgba($kasko-black, 0.25);
+        border-color: rgba($kasko-white, 0.5);
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(17,17,17,0.75)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
     }
 }
 
-// Header phone / FREE QUOTES CTA — forest green filled circle, black text
+// Header phone / FREE QUOTES CTA — integrated into green header
+// "FREE QUOTES" gold, phone number white, phone icon in gold accent circle
 .site-header__cta {
-    color: $kasko-black;
+    color: $kasko-white;
+
+    .free-quotes-label {
+        color: $kasko-brass;
+    }
+
+    .phone-number {
+        color: $kasko-brass;
+    }
 
     .phone-icon-circle {
-        background-color: $kasko-forest;
-        border-color: $kasko-forest;
-        color: $kasko-white;
+        background-color: transparent;
+        border-color: $kasko-brass;
+        color: $kasko-brass;
     }
 
     &:hover {
-        color: $kasko-black;
+        color: $kasko-white;
         text-decoration: none;
 
+        .free-quotes-label {
+            color: $kasko-brass;
+        }
+
         .phone-icon-circle {
-            background-color: $kasko-forest-light;
-            border-color: $kasko-forest-light;
-            color: $kasko-white;
+            background-color: rgba($kasko-brass, 0.15);
+            border-color: $kasko-brass;
+            color: $kasko-brass;
         }
     }
 }
@@ -172,11 +188,11 @@
     border-radius: 50%;
 }
 
-// Short accent line beneath section headings — forest green
+// Short accent line beneath section headings — gold
 .heading-accent {
     width: 48px;
     height: 3px;
-    background-color: $kasko-forest;
+    background-color: $kasko-brass;
 }
 
 // Google Map embed

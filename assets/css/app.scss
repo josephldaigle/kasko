@@ -105,6 +105,10 @@
     padding: 0.75rem 1rem;
     border-radius: 2px;
 
+    #logo {
+        filter: brightness(0) invert(1);
+    }
+
     a {
         color: $kasko-white;
     }

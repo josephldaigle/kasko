@@ -1,25 +1,26 @@
 /* Site-wide variables — KasKo Construction & Remodeling palette */
 
-// Brand palette
-$kasko-forest:       #183C2B; // primary forest green
-$kasko-forest-2:     #2D5A40; // supporting green
-$kasko-black:        #111111; // near-black
-$kasko-brass:        #C9A34E; // brass / gold accent
-$kasko-brass-dark:   #A8853C; // brass hover
-$kasko-cream:        #F5F3ED; // warm light background
+// Brand palette — black + white, forest green for action, gold for detail
+$kasko-black:        #111111; // near-black (structure & typography)
 $kasko-white:        #FFFFFF;
-$kasko-danger:       #C0392B; // semantic error red
+$kasko-cream:        #F5F3ED; // warm neutral separation surface
+$kasko-forest:       #1F4935; // primary action / interactive accent
+$kasko-forest-light: #2D6B4C; // forest hover — slightly lighter, still clearly green
+$kasko-brass:        #C9A34E; // gold decorative accent
+$kasko-brass-dark:   #A8853C; // gold hover (used sparingly, e.g. footer)
+$kasko-danger:       #C0392B; // semantic error red — do NOT reuse as brand color
 
 // Bootstrap theme colors
 $theme-colors: (
-        "primary":   $kasko-forest,
+        "primary":   $kasko-black,
         "secondary": $kasko-black,
         "dark":      $kasko-black,
         "light":     $kasko-cream,
-        "info":      $kasko-forest-2,
+        "info":      $kasko-black,
         "danger":    $kasko-danger,
         "warning":   $kasko-brass,
         "gold":      $kasko-brass,
+        "forest":    $kasko-forest,
 );
 
 $h1-font-size: 1.5rem;
@@ -29,13 +30,13 @@ $h4-font-size: 1.1rem;
 $h5-font-size: 1rem;
 $h6-font-size: .90rem;
 
-// Navbar coloring — dark header
+// Navbar coloring — light header, dark text, forest hover/active
+$navbar-light-color:        $kasko-black;
+$navbar-light-hover-color:  $kasko-forest;
+$navbar-light-active-color: $kasko-forest;
 $navbar-dark-color:         rgba($kasko-white, 0.85);
 $navbar-dark-hover-color:   $kasko-brass;
 $navbar-dark-active-color:  $kasko-brass;
-$navbar-light-color:        $kasko-forest;
-$navbar-light-active-color: $kasko-brass;
-$navbar-light-hover-color:  $kasko-brass;
 
 
 // media breaks

@@ -137,7 +137,7 @@ class CustomerReview
 
     public function getSourceUrl(): ?string
     {
-        return $this->source_url;
+        return $this->source_url ?: '';
     }
 
     public function setSourceUrl($source_url): self

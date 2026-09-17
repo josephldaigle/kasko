@@ -1,4 +1,4 @@
-# This file defines page routes for https://cleangutterco.com.
+# This file defines page routes for https://kaskoconstruction.com.
 
 ################
 # PAGES        #
@@ -11,17 +11,17 @@ home:
     methods: GET
 # FAQ
 frequently-asked-questions:
-    path: /commonly-asked-gutter-questions
+    path: /faq
     controller: Kasko\Controller\DefaultController::getFaq
     methods: GET
 # About
 about-us:
-    path: /about-clean-gutter-co
+    path: /about
     controller: Kasko\Controller\DefaultController::getAbout
     methods: GET
 # Contact
 contact:
-    path: /contact-clean-gutter-co
+    path: /contact
     controller: Kasko\Controller\DefaultController::getContact
     methods: GET
 # Terms of Service
@@ -50,25 +50,3 @@ get_sitemap_xml:
     defaults:
         path: /sitemap
         permanent: true
-
-# Marketing
-
-# This route MUST be after all pages defined in it's `condition` property
-location_landing-page:
-    path: /gutter-cleaning/{location}
-    controller: Kasko\Controller\DefaultController::getLandingPage
-    condition: 'request.getPathInfo() matches "/gutter-cleaning\\\\|macon|perry|byron|warner-robins|fort-valley/"'
-    methods: GET
-
-#kathleen:
-#    path: /kathleen
-#    controller: Kasko\Controller\DefaultController::city
-#bonaire:
-#    path: /bonaire
-#    controller: Kasko\Controller\DefaultController::city
-#perry:
-#    path: /perry
-#    controller: Kasko\Controller\DefaultController::city
-#fort-valley:
-#    path: /fort-valley
-#    controller: Kasko\Controller\DefaultController::city

@@ -9,7 +9,7 @@ name: Deploy Kasko
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: kasko_prod
 
     steps:
       - name: Deploy to DigitalOcean

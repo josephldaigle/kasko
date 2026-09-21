@@ -8,13 +8,15 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuotesController extends AbstractController
 {
 	#[Route('/api/quotes', name: 'quotes', methods: ['POST'])]
-	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, \Swift_Mailer $mailer, LoggerInterface $logger)
+	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, MailerInterface $mailer, LoggerInterface $logger): JsonResponse
 	{
 		// validate form input
 
@@ -30,12 +32,13 @@ class QuotesController extends AbstractController
 		$entityManager->flush();
 
 		try {
-			$message = (new \Swift_Message('New Quote Request - KasKo Construction'))
-				->setFrom('kasasbury@yahoo.com')
-				->setTo('kasasbury@yahoo.com')
-				->setBody($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]), 'text/html');
+			$message = (new Email())
+				->from('kasasbury@yahoo.com')
+				->to('kasasbury@yahoo.com')
+				->subject('New Quote Request - KasKo Construction')
+				->html($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]));
 			$mailer->send($message);
-		} catch(\Exception $exception) {
+		} catch (\Throwable $exception) {
 			$logger->error($exception->getMessage(), ['context' => $exception, 'trace' => $exception->getTrace()]);
 		}
 

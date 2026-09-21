@@ -13,7 +13,7 @@ doctrine:
         mappings:
             Kasko:
                 is_bundle: false
-                type: annotation
+                type: attribute
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'Kasko\Entity'
                 alias: Kasko

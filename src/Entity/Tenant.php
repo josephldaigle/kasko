@@ -3,33 +3,24 @@
 namespace Kasko\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kasko\Repository\TenantRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass="Kasko\Repository\TenantRepository")
- */
+#[ORM\Entity(repositoryClass: TenantRepository::class)]
 class Tenant implements UserInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $uuid;
 
-	/**
-	 * @ORM\Column(type="json")
-	 */
+    #[ORM\Column(type: 'json')]
     private $devices = [];
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     public function getId(): ?int

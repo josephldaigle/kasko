@@ -1,58 +1,41 @@
 <?php
-/**
- * Created by Joseph Daigle.
- * Date: 3/10/19
- * Time: 9:37 AM
- */
 
 namespace Kasko\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
-/**
- * EmailTest.
- *
- * @package Kasko\Tests
- */
-class EmailTest extends WebTestCase
+class EmailTest extends KernelTestCase
 {
-	/**
-	 * @var mixed the service being used by the app to send emails
-	 */
-	private $emailer;
+	private MailerInterface $mailer;
 
-	/**
-	 * EmailTest constructor.
-	 */
-	public function __construct()
+	protected function setUp(): void
 	{
-		parent::__construct();
-
-		// boot the kernel
 		self::bootKernel();
 
-		// fetch emailer service
-		$this->emailer = self::$container->get('mailer');
+		$this->mailer = self::getContainer()->get('mailer');
 	}
 
-	public function testEmailServiceIsAvailable()
+	public function testEmailServiceIsAvailable(): void
 	{
-		$this->assertInstanceOf(\Swift_Mailer::class, $this->emailer, 'Unexpected mailer type');
+		$this->assertInstanceOf(MailerInterface::class, $this->mailer, 'Unexpected mailer type');
 		$this->assertTrue(
-			method_exists($this->emailer, 'send'),
+			method_exists($this->mailer, 'send'),
 			'Mailer service is missing a send function.'
 		);
 	}
 
-	public function testCanSendEmail(  )
+	public function testCanSendEmail(): void
 	{
-		$message = (new \Swift_Message('Test Email'))
-			->setTo('josephldaigle@yahoo.com')
-			->setBody('<p>This is a test message</p>');
+		$message = (new Email())
+			->from('kasasbury@yahoo.com')
+			->to('josephldaigle@yahoo.com')
+			->subject('Test Email')
+			->html('<p>This is a test message</p>');
 
-		$sent = $this->emailer->send($message);
-
-		$this->assertTrue(is_int($sent), 'Unexpected return type from sent()');
-		$this->assertTrue($sent === 1, 'Email not sent.');
+		// With MAILER_DSN=null://null (test/dev default) send() should return without throwing.
+		$this->mailer->send($message);
+		$this->addToAssertionCount(1);
 	}
 }

@@ -3,37 +3,26 @@
 namespace Kasko\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kasko\Repository\FormLeadRepository;
 
-/**
- * @ORM\Entity(repositoryClass="Kasko\Repository\FormLeadRepository")
- */
+#[ORM\Entity(repositoryClass: FormLeadRepository::class)]
 class FormLead
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
+    #[ORM\Column(type: 'string', length: 255)]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $address;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
+    #[ORM\Column(type: 'string', length: 10)]
     private $phone_number;
 
     public function getId(): ?int

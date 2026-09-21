@@ -75,13 +75,7 @@ class DefaultController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/our-work", name="our-work", methods={"GET"})
-	 *
-	 * @param Request $request
-	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
+	#[Route('/our-work', name: 'our-work', methods: ['GET'])]
 	public function getOurWork(Request $request)
 	{
 		return $this->render('page/our-work.html.twig', [

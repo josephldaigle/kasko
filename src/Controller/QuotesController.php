@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Joseph Daigle.
- * Date: 3/8/19
- * Time: 9:28 PM
- */
 
 namespace Kasko\Controller;
 
@@ -13,28 +8,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * QuotesController.
- *
- * @package Kasko\Controller
- */
 class QuotesController extends AbstractController
 {
-	/**
-	 * @Route("/api/quotes", name="quotes", methods={"POST"})
-	 *
-	 * @param Request                $request
-	 * @param ValidatorInterface     $validator
-	 * @param EntityManagerInterface $entityManager
-	 * @param \Swift_Mailer          $mailer
-	 * @param LoggerInterface        $logger
-	 *
-	 * @return JsonResponse
-	 */
+	#[Route('/api/quotes', name: 'quotes', methods: ['POST'])]
 	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, \Swift_Mailer $mailer, LoggerInterface $logger)
 	{
 		// validate form input

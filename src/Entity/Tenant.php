@@ -40,38 +40,21 @@ class Tenant implements UserInterface
         return $this;
     }
 
-	public function getDevices()
-	{
-		return $this->devices;
-	}
+    public function getDevices()
+    {
+        return $this->devices;
+    }
 
-	public function setDevices( $devices )
-	{
-		$this->devices = $devices;
-	}
+    public function setDevices($devices)
+    {
+        $this->devices = $devices;
+    }
 
-    /**
-     * The modern Symfony 5.3+ way to expose the user identifier.
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->uuid;
     }
 
-    /**
-     * Kept for BC — Symfony 5.4's UserInterface still requires this method.
-     * Remove when we drop Symfony 5.x compatibility.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
-    {
-        return $this->getUserIdentifier();
-    }
-
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -88,28 +71,7 @@ class Tenant implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): ?string
-    {
-        // not needed for apps that do not check user passwords
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
-    {
-        // not needed for apps that do not check user passwords
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

@@ -18,14 +18,11 @@ COPY assets/ ./assets/
 RUN yarn build
 
 # ============================================================
-# Stage 2: PHP 8.0-FPM – production application
+# Stage 2: PHP 8.2-FPM – production application
 # ============================================================
-FROM php:8.0-fpm-bullseye AS app
+FROM php:8.2-fpm-bookworm AS app
 
-RUN sed -i 's|http://deb.debian.org/debian |http://archive.debian.org/debian |g' /etc/apt/sources.list \
-    && sed -i '/deb.debian.org\/debian-security/d' /etc/apt/sources.list
-
-RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         libicu-dev \
         libzip-dev \
         unzip \

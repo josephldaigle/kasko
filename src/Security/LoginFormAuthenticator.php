@@ -6,89 +6,86 @@ use Kasko\Entity\Tenant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+/**
+ * NOTE: This authenticator was Guard-based before the Symfony 5.4 upgrade
+ * and was ported to the new authenticator system. There is no `login`
+ * route registered in this application, so supports() never returns true
+ * in practice and this authenticator is effectively dormant.
+ *
+ * The original checkCredentials() threw an "unimplemented" exception; that
+ * behavior is preserved here via CustomCredentials so nothing that was
+ * previously broken starts silently succeeding.
+ */
+class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager)
-    {
-        $this->entityManager = $entityManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return 'login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        $credentials = [
-            'uuid' => $request->request->get('uuid'),
-            'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
-        ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['uuid']
+        $uuid = (string) $request->request->get('uuid', '');
+        $password = (string) $request->request->get('password', '');
+        $csrfToken = (string) $request->request->get('_csrf_token', '');
+
+        $request->getSession()->set(Security::LAST_USERNAME, $uuid);
+
+        return new Passport(
+            new UserBadge($uuid, function (string $identifier): Tenant {
+                $user = $this->entityManager->getRepository(Tenant::class)
+                    ->findOneBy(['uuid' => $identifier]);
+
+                if (!$user) {
+                    throw new CustomUserMessageAuthenticationException('Your username/password did not match.');
+                }
+
+                return $user;
+            }),
+            new CustomCredentials(
+                function () {
+                    // Preserves the original Guard behavior: credential
+                    // checking is not implemented. Since no login route
+                    // is registered, this path is unreachable.
+                    throw new \RuntimeException('TODO: implement credential check for '.self::class);
+                },
+                $password,
+            ),
+            [new CsrfTokenBadge('authenticate', $csrfToken)],
         );
-
-        return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
-        }
-
-        $user = $this->entityManager->getRepository(Tenant::class)->findOneBy(['uuid' => $credentials['uuid']]);
-
-        if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Your username/password did not match.');
-        }
-
-        return $user;
-    }
-
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        // Check the user's password or other credentials and return true or false
-        // If there are no credentials to check, you can just return true
-        throw new \Exception('TODO: check the credentials inside '.__FILE__);
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         return new RedirectResponse('/');
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate('login');
     }

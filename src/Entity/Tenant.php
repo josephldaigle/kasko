@@ -51,13 +51,22 @@ class Tenant implements UserInterface
 	}
 
     /**
-     * A visual identifier that represents this user.
+     * The modern Symfony 5.3+ way to expose the user identifier.
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->uuid;
+    }
+
+    /**
+     * Kept for BC — Symfony 5.4's UserInterface still requires this method.
+     * Remove when we drop Symfony 5.x compatibility.
      *
      * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->uuid;
+        return $this->getUserIdentifier();
     }
 
     /**
@@ -82,17 +91,19 @@ class Tenant implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         // not needed for apps that do not check user passwords
+        return null;
     }
 
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         // not needed for apps that do not check user passwords
+        return null;
     }
 
     /**

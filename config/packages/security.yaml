@@ -1,4 +1,6 @@
 security:
+    enable_authenticator_manager: true
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -7,16 +9,15 @@ security:
                 class: Kasko\Entity\Tenant
                 property: uuid
         users_in_memory: { memory: null }
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            guard:
-                authenticators:
-                    - Kasko\Security\LoginFormAuthenticator
+            lazy: true
             provider: app_user_provider
+            custom_authenticator: Kasko\Security\LoginFormAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

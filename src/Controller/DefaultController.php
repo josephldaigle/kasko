@@ -57,7 +57,7 @@ class DefaultController extends AbstractController
       ],
       [
         'question' => 'Who purchases the materials?',
-        'answer' => 'KasKo will coordinate purchate and delivery of all materials needed for the project.'
+        'answer' => 'KasKo will coordinate the purchase and delivery of all materials needed for the project.'
       ],
       [
         'question' => 'What happens if something changes after work begins?',

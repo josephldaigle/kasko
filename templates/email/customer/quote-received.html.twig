@@ -1,0 +1,13 @@
+{% extends 'email/email-base.html.twig' %}
+
+{% block main_content %}
+    <p>Hi {{ formLead.name }},</p>
+
+    <p>Thank you for reaching out to KasKo Construction &amp; Remodeling. We&rsquo;ve received your request for a free quote and one of us will be in touch soon.</p>
+
+    <p>If you need to reach us in the meantime, just reply to this email.</p>
+
+    <p>&mdash; The KasKo team</p>
+
+    <p><small><a href="{{ url('home') }}">KasKo Construction &amp; Remodeling</a> &middot; {{ "now"|date("Y") }}</small></p>
+{% endblock %}

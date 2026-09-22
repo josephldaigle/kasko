@@ -29,7 +29,7 @@ class EmailTest extends KernelTestCase
 	public function testCanSendEmail(): void
 	{
 		$message = (new Email())
-			->from('kasasbury@yahoo.com')
+			->from('kasasbury@kaskoconstruction.com')
 			->to('josephldaigle@yahoo.com')
 			->subject('Test Email')
 			->html('<p>This is a test message</p>');

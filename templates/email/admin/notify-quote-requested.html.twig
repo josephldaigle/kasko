@@ -11,6 +11,11 @@
     <p><strong>Phone:</strong> {{ formLead.phoneNumber}}</p>
     <p><strong>Address:</strong> {{ formLead.address }}</p>
 
+    {% if formLead.projectDescription %}
+        <p><strong>Project Description:</strong></p>
+        <p>{{ formLead.projectDescription|nl2br }}</p>
+    {% endif %}
+
     <p><small>Sent on behalf of <a href="{{ url('home') }}">KasKo Construction & Remodeling</a> {{ "now"|date("Y") }}.</small></p>
 
 {% endblock %}

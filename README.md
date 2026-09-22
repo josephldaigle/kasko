@@ -1,86 +1,102 @@
+# KasKo Construction
 
+Marketing site and quote-request form for KasKo Construction, a residential construction and remodeling business serving Middle Georgia.
 
-# Clean Gutter Co
+Canonical hostname: `kaskoconstruction.com` (the nginx config also redirects `www.kaskoconstruction.com`, `kaskomaintenance.com`, and `www.kaskomaintenance.com` to the canonical host).
 
-Website for Clean Gutter Co, a gutter-cleaning company serving Byron, Warner Robins, Macon, Perry, Fort Valley, and surrounding Middle Georgia communities.
+## Stack
 
-## Tech Stack
-
-- Symfony
-- Twig
-- Bootstrap
-- SCSS
+- PHP 8.4
+- Symfony 7.4 LTS
+- Doctrine ORM 3 / DBAL 4
+- Symfony Mailer
+- Twig 3
+- Webpack Encore + Dart Sass, Bootstrap 4, Font Awesome 5, Stimulus, Vue 2
 - MySQL 8.0
-- Webpack Encore / Node
-- nginx in production
+- nginx 1.25-alpine (production)
+- Docker Compose deployment
 
-## Local Development
+## Local development
 
-### Database
+The application is designed to run under Docker Compose. A bare-metal setup with a matching PHP/MySQL install is also possible.
 
-Start MySQL 8.0 before running the application:
+### With Docker
+
+1. Copy `.env.prod.dist` to `.env.prod` and fill in real values (this file is gitignored).
+2. Provide overrides for anything you want to differ from the committed `.env` / `.env.dev` defaults in `.env.local` and/or `.env.dev.local` (also gitignored).
+3. Bring the stack up:
+   ```bash
+   docker compose up -d --build
+   ```
+4. Run pending migrations inside the app container:
+   ```bash
+   docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
+   ```
+
+`compose.override.yaml` adds a [Mailpit](https://github.com/axllent/mailpit) container for local mail capture; it is picked up automatically by `docker compose up` and ignored by explicit `docker compose -f docker-compose.yml up` invocations.
+
+### Without Docker
+
+Prereqs: PHP 8.4 (with `pdo_mysql`, `intl`, `opcache`, `zip`, `xml`), Composer 2, MySQL 8.0, Node 22, Yarn 1.
 
 ```bash
-brew services start mysql@8.0
+composer install
+yarn install
+yarn build              # one-shot production build
+# — or —
+yarn watch              # webpack in watch mode
+
+php bin/console doctrine:migrations:migrate
+symfony server:start    # or: php -S 127.0.0.1:8000 -t public
 ```
 
-### Symfony
+Real credentials for local dev belong in `.env.local`. The committed `.env` and `.env.dev` contain only `!ChangeMe!` placeholders.
 
-Start the local Symfony server in the development environment:
+## Environment file layout
 
-```bash
-APP_ENV=dev symfony server:start
-```
+| File | Committed? | Purpose |
+|---|---|---|
+| `.env` | yes | Baseline defaults, safe placeholders only. |
+| `.env.dev` | yes | `APP_ENV=dev` overrides, safe placeholders only. |
+| `.env.test` | yes | Test-env values. |
+| `.env.prod.dist` | yes | Template for production; every value is a `CHANGE_ME_*` placeholder. |
+| `.env.local` | **no** | Real dev-time credentials. |
+| `.env.dev.local` | **no** | Real dev-time env-specific overrides. |
+| `.env.prod` | **no** | Real production credentials. Copied from `.env.prod.dist` on the deploy host and used by `docker-compose` via `env_file: .env.prod`. |
 
-### Frontend assets
+Do not commit real credentials.
 
-The project uses Node-managed frontend dependencies. If the asset build fails, confirm that the expected Node version is active before installing dependencies or compiling assets.
+## Key pages
 
-```bash
-npm install
-npm run dev
-```
+- Home (`/`)
+- About (`/about`)
+- FAQ (`/faq`)
+- Contact (`/contact`)
+- Our Work (`/our-work`)
+- Customer Reviews (`/reviews`)
+- Terms of Service (`/terms-of-service`)
+- Privacy Policy (`/privacy-policy`)
+- Sitemap (`/sitemap`, `/sitemap.xml`)
 
-## Production
-
-The production site runs on a DigitalOcean server behind nginx with SSL managed through Certbot.
-
-Before deploying, verify that:
-
-- production environment variables are configured
-- MySQL is running
-- frontend assets compile successfully
-- Symfony cache is cleared/warmed for production
-- database migrations, if any, have been reviewed and run
-- the quote-request form and email delivery work after deployment
-- HTTPS and primary site routes respond correctly
+The quote-request form posts to `POST /api/quotes` (`Kasko\Controller\QuotesController::postFormLead`), which persists a `FormLead` via Doctrine and sends a notification email via Symfony Mailer using `MAILER_DSN`.
 
 ## Deployment
 
-Deployment details are intentionally documented at a high level here. Do not commit production credentials, API keys, SMTP passwords, private keys, or other secrets to this repository.
+Production runs the same image built from `Dockerfile` (multi-stage: Node 22 asset build → PHP 8.4-FPM runtime). nginx terminates TLS and forwards to `app:9000` over FastCGI.
 
-A typical release should include:
+A typical release, at a high level:
 
-1. Pull the intended production branch/revision.
-2. Install/update PHP dependencies for production.
-3. Install/build frontend assets.
-4. Run any required database migrations.
-5. Clear and warm the Symfony production cache.
-6. Verify file permissions where necessary.
-7. Smoke-test the site, quote form, email delivery, and HTTPS.
+1. Populate `.env.prod` on the deploy host with real credentials.
+2. Build the image: `docker build -t kasko:<sha or tag> .`
+3. Bring the stack up: `docker compose up -d`.
+4. Run pending Doctrine migrations inside the container.
+5. Smoke-test the site, the quote-request form and its email delivery, HTTPS certificates for each configured hostname, and the sitemap.
 
-## Key Pages
+Do not commit production credentials, API keys, SMTP passwords, or private keys to this repository.
 
-- Home
-- About
-- FAQ
-- Contact & Service Area
-- Terms of Service
-- Privacy Policy
+## Business contact
 
-## Business Contact
-
-**Clean Gutter Co**  
-Byron, Georgia  
-(478) 283-3355  
-joe@cleangutterco.com
+**KasKo Construction**
+Middle Georgia
+(478) 283-3355
+kasasbury@yahoo.com

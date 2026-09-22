@@ -22,7 +22,7 @@ class QuickBooksExtension extends Extension
 	/**
 	 * @inheritdoc
 	 */
-	public function load( array $configs, ContainerBuilder $container )
+	public function load(array $configs, ContainerBuilder $container): void
 	{
 		// TODO: Implement load() method.
 	}
@@ -30,7 +30,7 @@ class QuickBooksExtension extends Extension
 	/**
 	 * @inheritdoc
 	 */
-	public function getAlias()
+	public function getAlias(): string
 	{
 		return 'quickbooks';
 	}

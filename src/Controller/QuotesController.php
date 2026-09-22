@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Joseph Daigle.
- * Date: 3/8/19
- * Time: 9:28 PM
- */
 
 namespace Kasko\Controller;
 
@@ -13,29 +8,15 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * QuotesController.
- *
- * @package Kasko\Controller
- */
 class QuotesController extends AbstractController
 {
-	/**
-	 * @Route("/api/quotes", name="quotes", methods={"POST"})
-	 *
-	 * @param Request                $request
-	 * @param ValidatorInterface     $validator
-	 * @param EntityManagerInterface $entityManager
-	 * @param \Swift_Mailer          $mailer
-	 * @param LoggerInterface        $logger
-	 *
-	 * @return JsonResponse
-	 */
-	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, \Swift_Mailer $mailer, LoggerInterface $logger)
+	#[Route('/api/quotes', name: 'quotes', methods: ['POST'])]
+	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, MailerInterface $mailer, LoggerInterface $logger): JsonResponse
 	{
 		// validate form input
 
@@ -51,12 +32,13 @@ class QuotesController extends AbstractController
 		$entityManager->flush();
 
 		try {
-			$message = (new \Swift_Message('New Gutter Quote Request'))
-				->setFrom('joe@cleangutterco.com')
-				->setTo('joe@cleangutterco.com')
-				->setBody($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]), 'text/html');
+			$message = (new Email())
+				->from('kasasbury@yahoo.com')
+				->to('kasasbury@yahoo.com')
+				->subject('New Quote Request - KasKo Construction')
+				->html($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]));
 			$mailer->send($message);
-		} catch(\Exception $exception) {
+		} catch (\Throwable $exception) {
 			$logger->error($exception->getMessage(), ['context' => $exception, 'trace' => $exception->getTrace()]);
 		}
 

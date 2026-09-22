@@ -1,10 +1,9 @@
 # ============================================================
-# Stage 1: Node 18 – compile frontend assets
-# node-sass@8 supports Node 14–18; do not upgrade to Node 20+
+# Stage 1: Node 22 / Bookworm asset build
 # ============================================================
-FROM node:18-bullseye-slim AS assets
+FROM node:22-bookworm-slim AS assets
 
-# node-sass may need to compile native bindings as a fallback
+# native build tools kept in case any dep still compiles bindings
 RUN apt-get update && apt-get install -y python3 make g++ \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,18 +18,19 @@ COPY assets/ ./assets/
 RUN yarn build
 
 # ============================================================
-# Stage 2: PHP 8.0-FPM – production application
+# Stage 2: PHP 8.4-FPM – production application
 # ============================================================
-FROM php:8.0-fpm-bullseye AS app
+FROM php:8.4-fpm-bookworm AS app
 
 RUN apt-get update && apt-get install -y \
         libicu-dev \
         libzip-dev \
+        libxml2-dev \
         unzip \
         git \
         gosu \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql intl opcache zip \
+    && docker-php-ext-install pdo_mysql intl opcache zip xml \
     && rm -rf /var/lib/apt/lists/*
 
 # OPcache tuned for immutable production code
@@ -42,7 +42,7 @@ RUN { \
     echo 'opcache.revalidate_freq=0'; \
 } > /usr/local/etc/php/conf.d/opcache-prod.ini
 
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
@@ -69,6 +69,7 @@ COPY --from=assets /build/public/build/ ./public/build/
 RUN APP_ENV=prod \
     APP_SECRET=build-placeholder \
     DATABASE_URL=mysql://x:x@localhost/x \
+    MAILER_DSN=null://null \
     php bin/console assets:install public --no-interaction 2>/dev/null || true
 
 RUN mkdir -p public/img && cp -r assets/img/* public/img/

@@ -28,10 +28,10 @@ class MenuTest extends TestCase
 
 	/**
 	 * @dataProvider constructorThrowsInvalidArgumentExceptionTestProvider
-	 * @expectedException \TypeError
 	 */
 	public function testConstructorThrowsInvalidArgumentException($param)
 	{
+		$this->expectException(\TypeError::class);
 		$menu = new Menu($param);
 	}
 

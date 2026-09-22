@@ -3,53 +3,36 @@
 namespace Kasko\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kasko\Repository\CustomerReviewRepository;
 
-/**
- * @ORM\Entity(repositoryClass="Kasko\Repository\CustomerReviewRepository")
- */
+#[ORM\Entity(repositoryClass: CustomerReviewRepository::class)]
 class CustomerReview
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-	/**
-	 * @ORM\Column(type="integer")
-     */
-	private $review_score;
+    #[ORM\Column(type: 'integer')]
+    private $review_score;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-	private $review_scale;
+    #[ORM\Column(type: 'integer')]
+    private $review_scale;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-	private $reviewer_name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $reviewer_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $reviewer_location;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-	private $review_text;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $review_text;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-	private $source_name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $source_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-	private $source_url;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $source_url;
 
     public function getId(): ?int
     {
@@ -137,7 +120,7 @@ class CustomerReview
 
     public function getSourceUrl(): ?string
     {
-        return $this->source_url;
+        return $this->source_url ?: '';
     }
 
     public function setSourceUrl($source_url): self
@@ -146,5 +129,4 @@ class CustomerReview
 
         return $this;
     }
-
 }

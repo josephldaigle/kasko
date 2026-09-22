@@ -7,11 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerReviewController extends AbstractController
 {
-    /**
-     * Expose review submission form.
-     *
-     * @Route("/reviews", name="review_form")
-     */
+    #[Route('/reviews', name: 'review_form')]
     public function index()
     {
         return $this->render('page/customer-review.html.twig', [

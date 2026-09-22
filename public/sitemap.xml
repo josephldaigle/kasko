@@ -4,37 +4,34 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
   <url>
-    <loc>https://www.cleangutterco.com/</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
+    <loc>https://www.kaskoconstruction.com/</loc>
+    <lastmod>2026-09-09</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://www.cleangutterco.com/about-clean-gutter-co</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
+    <loc>https://www.kaskoconstruction.com/about</loc>
+    <lastmod>2026-09-09</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://www.cleangutterco.com/commonly-asked-gutter-questions</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
+    <loc>https://www.kaskoconstruction.com/faq</loc>
+    <lastmod>2026-09-09</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://www.cleangutterco.com/contact-clean-gutter-co</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
+    <loc>https://www.kaskoconstruction.com/contact</loc>
+    <lastmod>2026-09-09</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://www.cleangutterco.com/terms-of-service</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
-    <priority>0.80</priority>
+    <loc>https://www.kaskoconstruction.com/terms-of-service</loc>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://www.cleangutterco.com/privacy-policy</loc>
-    <lastmod>2020-08-22T11:31:25+00:00</lastmod>
-    <priority>0.80</priority>
+    <loc>https://www.kaskoconstruction.com/privacy-policy</loc>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.50</priority>
   </url>
 </urlset>

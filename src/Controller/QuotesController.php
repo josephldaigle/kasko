@@ -45,7 +45,7 @@ class QuotesController extends AbstractController
 
 		try {
 			$message = (new Email())
-				->from('kasasbury@kaskoconstruction.com')
+				->from('kas@kaskoconstruction.com')
 				->to('josephldaigle@yahoo.com')
 				->subject('New Quote Request - KasKo Construction')
 				->html($this->renderView('email/admin/notify-quote-requested.html.twig', ['formLead' => $lead]));

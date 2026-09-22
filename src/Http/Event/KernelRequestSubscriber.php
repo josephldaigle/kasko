@@ -14,7 +14,6 @@ use Psr\Log\LoggerInterface;
 use SebastianBergmann\GlobalState\RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -79,7 +78,7 @@ class KernelRequestSubscriber implements EventSubscriberInterface
 	 */
 	public function handleHtmlRequest(RequestEvent $event)
 	{
-//		if (! $event->isMasterRequest()) {
+//		if (! $event->isMainRequest()) {
 //			return;
 //		}
 
@@ -116,7 +115,7 @@ class KernelRequestSubscriber implements EventSubscriberInterface
 	 */
 	public function validateCsrfToken(RequestEvent $event)
 	{
-		if (! $event->isMasterRequest()) {
+		if (! $event->isMainRequest()) {
 			return;
 		}
 

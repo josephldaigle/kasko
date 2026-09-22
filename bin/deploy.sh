@@ -188,29 +188,61 @@ while true; do
 done
 
 # ------------------------------------------------------------------
-# 9b. Wait for the app entrypoint to finish (php-fpm master running)
+# 9b. Wait for the app entrypoint to finish (php-fpm as PID 1)
 # ------------------------------------------------------------------
 stage "9b. Wait for app to reach php-fpm (timeout: ${APP_READY_TIMEOUT}s)"
 
 # docker/entrypoint.sh runs cache:warmup as www-data BEFORE it execs
 # php-fpm. If we start running migrations or a second cache:warmup
 # while the entrypoint is still writing var/cache/prod, the two writes
-# race on the same directory. We wait until the container's main
-# process is php-fpm (i.e. the entrypoint has completed) before we
-# run any Symfony console commands.
+# race on the same directory. We wait until the container's PID 1 is
+# php-fpm (i.e. the entrypoint's `exec "$@"` has fired) before running
+# any Symfony console commands.
+#
+# We read /proc/1/comm rather than using pgrep or ps because the
+# php:8.4-fpm-bookworm base image is bookworm-slim and does NOT
+# include procps -- the previous pgrep-based probe silently
+# timed out because `pgrep: command not found`. `cat` and /proc/1/comm
+# are both present in every Linux container regardless of installed
+# packages.
 elapsed=0
+pid1_comm=""
 while true; do
-    if docker compose exec -T app pgrep -f 'php-fpm: master' >/dev/null 2>&1; then
-        log "php-fpm master is running after ${elapsed}s"
+    pid1_comm=$(docker compose exec -T app cat /proc/1/comm 2>/dev/null | tr -d '[:space:]' || true)
+    if [ "${pid1_comm}" = "php-fpm" ]; then
+        log "container PID 1 is php-fpm (entrypoint completed) after ${elapsed}s"
         break
     fi
     if [ "${elapsed}" -ge "${APP_READY_TIMEOUT}" ]; then
-        die "app container did not reach php-fpm within ${APP_READY_TIMEOUT}s"
+        die "app did not reach php-fpm within ${APP_READY_TIMEOUT}s (last PID 1 comm: '${pid1_comm:-unknown}')"
     fi
-    log "app: entrypoint still running — waiting..."
+    log "app: PID 1 is '${pid1_comm:-unknown}' — waiting..."
     sleep 3
     elapsed=$((elapsed + 3))
 done
+
+# ------------------------------------------------------------------
+# 9c. Restart nginx so it re-resolves the (possibly new) app IP
+# ------------------------------------------------------------------
+stage "9c. Restart nginx (re-resolve app container IP)"
+
+# When `docker compose up -d` in step 8 recreates the app container
+# (which happens on every deploy because the image was just rebuilt),
+# the new container gets a new IP address on the compose network.
+# docker/nginx/site.conf declares `fastcgi_pass app:9000;` as a static
+# hostname; nginx resolves it once at startup and caches the IP for
+# the process's lifetime. Without intervention, nginx keeps sending
+# requests to the old (now-gone) container IP and returns 502 Bad
+# Gateway on every request until nginx is restarted.
+#
+# `restart` is chosen over `reload` because the static fastcgi_pass
+# upstream cache is not invalidated by nginx -s reload; only a fresh
+# nginx process re-runs the DNS resolution.
+#
+# The MySQL volume, app_public volume, app_var volume, and the app
+# and db containers are untouched by this command. `restart` operates
+# only on the named service.
+docker compose restart nginx
 
 # ------------------------------------------------------------------
 # 10. Run Doctrine migrations non-interactively

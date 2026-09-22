@@ -1,3 +1,19 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
+        # Compose local_domain into the DSN so the SMTP transport's EHLO
+        # greeting advertises kaskoconstruction.com instead of the
+        # container's default "[127.0.0.1]", which Google Workspace SMTP
+        # rejects with:
+        #   421-4.7.0 Try again later, closing connection. (EHLO)
+        #
+        # local_domain is a standard smtp:// DSN option (handled by
+        # Symfony\Component\Mailer\Bridge\Smtp\SmtpTransportFactory:
+        # calls EsmtpTransport::setLocalDomain()). The MAILER_DSN env
+        # value is unchanged; we only append the local_domain query
+        # parameter here.
+        #
+        # This works because every tracked MAILER_DSN template (.env,
+        # .env.dev, .env.prod.dist) is a bare DSN with no query string.
+        # If a future MAILER_DSN value carries other options (e.g.
+        # `?verify_peer=0`), replace the `?` below with `&`.
+        dsn: '%env(MAILER_DSN)%?local_domain=kaskoconstruction.com'

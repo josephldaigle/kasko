@@ -1,0 +1,378 @@
+// ==========================================================================
+// /fencing — Google Ads landing page (scoped)
+// All rules nest under .fencing-landing so nothing leaks to other pages.
+// ==========================================================================
+
+.fencing-landing {
+    color: $kasko-black;
+    background-color: $kasko-white;
+
+    // Break out of base.html.twig's constrained column so hero/strips can
+    // read edge-to-edge within the landing page container.
+    margin-left: -15px;
+    margin-right: -15px;
+
+    section {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    // ----- HERO -----
+    .fencing-hero {
+        position: relative;
+        background-color: $kasko-black;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        color: $kasko-white;
+        padding: 4rem 1.25rem;
+        text-align: center;
+    }
+
+    .fencing-hero__inner {
+        max-width: 780px;
+        margin: 0 auto;
+        // Treat the hero content as one centered stack: headline, subheading,
+        // and CTA row line up on the same vertical axis regardless of their
+        // individual widths.
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .fencing-hero__title {
+        color: $kasko-white;
+        font-size: 2.25rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        margin: 0 0 1rem;
+    }
+
+    .fencing-hero__subtitle {
+        color: rgba($kasko-white, 0.92);
+        font-size: 1.15rem;
+        line-height: 1.5;
+        max-width: 600px;
+        margin: 0 0 1.5rem;
+    }
+
+    .fencing-hero__ctas {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+
+    .fencing-cta-primary {
+        // Extends existing .btn-cta; only size it up for the hero.
+        font-size: 1rem;
+        padding: 0.85rem 2rem;
+        min-width: 220px;
+    }
+
+    .fencing-cta-secondary {
+        color: $kasko-white;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 0.9rem;
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+
+        &:hover,
+        &:focus {
+            color: $kasko-brass;
+            text-decoration: none;
+        }
+
+        i {
+            color: $kasko-brass;
+        }
+    }
+
+    // ----- SECTION HEADERS (shared) -----
+    .fencing-section-header {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 2.5rem;
+    }
+
+    .fencing-section-title {
+        color: $kasko-black;
+        font-size: 1.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 1rem;
+    }
+
+    .fencing-section-subtitle {
+        color: rgba($kasko-black, 0.72);
+        font-size: 1.05rem;
+        line-height: 1.5;
+        margin-top: 1rem;
+        margin-bottom: 0;
+    }
+
+    // Center the shared gold heading accent inside these section headers.
+    .fencing-section-header .heading-accent {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    // ----- VALUE STRIP -----
+    .fencing-value-strip {
+        background-color: $kasko-cream;
+        padding: 2rem 1.25rem;
+        border-top: 1px solid rgba($kasko-black, 0.06);
+        border-bottom: 1px solid rgba($kasko-black, 0.06);
+    }
+
+    .fencing-value-item {
+        text-align: center;
+        padding: 1rem 1.25rem;
+    }
+
+    .fencing-value-icon {
+        color: $kasko-forest;
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .fencing-value-title {
+        color: $kasko-black;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.35rem;
+    }
+
+    .fencing-value-copy {
+        color: rgba($kasko-black, 0.7);
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+    // ----- SERVICES -----
+    .fencing-services {
+        padding-top: 4rem;
+        padding-bottom: 2rem; // trimmed — cards already carry their own margin
+    }
+
+    .fencing-services-grid {
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        margin-bottom: 0;
+    }
+
+    .fencing-service {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .fencing-service__image {
+        width: 100%;
+        padding-bottom: 75%; // 4:3 tile
+        background-color: rgba($kasko-black, 0.08);
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        margin-bottom: 0.9rem;
+    }
+
+    .fencing-service__title {
+        color: $kasko-black;
+        font-size: 1.05rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.4rem;
+    }
+
+    .fencing-service__copy {
+        color: rgba($kasko-black, 0.72);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 0;
+    }
+
+    // ----- KASKO DIFFERENCE -----
+    .fencing-difference {
+        background-color: $kasko-cream;
+        padding: 2.5rem 1.25rem;
+    }
+
+    .fencing-difference .fencing-section-header {
+        margin-bottom: 1.75rem;
+    }
+
+    .fencing-difference-item {
+        text-align: center;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .fencing-difference-icon {
+        color: $kasko-forest;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .fencing-difference-title {
+        color: $kasko-black;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+    }
+
+    .fencing-difference-copy {
+        color: rgba($kasko-black, 0.7);
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+    // ----- SOCIAL PROOF -----
+    .fencing-social-proof {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    .fencing-review {
+        max-width: 720px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .fencing-review__stars {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+
+        .fa-star { color: rgba($kasko-black, 0.15); }
+        .fa-star.text-gold { color: $kasko-brass; }
+    }
+
+    .fencing-review__quote {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: $kasko-black;
+        margin-bottom: 1rem;
+        font-style: italic;
+    }
+
+    .fencing-review__attribution {
+        color: rgba($kasko-black, 0.65);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    // ----- CLOSING CTA — small, restrained -----
+    .fencing-closing-cta {
+        padding: 2rem 1.25rem 2.5rem;
+        text-align: center;
+        border-top: 1px solid rgba($kasko-black, 0.08);
+    }
+
+    .fencing-closing-cta__title {
+        color: $kasko-black;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 1rem;
+    }
+
+    .fencing-closing-cta__actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .fencing-closing-cta__phone {
+        color: $kasko-black;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+        padding: 0.35rem 0.5rem;
+
+        i { color: $kasko-forest; }
+
+        &:hover,
+        &:focus {
+            color: $kasko-forest;
+            text-decoration: none;
+        }
+    }
+
+    // ----- RESPONSIVE -----
+
+    // Tablet and up: larger hero, horizontal CTAs, side-by-side value strip already handled by col-md-4.
+    @media (min-width: $media-break-medium) {
+        .fencing-hero {
+            padding: 6rem 2rem;
+        }
+
+        .fencing-hero__title {
+            font-size: 3rem;
+        }
+
+        .fencing-hero__subtitle {
+            font-size: 1.25rem;
+        }
+
+        .fencing-hero__ctas {
+            flex-direction: row;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .fencing-section-title {
+            font-size: 2rem;
+        }
+
+        // Value strip items get vertical dividers between columns on tablet+.
+        .fencing-value-item + .fencing-value-item {
+            border-left: 1px solid rgba($kasko-black, 0.1);
+        }
+
+        .fencing-closing-cta__actions {
+            flex-direction: row;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+    }
+
+    // Desktop: full 4-column services grid handled by col-lg-3; add breathing room.
+    @media (min-width: $media-break-large) {
+        .fencing-hero {
+            padding: 8rem 2rem;
+        }
+
+        .fencing-hero__title {
+            font-size: 3.5rem;
+        }
+
+        .fencing-services {
+            padding-top: 5rem;
+            padding-bottom: 2.5rem;
+        }
+
+        .fencing-difference {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .fencing-social-proof {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+    }
+}

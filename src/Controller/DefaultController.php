@@ -83,6 +83,13 @@ class DefaultController extends AbstractController
 		]);
 	}
 
+	public function getFencing(Request $request)
+	{
+		return $this->render('page/fencing.html.twig', [
+			'controller_name' => 'DefaultController'
+		]);
+	}
+
 	/**
 	 * @param Request $request
 	 *

@@ -24,6 +24,11 @@ contact:
     path: /contact
     controller: Kasko\Controller\DefaultController::getContact
     methods: GET
+# Fencing — Google Ads landing page
+fencing:
+    path: /fencing
+    controller: Kasko\Controller\DefaultController::getFencing
+    methods: GET
 # Terms of Service
 terms-of-service:
     path: /terms-of-service

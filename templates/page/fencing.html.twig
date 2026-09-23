@@ -1,0 +1,176 @@
+{# twig template — /fencing Google Ads landing page #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Fencing Contractor in Middle Georgia — KasKo Construction{% endblock %}
+{% block page_meta_description %}Professional fence installation and repair throughout Middle Georgia. Privacy, wood, chain link, and fence repair from a local contractor.{% endblock %}
+
+{% block page_content %}
+
+    {# Source assets live in assets/img/ and are copied to public/build/images/
+       by Encore's copyFiles() rule in webpack.config.js. #}
+    {% set hero_image = 'build/images/hero.jpg' %}
+    {% set service_privacy_image = 'build/images/privacy.jpg' %}
+    {% set service_wood_image    = 'build/images/wood.jpg' %}
+    {% set service_chain_image   = 'build/images/chain-link.jpg' %}
+    {% set service_repair_image  = 'build/images/repair.jpg' %}
+
+    {% set tel_href = 'tel:1-' ~ (company_phone | replace({'(': '', ') ': '', '-': '', ' ': ''})) %}
+    {% set quote_href = path('contact') %}
+
+    <div class="col-12 px-0 fencing-landing">
+
+        {# 1. HERO #}
+        <section class="fencing-hero"
+                 style="background-image: linear-gradient(rgba(17,17,17,0.55), rgba(17,17,17,0.55)), url('{{ asset(hero_image) }}');">
+            <div class="fencing-hero__inner">
+                <h1 class="fencing-hero__title">Fencing Built Right.</h1>
+                <p class="fencing-hero__subtitle">
+                    Professional fence installation and repair throughout Middle Georgia.
+                </p>
+                <div class="fencing-hero__ctas">
+                    <a href="{{ quote_href }}" class="btn btn-cta fencing-cta-primary">Get a Free Quote</a>
+                    <a href="{{ tel_href }}" class="fencing-cta-secondary">
+                        <i class="fas fa-phone mr-2"></i>Call or Text {{ company_phone }}
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        {# 2. VALUE STRIP #}
+        <section class="fencing-value-strip">
+            <div class="row no-gutters">
+                <div class="col-12 col-md-4 fencing-value-item">
+                    <i class="fas fa-cube fencing-value-icon"></i>
+                    <h3 class="fencing-value-title">Quality Materials</h3>
+                    <p class="fencing-value-copy">Fences built to last.</p>
+                </div>
+                <div class="col-12 col-md-4 fencing-value-item">
+                    <i class="fas fa-hammer fencing-value-icon"></i>
+                    <h3 class="fencing-value-title">Professional Installation</h3>
+                    <p class="fencing-value-copy">Clean work. Done right.</p>
+                </div>
+                <div class="col-12 col-md-4 fencing-value-item">
+                    <i class="fas fa-tag fencing-value-icon"></i>
+                    <h3 class="fencing-value-title">Straightforward Pricing</h3>
+                    <p class="fencing-value-copy">No surprises.</p>
+                </div>
+            </div>
+        </section>
+
+        {# 3. FENCING SERVICES #}
+        <section class="fencing-services">
+            <header class="fencing-section-header">
+                <h2 class="fencing-section-title">What Are You Looking For?</h2>
+                <div class="heading-accent mx-auto"></div>
+                <p class="fencing-section-subtitle">
+                    From privacy and security to simple repairs, we build fences that fit your property and your goals.
+                </p>
+            </header>
+
+            <div class="row fencing-services-grid">
+                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                    <div class="fencing-service__image"
+                         style="background-image: url('{{ asset(service_privacy_image) }}');"
+                         role="img" aria-label="Privacy fencing"></div>
+                    <h3 class="fencing-service__title">Privacy Fencing</h3>
+                    <p class="fencing-service__copy">Add security, separation and a finished look to your property.</p>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                    <div class="fencing-service__image"
+                         style="background-image: url('{{ asset(service_wood_image) }}');"
+                         role="img" aria-label="Wood fencing"></div>
+                    <h3 class="fencing-service__title">Wood Fencing</h3>
+                    <p class="fencing-service__copy">Traditional, horizontal or custom wood fences.</p>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                    <div class="fencing-service__image"
+                         style="background-image: url('{{ asset(service_chain_image) }}');"
+                         role="img" aria-label="Chain link fencing"></div>
+                    <h3 class="fencing-service__title">Chain Link</h3>
+                    <p class="fencing-service__copy">Durable, practical fencing for residential and commercial properties.</p>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                    <div class="fencing-service__image"
+                         style="background-image: url('{{ asset(service_repair_image) }}');"
+                         role="img" aria-label="Fence repair"></div>
+                    <h3 class="fencing-service__title">Fence Repair</h3>
+                    <p class="fencing-service__copy">Damaged posts, sections, gates and more.</p>
+                </div>
+            </div>
+        </section>
+
+        {# 4. THE KASKO DIFFERENCE #}
+        <section class="fencing-difference">
+            <header class="fencing-section-header">
+                <h2 class="fencing-section-title">The KasKo Difference</h2>
+                <div class="heading-accent mx-auto"></div>
+                <p class="fencing-section-subtitle">A Local Contractor You Can Count On.</p>
+            </header>
+
+            <div class="row fencing-difference-grid">
+                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                    <i class="fas fa-check fencing-difference-icon"></i>
+                    <h4 class="fencing-difference-title">We purchase materials up front</h4>
+                    <p class="fencing-difference-copy">No delays. No excuses.</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                    <i class="fas fa-check fencing-difference-icon"></i>
+                    <h4 class="fencing-difference-title">Clear pricing before work begins</h4>
+                    <p class="fencing-difference-copy">Know what to expect.</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                    <i class="fas fa-check fencing-difference-icon"></i>
+                    <h4 class="fencing-difference-title">Professional installation</h4>
+                    <p class="fencing-difference-copy">Respect for your property.</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                    <i class="fas fa-check fencing-difference-icon"></i>
+                    <h4 class="fencing-difference-title">Local Middle Georgia contractor</h4>
+                    <p class="fencing-difference-copy">Our community. Our work.</p>
+                </div>
+            </div>
+        </section>
+
+        {# 5. SOCIAL PROOF #}
+        <section class="fencing-social-proof">
+            <header class="fencing-section-header">
+                <h2 class="fencing-section-title">What Our Clients Say</h2>
+                <div class="heading-accent mx-auto"></div>
+            </header>
+
+            {% set reviews = template_data.get('reviews') %}
+            {% if reviews is not empty %}
+                {% set review = reviews|first %}
+                <figure class="fencing-review">
+                    <div class="fencing-review__stars" aria-label="{{ review.reviewScore }} out of {{ review.reviewScale }} stars">
+                        {% for i in 1..review.reviewScale %}
+                            <i class="fas fa-star {% if loop.index <= review.reviewScore %}text-gold{% endif %}"></i>
+                        {% endfor %}
+                    </div>
+                    <blockquote class="fencing-review__quote">
+                        &ldquo;{{ review.reviewText }}&rdquo;
+                    </blockquote>
+                    <figcaption class="fencing-review__attribution">
+                        {% if review.reviewerName %}{{ review.reviewerName }}{% else %}{{ review.sourceName }}{% endif %}
+                        {% if review.reviewerLocation %} &middot; {{ review.reviewerLocation }}{% endif %}
+                    </figcaption>
+                </figure>
+            {% else %}
+                {# TODO: no existing Kasko review found — populate with a real fencing customer review when available. #}
+            {% endif %}
+        </section>
+
+        {# 6. CLOSING CTA — small, restrained #}
+        <section class="fencing-closing-cta">
+            <h2 class="fencing-closing-cta__title">Ready to Get Started?</h2>
+            <div class="fencing-closing-cta__actions">
+                <a href="{{ quote_href }}" class="btn btn-cta">Get a Free Quote</a>
+                <a href="{{ tel_href }}" class="fencing-closing-cta__phone">
+                    <i class="fas fa-phone mr-2"></i>Call or Text {{ company_phone }}
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+{% endblock %}

@@ -4,4 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         company_phone: '(912) 614-5004'
-        company_email: 'kasasbury@kaskoconstruction.com'
+        company_email: 'kas@kaskoconstruction.com'

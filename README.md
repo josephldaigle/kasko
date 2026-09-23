@@ -99,4 +99,4 @@ Do not commit production credentials, API keys, SMTP passwords, or private keys 
 **KasKo Construction**
 Middle Georgia
 (912) 614-5004
-kasasbury@kaskoconstruction.com
+kas@kaskoconstruction.com

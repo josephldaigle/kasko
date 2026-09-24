@@ -39,12 +39,14 @@
                     </div>
                 </div>
 
-                {# Replace this Google Maps embed with a custom service-area map later. #}
+                {# Replace this Google Maps embed with a custom service-area map later.
+                   `ll` (lat,lng) centers on Byron, GA without setting a place query,
+                   so Google renders a plain regional map with no marker or place card. #}
                 <iframe
                         class="mt-3 w-100"
                         id="google-map-embed"
                         title="KasKo Construction & Remodeling service area"
-                        src="https://maps.google.com/maps?q=Middle+Georgia&t=&z=9&ie=UTF8&iwloc=&output=embed"
+                        src="https://maps.google.com/maps?ll=32.6532,-83.7607&z=9&t=&ie=UTF8&iwloc=&output=embed"
                         width="600"
                         height="375"
                         style="border:0"

@@ -118,9 +118,9 @@ class DefaultController extends AbstractController
 		// Services section variants. Each entry drives the "What Are You
 		// Looking For?" section (or its variant-specific replacement).
 		// Unknown/undefined variants fall back to the default four-card
-		// generic fencing grid — so /fencing/privacy, /fencing/chain-link,
-		// and /fencing/repair keep rendering today's content until they
-		// get their own dedicated entry here.
+		// generic fencing grid. Every item defines its own image asset;
+		// missing files rely on .fencing-service__image's neutral CSS
+		// background-color so the layout stays intact.
 		$serviceVariants = [
 			'default' => [
 				'heading'        => 'What Are You Looking For?',
@@ -187,6 +187,117 @@ class DefaultController extends AbstractController
 				'closing_prompt' => [
 					'heading'   => 'Not Sure Which Style Makes Sense?',
 					'body'      => 'Tell us what you\'re trying to accomplish and we\'ll help you work through the options.',
+					'cta_label' => 'Get a Free Quote',
+					'cta_href'  => '#quote',
+				],
+			],
+			'privacy' => [
+				'heading'    => 'Privacy Fencing Built for Your Backyard',
+				'subheading' => 'A private outdoor space. A clear property line. A fence you don\'t have to think about.',
+				'intro'      => 'Privacy fencing gives homeowners a real sense of separation from the neighborhood without giving up curb appeal. Kasko installs full-height privacy fences suited to the yard, the goal, and the way you actually use your outdoor space.',
+				'items'      => [
+					[
+						'title' => 'Standard Privacy',
+						'copy'  => 'Full-height wood or vinyl privacy fencing for backyards, pools, and everyday separation from the neighbors.',
+						'image' => 'build/images/privacy.jpg',
+						'alt'   => 'Standard privacy fence',
+					],
+					[
+						'title' => 'Board-on-Board',
+						'copy'  => 'Overlapping boards on both sides for maximum privacy, added strength, and a symmetrical look from either yard.',
+						'image' => 'build/images/privacy-board-on-board.jpg',
+						'alt'   => 'Board-on-board privacy fence',
+					],
+					[
+						'title' => 'Shadowbox',
+						'copy'  => 'Alternating boards that let air through while still blocking sightlines — good for larger runs and windy yards.',
+						'image' => 'build/images/privacy-shadowbox.jpg',
+						'alt'   => 'Shadowbox privacy fence',
+					],
+					[
+						'title' => 'Privacy Gates',
+						'copy'  => 'Matching walk-through and drive-through gates sized for how you actually use the yard.',
+						'image' => 'build/images/privacy-gates.jpg',
+						'alt'   => 'Wood privacy gate',
+					],
+				],
+				'closing_prompt' => [
+					'heading'   => 'Not Sure Which Style Fits?',
+					'body'      => 'Tell us the yard and how you plan to use it — we\'ll help you land on the right approach before quoting the work.',
+					'cta_label' => 'Get a Free Quote',
+					'cta_href'  => '#quote',
+				],
+			],
+			'chain-link' => [
+				'heading'    => 'Chain-Link Fencing That Does the Job',
+				'subheading' => 'Durable, straightforward fencing for yards, dogs, businesses, and property lines.',
+				'intro'      => 'Chain-link isn\'t the flashiest fence, but it\'s practical and it lasts. Kasko installs galvanized and vinyl-coated chain-link for residential and commercial properties, sized and gated to how you actually need to use it.',
+				'items'      => [
+					[
+						'title' => 'Residential Chain-Link',
+						'copy'  => 'Standard galvanized chain-link for backyards, pet enclosures, and clear property boundaries.',
+						'image' => 'build/images/chain-link.jpg',
+						'alt'   => 'Residential galvanized chain-link fence',
+					],
+					[
+						'title' => 'Black Coated Chain-Link',
+						'copy'  => 'Vinyl-coated chain-link that reads far cleaner against grass and landscaping while adding weather resistance.',
+						'image' => 'build/images/chain-link-black.jpg',
+						'alt'   => 'Black vinyl-coated chain-link fence',
+					],
+					[
+						'title' => 'Commercial & Security',
+						'copy'  => 'Taller runs, heavier gauge, and optional top rails or barbed extensions for businesses, lots, and equipment yards.',
+						'image' => 'build/images/chain-link-commercial.jpg',
+						'alt'   => 'Commercial chain-link security fence',
+					],
+					[
+						'title' => 'Gates & Access',
+						'copy'  => 'Walk-through, double-swing, and rolling gates sized to fit vehicles, equipment, and daily use.',
+						'image' => 'build/images/chain-link-gates.jpg',
+						'alt'   => 'Chain-link gate',
+					],
+				],
+				'closing_prompt' => [
+					'heading'   => 'Not Sure What You Need?',
+					'body'      => 'Tell us the property and what the fence is protecting — we\'ll recommend the right height, gauge, and gate setup.',
+					'cta_label' => 'Get a Free Quote',
+					'cta_href'  => '#quote',
+				],
+			],
+			'repair' => [
+				'heading'    => 'Fence Repair, Done Right the First Time',
+				'subheading' => 'Leaning posts, broken boards, sagging gates — we fix what\'s actually wrong.',
+				'intro'      => 'Not every fence problem needs a full replacement. Kasko repairs damaged sections, resets leaning posts, rehangs gates, and swaps out failed hardware so you get more life out of the fence you already have.',
+				'items'      => [
+					[
+						'title' => 'Leaning & Damaged Fences',
+						'copy'  => 'Fences leaning after a storm, root movement, or years of settling — straightened, re-secured, and reinforced where needed.',
+						'image' => 'build/images/repair.jpg',
+						'alt'   => 'Leaning fence being repaired',
+					],
+					[
+						'title' => 'Post Repair',
+						'copy'  => 'Rotten, cracked, or shifting posts replaced without tearing out the whole run.',
+						'image' => 'build/images/repair-posts.jpg',
+						'alt'   => 'Fence post repair',
+					],
+					[
+						'title' => 'Gate Repair',
+						'copy'  => 'Sagging gates rehung, hardware replaced, and hinges reset so they open and close the way they should.',
+						'image' => 'build/images/repair-gates.jpg',
+						'alt'   => 'Fence gate repair',
+					],
+					[
+						'title' => 'Section Replacement',
+						'copy'  => 'Damaged panels or boards swapped in place to match the rest of the fence.',
+						'image' => 'build/images/repair-sections.jpg',
+						'alt'   => 'Fence section replacement',
+					],
+				],
+				'closing_prompt' => [
+					'heading'   => 'Not Sure If It Can Be Repaired?',
+					'body'      => 'Send us a couple photos and a short description — we\'ll tell you whether a repair makes sense or if replacement is the smarter call.',
 					'cta_label' => 'Get a Free Quote',
 					'cta_href'  => '#quote',
 				],

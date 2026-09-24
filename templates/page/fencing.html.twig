@@ -15,7 +15,8 @@
     {% set service_repair_image  = 'build/images/repair.jpg' %}
 
     {% set tel_href = 'tel:1-' ~ (company_phone | replace({'(': '', ') ': '', '-': '', ' ': ''})) %}
-    {% set quote_href = path('contact') %}
+    {# In-page anchor to the shared quote form embedded near the bottom. #}
+    {% set quote_href = '#quote' %}
 
     <div class="col-12 px-0 fencing-landing">
 
@@ -23,10 +24,8 @@
         <section class="fencing-hero"
                  style="background-image: linear-gradient(rgba(17,17,17,0.55), rgba(17,17,17,0.55)), url('{{ asset(hero_image) }}');">
             <div class="fencing-hero__inner">
-                <h1 class="fencing-hero__title">Fencing Built Right.</h1>
-                <p class="fencing-hero__subtitle">
-                    Professional fence installation and repair throughout Middle Georgia.
-                </p>
+                <h1 class="fencing-hero__title">{{ hero.headline }}</h1>
+                <p class="fencing-hero__subtitle">{{ hero.subheading }}</p>
                 <div class="fencing-hero__ctas">
                     <a href="{{ quote_href }}" class="btn btn-cta fencing-cta-primary">Get a Free Quote</a>
                     <a href="{{ tel_href }}" class="fencing-cta-secondary">
@@ -168,6 +167,24 @@
                 <a href="{{ tel_href }}" class="fencing-closing-cta__phone">
                     <i class="fas fa-phone mr-2"></i>Call or Text {{ company_phone }}
                 </a>
+            </div>
+        </section>
+
+        {# 7. QUOTE FORM — reuses the shared homepage form partial verbatim.
+             Renders the same card, uses the same #free-quote submit handler
+             (assets/js/quote-form.js), posts to the same /api/quotes endpoint
+             (Kasko\Controller\QuotesController::postFormLead), and persists
+             through the same FormLead entity + admin/customer email flow.
+             `landing_type` is only forwarded when a whitelisted variant is
+             on the URL, so requests from /fencing (default) are identical
+             to homepage submissions. #}
+        <section id="quote" class="fencing-form">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {% include 'components/forms/quote-request.html.twig' with {
+                        landing_type: fencing_landing_type
+                    } %}
+                </div>
             </div>
         </section>
 

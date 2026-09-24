@@ -90,6 +90,12 @@
 
                     <input type="hidden" name="token" value="{{ csrf_token('free-quote') }}"/>
                     <input type="hidden" name="form-name" value="{{ 'free-quote' | raw }}"/>
+                    {# Optional landing-page attribution (opt-in via `landing_type`
+                       Twig variable). Absent on pages that don't set it, so the
+                       homepage form submission is byte-identical to today. #}
+                    {% if landing_type is defined and landing_type %}
+                        <input type="hidden" name="landing_type" value="{{ landing_type }}"/>
+                    {% endif %}
 
                 </form>
 

@@ -24,11 +24,21 @@ contact:
     path: /contact
     controller: Kasko\Controller\DefaultController::getContact
     methods: GET
-# Fencing — Google Ads landing page
+# Fencing — Google Ads landing page (default/general)
 fencing:
     path: /fencing
     controller: Kasko\Controller\DefaultController::getFencing
     methods: GET
+# Fencing — variant landing pages. The `type` requirement is a strict
+# whitelist so /fencing/garbage returns 404 rather than rendering the
+# default page. Adding a new variant means updating both this regex
+# and the $heroVariants map in DefaultController::getFencing.
+fencing_variant:
+    path: /fencing/{type}
+    controller: Kasko\Controller\DefaultController::getFencing
+    methods: GET
+    requirements:
+        type: 'privacy|wood|chain-link|repair'
 # Terms of Service
 terms-of-service:
     path: /terms-of-service

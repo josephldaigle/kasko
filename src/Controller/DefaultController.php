@@ -83,10 +83,42 @@ class DefaultController extends AbstractController
 		]);
 	}
 
-	public function getFencing(Request $request)
+	public function getFencing(Request $request, ?string $type = null)
 	{
+		// Hero copy variants. The `type` argument is populated by Symfony
+		// routing from the URL path (see fencing_variant in routes.yaml)
+		// and is already restricted to this whitelist by the route's
+		// requirements — so any value that reaches this method is either
+		// one of the four supported variants or null (the default page).
+		$heroVariants = [
+			'default' => [
+				'headline'   => 'Fencing Built Right.',
+				'subheading' => 'Professional fence installation and repair throughout Middle Georgia.',
+			],
+			'privacy' => [
+				'headline'   => 'Privacy Fencing Built Right.',
+				'subheading' => 'Quality privacy fencing built for security, separation, and a finished backyard.',
+			],
+			'wood' => [
+				'headline'   => 'Wood Fencing Built Right.',
+				'subheading' => 'Professional wood fence installation built to complement your property and last.',
+			],
+			'chain-link' => [
+				'headline'   => 'Chain-Link Fencing Built Right.',
+				'subheading' => 'Durable, practical chain-link fencing for residential and commercial properties.',
+			],
+			'repair' => [
+				'headline'   => 'Fence Repair Done Right.',
+				'subheading' => 'Professional repairs for damaged posts, gates, sections, and existing fencing.',
+			],
+		];
+
+		$hero = $heroVariants[$type] ?? $heroVariants['default'];
+
 		return $this->render('page/fencing.html.twig', [
-			'controller_name' => 'DefaultController'
+			'controller_name'      => 'DefaultController',
+			'hero'                 => $hero,
+			'fencing_landing_type' => $type,
 		]);
 	}
 

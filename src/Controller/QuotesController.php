@@ -43,6 +43,16 @@ class QuotesController extends AbstractController
 		// empty string; store null instead so the email template can
 		// cleanly detect "not supplied".
 		$projectDescription = trim((string) $request->request->get('project_description', ''));
+
+		// Optional landing-page attribution. If the submission carries a
+		// whitelisted `landing_type` (only rendered by the /fencing form),
+		// prepend a small tag so the description column captures the ad
+		// variant without touching the schema or the email templates.
+		$landingType = (string) $request->request->get('landing_type', '');
+		if (in_array($landingType, ['privacy', 'wood', 'chain-link', 'repair'], true)) {
+			$projectDescription = trim("[Fencing landing – {$landingType}] {$projectDescription}");
+		}
+
 		$lead->setProjectDescription($projectDescription !== '' ? $projectDescription : null);
 
 		// Server-side validation. Only the Length(max: 2000) constraint

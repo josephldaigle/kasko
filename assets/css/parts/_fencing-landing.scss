@@ -7,10 +7,10 @@
     color: $kasko-black;
     background-color: $kasko-white;
 
-    // Break out of base.html.twig's constrained column so hero/strips can
-    // read edge-to-edge within the landing page container.
-    margin-left: -15px;
-    margin-right: -15px;
+    // Wrapper sits inside base.html.twig's `.row > .col-12` — matching the
+    // .col-sm-12 that carries the site header. Twig applies `.px-0` on the
+    // column so section backgrounds (hero, cream strips) fill edge-to-edge
+    // to exactly the same outer bounds as the header.
 
     section {
         padding-left: 1.25rem;
@@ -68,14 +68,21 @@
     }
 
     .fencing-cta-primary {
-        // Extends existing .btn-cta; only size it up for the hero.
+        // Extends existing .btn-cta; only size it up for the hero and swap
+        // the label color to Kasko brass. Green background is preserved.
         font-size: 1rem;
         padding: 0.85rem 2rem;
         min-width: 220px;
+        color: $kasko-brass;
+
+        &:hover,
+        &:focus {
+            color: $kasko-brass;
+        }
     }
 
     .fencing-cta-secondary {
-        color: $kasko-white;
+        color: $kasko-brass;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.04em;
@@ -269,6 +276,15 @@
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+    }
+
+    // ----- QUOTE FORM SECTION — hosts the shared quote-request card -----
+    // Only lays out the section around the card; the card itself is
+    // rendered by templates/components/forms/quote-request.html.twig and
+    // styled by the existing .quote-card rules — untouched here.
+    .fencing-form {
+        padding: 2.5rem 1.25rem 3.5rem;
+        scroll-margin-top: 1rem;
     }
 
     // ----- CLOSING CTA — small, restrained -----

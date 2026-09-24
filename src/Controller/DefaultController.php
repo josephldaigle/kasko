@@ -115,9 +115,90 @@ class DefaultController extends AbstractController
 
 		$hero = $heroVariants[$type] ?? $heroVariants['default'];
 
+		// Services section variants. Each entry drives the "What Are You
+		// Looking For?" section (or its variant-specific replacement).
+		// Unknown/undefined variants fall back to the default four-card
+		// generic fencing grid — so /fencing/privacy, /fencing/chain-link,
+		// and /fencing/repair keep rendering today's content until they
+		// get their own dedicated entry here.
+		$serviceVariants = [
+			'default' => [
+				'heading'        => 'What Are You Looking For?',
+				'subheading'     => 'From privacy and security to simple repairs, we build fences that fit your property and your goals.',
+				'intro'          => null,
+				'items'          => [
+					[
+						'title' => 'Privacy Fencing',
+						'copy'  => 'Add security, separation and a finished look to your property.',
+						'image' => 'build/images/privacy.jpg',
+						'alt'   => 'Privacy fencing',
+					],
+					[
+						'title' => 'Wood Fencing',
+						'copy'  => 'Traditional, horizontal or custom wood fences.',
+						'image' => 'build/images/wood.jpg',
+						'alt'   => 'Wood fencing',
+					],
+					[
+						'title' => 'Chain Link',
+						'copy'  => 'Durable, practical fencing for residential and commercial properties.',
+						'image' => 'build/images/chain-link.jpg',
+						'alt'   => 'Chain link fencing',
+					],
+					[
+						'title' => 'Fence Repair',
+						'copy'  => 'Damaged posts, sections, gates and more.',
+						'image' => 'build/images/repair.jpg',
+						'alt'   => 'Fence repair',
+					],
+				],
+				'closing_prompt' => null,
+			],
+			'wood' => [
+				'heading'    => 'Wood Fencing Built for Your Property',
+				'subheading' => 'Privacy. Curb appeal. A fence that actually looks like it belongs there.',
+				'intro'      => 'Wood fencing gives homeowners flexibility in both function and appearance. Whether the goal is backyard privacy, a clean property line, or something more architectural, Kasko can help build a fence that fits the property and the project.',
+				'items'      => [
+					[
+						'title' => 'Privacy Fencing',
+						'copy'  => 'Full-height wood fencing for backyards, pets, added separation, and a more private outdoor space.',
+						'image' => 'build/images/wood-privacy.jpg',
+						'alt'   => 'Full-height wood privacy fence',
+					],
+					[
+						'title' => 'Horizontal Fencing',
+						'copy'  => 'A clean, contemporary wood-fence option with strong architectural lines.',
+						'image' => 'build/images/wood-horizontal.jpg',
+						'alt'   => 'Horizontal wood fence',
+					],
+					[
+						'title' => 'Picket & Decorative',
+						'copy'  => 'Define the property while keeping the yard more open and visually connected.',
+						'image' => 'build/images/wood-picket.jpg',
+						'alt'   => 'Picket and decorative wood fence',
+					],
+					[
+						'title' => 'Gates & Custom Details',
+						'copy'  => 'Matching gates, transitions, corners, and other details incorporated into the fence installation.',
+						'image' => 'build/images/wood-gates.jpg',
+						'alt'   => 'Wood fence gate and custom detail',
+					],
+				],
+				'closing_prompt' => [
+					'heading'   => 'Not Sure Which Style Makes Sense?',
+					'body'      => 'Tell us what you\'re trying to accomplish and we\'ll help you work through the options.',
+					'cta_label' => 'Get a Free Quote',
+					'cta_href'  => '#quote',
+				],
+			],
+		];
+
+		$services = $serviceVariants[$type] ?? $serviceVariants['default'];
+
 		return $this->render('page/fencing.html.twig', [
 			'controller_name'      => 'DefaultController',
 			'hero'                 => $hero,
+			'services'             => $services,
 			'fencing_landing_type' => $type,
 		]);
 	}

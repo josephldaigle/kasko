@@ -125,6 +125,41 @@
         margin-bottom: 0;
     }
 
+    // Optional longer paragraph under the section subtitle (used by
+    // variant pages that need more contextual copy, e.g. /fencing/wood).
+    .fencing-section-intro {
+        color: rgba($kasko-black, 0.72);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-top: 0.75rem;
+        margin-bottom: 0;
+    }
+
+    // Optional "not sure which style?" prompt below the service cards.
+    .fencing-services__prompt {
+        text-align: center;
+        max-width: 640px;
+        margin: 1.5rem auto 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba($kasko-black, 0.08);
+    }
+
+    .fencing-services__prompt-title {
+        color: $kasko-black;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.5rem;
+    }
+
+    .fencing-services__prompt-body {
+        color: rgba($kasko-black, 0.72);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
     // Center the shared gold heading accent inside these section headers.
     .fencing-section-header .heading-accent {
         margin-left: auto;

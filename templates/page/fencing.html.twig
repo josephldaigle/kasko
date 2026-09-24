@@ -6,13 +6,9 @@
 
 {% block page_content %}
 
-    {# Source assets live in assets/img/ and are copied to public/build/images/
-       by Encore's copyFiles() rule in webpack.config.js. #}
+    {# Hero image is shared across variants. Service-card images are
+       provided per-variant by the `services` map from the controller. #}
     {% set hero_image = 'build/images/hero.jpg' %}
-    {% set service_privacy_image = 'build/images/privacy.jpg' %}
-    {% set service_wood_image    = 'build/images/wood.jpg' %}
-    {% set service_chain_image   = 'build/images/chain-link.jpg' %}
-    {% set service_repair_image  = 'build/images/repair.jpg' %}
 
     {% set tel_href = 'tel:1-' ~ (company_phone | replace({'(': '', ') ': '', '-': '', ' ': ''})) %}
     {# In-page anchor to the shared quote form embedded near the bottom. #}
@@ -56,46 +52,39 @@
             </div>
         </section>
 
-        {# 3. FENCING SERVICES #}
+        {# 3. FENCING SERVICES — content comes from the `services` variant
+             map in DefaultController::getFencing. Structure is identical
+             across variants; only the copy, intro paragraph, and optional
+             closing prompt differ. No route-name checks in this template. #}
         <section class="fencing-services">
             <header class="fencing-section-header">
-                <h2 class="fencing-section-title">What Are You Looking For?</h2>
+                <h2 class="fencing-section-title">{{ services.heading }}</h2>
                 <div class="heading-accent mx-auto"></div>
-                <p class="fencing-section-subtitle">
-                    From privacy and security to simple repairs, we build fences that fit your property and your goals.
-                </p>
+                <p class="fencing-section-subtitle">{{ services.subheading }}</p>
+                {% if services.intro %}
+                    <p class="fencing-section-intro">{{ services.intro }}</p>
+                {% endif %}
             </header>
 
             <div class="row fencing-services-grid">
-                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                    <div class="fencing-service__image"
-                         style="background-image: url('{{ asset(service_privacy_image) }}');"
-                         role="img" aria-label="Privacy fencing"></div>
-                    <h3 class="fencing-service__title">Privacy Fencing</h3>
-                    <p class="fencing-service__copy">Add security, separation and a finished look to your property.</p>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                    <div class="fencing-service__image"
-                         style="background-image: url('{{ asset(service_wood_image) }}');"
-                         role="img" aria-label="Wood fencing"></div>
-                    <h3 class="fencing-service__title">Wood Fencing</h3>
-                    <p class="fencing-service__copy">Traditional, horizontal or custom wood fences.</p>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                    <div class="fencing-service__image"
-                         style="background-image: url('{{ asset(service_chain_image) }}');"
-                         role="img" aria-label="Chain link fencing"></div>
-                    <h3 class="fencing-service__title">Chain Link</h3>
-                    <p class="fencing-service__copy">Durable, practical fencing for residential and commercial properties.</p>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                    <div class="fencing-service__image"
-                         style="background-image: url('{{ asset(service_repair_image) }}');"
-                         role="img" aria-label="Fence repair"></div>
-                    <h3 class="fencing-service__title">Fence Repair</h3>
-                    <p class="fencing-service__copy">Damaged posts, sections, gates and more.</p>
-                </div>
+                {% for item in services.items %}
+                    <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                        <div class="fencing-service__image"
+                             style="background-image: url('{{ asset(item.image) }}');"
+                             role="img" aria-label="{{ item.alt }}"></div>
+                        <h3 class="fencing-service__title">{{ item.title }}</h3>
+                        <p class="fencing-service__copy">{{ item.copy }}</p>
+                    </div>
+                {% endfor %}
             </div>
+
+            {% if services.closing_prompt %}
+                <div class="fencing-services__prompt">
+                    <h3 class="fencing-services__prompt-title">{{ services.closing_prompt.heading }}</h3>
+                    <p class="fencing-services__prompt-body">{{ services.closing_prompt.body }}</p>
+                    <a href="{{ services.closing_prompt.cta_href }}" class="btn btn-cta">{{ services.closing_prompt.cta_label }}</a>
+                </div>
+            {% endif %}
         </section>
 
         {# 4. THE KASKO DIFFERENCE #}

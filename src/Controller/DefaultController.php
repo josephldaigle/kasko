@@ -180,7 +180,9 @@ class DefaultController extends AbstractController
 					[
 						'title' => 'Gates & Custom Details',
 						'copy'  => 'Matching gates, transitions, corners, and other details incorporated into the fence installation.',
-						'image' => 'build/images/wood-gates.jpg',
+						// Reuses privacy-gates.jpg — no dedicated wood-gates
+						// asset is planned; the gate photo works for both.
+						'image' => 'build/images/privacy-gates.jpg',
 						'alt'   => 'Wood fence gate and custom detail',
 					],
 				],

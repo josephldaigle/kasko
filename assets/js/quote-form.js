@@ -56,6 +56,9 @@ $('#free-quote').off('submit').on('submit', function(event)
         // enable form button
         form.find('button').attr('disabled', false);
         form.find('button').find('span.spinner').toggleClass('d-none');
+
+        // Reset the Turnstile widget so the user can retry without a stale token.
+        if (window.turnstile) { window.turnstile.reset(); }
     };
 
     // submit form

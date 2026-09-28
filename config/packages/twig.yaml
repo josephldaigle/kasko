@@ -5,3 +5,4 @@ twig:
     globals:
         company_phone: '(912) 614-5004'
         company_email: 'kas@kaskoconstruction.com'
+        turnstile_site_key: '%env(TURNSTILE_SITE_KEY)%'

@@ -66,7 +66,8 @@ let AjaxForm = {
                 if (jqXHR.status === 400) {
                     console.error('400 response while submitting form.');
                     console.info('Response: ', jqXHR);
-                    errorCallback({'level': 'alert-danger', 'message': 'Yikes! It looks like this is broken. You can still call us (912) 614-5004. We\'ll get this fixed soon.'});
+                    let serverMessage = jqXHR.responseJSON && jqXHR.responseJSON.message;
+                    errorCallback({'level': 'alert-danger', 'message': serverMessage || 'Yikes! It looks like this is broken. You can still call us (912) 614-5004. We\'ll get this fixed soon.'});
                 } else {
                     console.error('Unknown error while submitting form.');
                     errorCallback({'level': 'alert-danger', 'message': 'Yikes! It looks like this is broken. You can still call us (912) 614-5004. We\'ll get this fixed soon.'});

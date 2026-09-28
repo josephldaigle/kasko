@@ -58,6 +58,10 @@
                         </div>
                     </div>
 
+                    <div class="form-row my-2">
+                        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+                    </div>
+
                     <button type="submit" class="btn btn-cta mt-3">Get Free Quote
                         <span class="spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                         <span class="sr-only">Loading...</span>
@@ -98,6 +102,8 @@
                     {% endif %}
 
                 </form>
+
+                <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
             </div>
         </div>

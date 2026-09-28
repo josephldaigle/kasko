@@ -7,12 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class QuotesController extends AbstractController
 {
@@ -30,8 +32,28 @@ class QuotesController extends AbstractController
 	];
 
 	#[Route('/api/quotes', name: 'quotes', methods: ['POST'])]
-	public function postFormLead(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager, MailerInterface $mailer, LoggerInterface $logger): JsonResponse
+	public function postFormLead(
+		Request $request,
+		ValidatorInterface $validator,
+		EntityManagerInterface $entityManager,
+		MailerInterface $mailer,
+		LoggerInterface $logger,
+		HttpClientInterface $httpClient,
+		#[Autowire(env: 'TURNSTILE_SECRET_KEY')]
+		string $turnstileSecretKey,
+	): JsonResponse
 	{
+		// Cloudflare Turnstile verification must succeed before we touch
+		// the database or send any email. A missing/invalid token short-
+		// circuits the request with a user-facing message.
+		$turnstileToken = (string) $request->request->get('cf-turnstile-response', '');
+		if ($turnstileToken === '' || !$this->verifyTurnstile($turnstileToken, $request->getClientIp(), $turnstileSecretKey, $httpClient, $logger)) {
+			return new JsonResponse(
+				['message' => "We couldn't verify your submission. Please try again."],
+				400
+			);
+		}
+
 		// create a lead object
 		$lead = new FormLead();
 		$lead->setName($request->request->get('name'));
@@ -72,6 +94,35 @@ class QuotesController extends AbstractController
 		$this->sendCustomerConfirmation($mailer, $logger, $lead);
 
 		return new JsonResponse(['message' => 'You\'ve made a great choice! We will contact you soon to schedule your free quote.'], 200);
+	}
+
+	private function verifyTurnstile(string $token, ?string $remoteIp, string $secretKey, HttpClientInterface $httpClient, LoggerInterface $logger): bool
+	{
+		if ($secretKey === '') {
+			$logger->error('Turnstile verification skipped: TURNSTILE_SECRET_KEY is not configured');
+			return false;
+		}
+
+		$body = [
+			'secret' => $secretKey,
+			'response' => $token,
+		];
+		if ($remoteIp !== null && $remoteIp !== '') {
+			$body['remoteip'] = $remoteIp;
+		}
+
+		try {
+			$response = $httpClient->request('POST', 'https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+				'body' => $body,
+				'timeout' => 5,
+			]);
+			$data = $response->toArray(false);
+		} catch (\Throwable $exception) {
+			$logger->error('Turnstile verification request failed', ['exception' => $exception]);
+			return false;
+		}
+
+		return isset($data['success']) && $data['success'] === true;
 	}
 
 	private function sendAdminNotification(MailerInterface $mailer, LoggerInterface $logger, FormLead $lead): void

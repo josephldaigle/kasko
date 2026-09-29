@@ -335,32 +335,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        margin-bottom: 1rem;
-    }
-
-    .fencing-closing-cta__actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .fencing-closing-cta__phone {
-        color: $kasko-black;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        text-decoration: none;
-        padding: 0.35rem 0.5rem;
-
-        i { color: $kasko-forest; }
-
-        &:hover,
-        &:focus {
-            color: $kasko-forest;
-            text-decoration: none;
-        }
+        margin-bottom: 0;
     }
 
     // ----- RESPONSIVE -----
@@ -392,12 +367,6 @@
         // Value strip items get vertical dividers between columns on tablet+.
         .fencing-value-item + .fencing-value-item {
             border-left: 1px solid rgba($kasko-black, 0.1);
-        }
-
-        .fencing-closing-cta__actions {
-            flex-direction: row;
-            justify-content: center;
-            gap: 1.25rem;
         }
     }
 

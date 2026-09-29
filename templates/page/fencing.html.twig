@@ -148,15 +148,10 @@
             {% endif %}
         </section>
 
-        {# 6. CLOSING CTA — small, restrained #}
+        {# 6. CLOSING CTA — small, restrained. Quote-form + phone CTAs
+             removed; the form itself is immediately below this section. #}
         <section class="fencing-closing-cta">
             <h2 class="fencing-closing-cta__title">Ready to Get Started?</h2>
-            <div class="fencing-closing-cta__actions">
-                <a href="{{ quote_href }}" class="btn btn-cta">Get a Free Quote</a>
-                <a href="{{ tel_href }}" class="fencing-closing-cta__phone">
-                    <i class="fas fa-phone mr-2"></i>Call or Text {{ company_phone }}
-                </a>
-            </div>
         </section>
 
         {# 7. QUOTE FORM — reuses the shared homepage form partial verbatim.

@@ -33,24 +33,44 @@
             </div>
         </section>
 
-        {# 2. VALUE STRIP #}
+        {# 2. VALUE STRIP — trust-focused on the default /fencing page.
+             Sub-pages (fencing_landing_type is not null) keep the original
+             strip verbatim; we'll revisit those separately. #}
         <section class="fencing-value-strip">
             <div class="row no-gutters">
-                <div class="col-12 col-md-4 fencing-value-item">
-                    <i class="fas fa-cube fencing-value-icon"></i>
-                    <h3 class="fencing-value-title">Quality Materials</h3>
-                    <p class="fencing-value-copy">Fences built to last.</p>
-                </div>
-                <div class="col-12 col-md-4 fencing-value-item">
-                    <i class="fas fa-hammer fencing-value-icon"></i>
-                    <h3 class="fencing-value-title">Professional Installation</h3>
-                    <p class="fencing-value-copy">Clean work. Done right.</p>
-                </div>
-                <div class="col-12 col-md-4 fencing-value-item">
-                    <i class="fas fa-tag fencing-value-icon"></i>
-                    <h3 class="fencing-value-title">Straightforward Pricing</h3>
-                    <p class="fencing-value-copy">No surprises.</p>
-                </div>
+                {% if fencing_landing_type is null %}
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-shield-alt fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">Licensed &amp; Insured</h3>
+                        <p class="fencing-value-copy">Professional coverage for every project.</p>
+                    </div>
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-handshake fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">$1M Bonded</h3>
+                        <p class="fencing-value-copy">Added protection and peace of mind.</p>
+                    </div>
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-hard-hat fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">Workers&apos; Comp Covered</h3>
+                        <p class="fencing-value-copy">Professional protection on the job site.</p>
+                    </div>
+                {% else %}
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-cube fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">Quality Materials</h3>
+                        <p class="fencing-value-copy">Fences built to last.</p>
+                    </div>
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-hammer fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">Professional Installation</h3>
+                        <p class="fencing-value-copy">Clean work. Done right.</p>
+                    </div>
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="fas fa-tag fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">Straightforward Pricing</h3>
+                        <p class="fencing-value-copy">No surprises.</p>
+                    </div>
+                {% endif %}
             </div>
         </section>
 
@@ -60,11 +80,21 @@
              closing prompt differ. No route-name checks in this template. #}
         <section class="fencing-services">
             <header class="fencing-section-header">
-                <h2 class="fencing-section-title">{{ services.heading }}</h2>
-                <div class="heading-accent mx-auto"></div>
-                <p class="fencing-section-subtitle">{{ services.subheading }}</p>
-                {% if services.intro %}
-                    <p class="fencing-section-intro">{{ services.intro }}</p>
+                {% if fencing_landing_type is null %}
+                    {# Default /fencing landing page overrides the controller
+                       heading/subheading with intent-oriented copy. Sub-page
+                       variants continue to use their controller-supplied
+                       heading, subheading, and optional intro paragraph. #}
+                    <h2 class="fencing-section-title">What Type of Fence Do You Need?</h2>
+                    <div class="heading-accent mx-auto"></div>
+                    <p class="fencing-section-subtitle">From privacy and security to repairs and custom wood fencing, we&apos;ll help you find the right fit for your property.</p>
+                {% else %}
+                    <h2 class="fencing-section-title">{{ services.heading }}</h2>
+                    <div class="heading-accent mx-auto"></div>
+                    <p class="fencing-section-subtitle">{{ services.subheading }}</p>
+                    {% if services.intro %}
+                        <p class="fencing-section-intro">{{ services.intro }}</p>
+                    {% endif %}
                 {% endif %}
             </header>
 
@@ -89,37 +119,43 @@
             {% endif %}
         </section>
 
-        {# 4. THE KASKO DIFFERENCE #}
-        <section class="fencing-difference">
-            <header class="fencing-section-header">
-                <h2 class="fencing-section-title">The KasKo Difference</h2>
-                <div class="heading-accent mx-auto"></div>
-                <p class="fencing-section-subtitle">A Local Contractor You Can Count On.</p>
-            </header>
+        {# 4. THE KASKO DIFFERENCE — rendered only on /fencing/* variants
+             (fencing_landing_type is not null). Intentionally omitted on
+             the default /fencing landing page as part of the conversion
+             copy cleanup. The .fencing-difference* SCSS rules remain in
+             place because the sub-pages still render this section. #}
+        {% if fencing_landing_type is not null %}
+            <section class="fencing-difference">
+                <header class="fencing-section-header">
+                    <h2 class="fencing-section-title">The KasKo Difference</h2>
+                    <div class="heading-accent mx-auto"></div>
+                    <p class="fencing-section-subtitle">A Local Contractor You Can Count On.</p>
+                </header>
 
-            <div class="row fencing-difference-grid">
-                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                    <i class="fas fa-check fencing-difference-icon"></i>
-                    <h4 class="fencing-difference-title">We purchase materials up front</h4>
-                    <p class="fencing-difference-copy">No delays. No excuses.</p>
+                <div class="row fencing-difference-grid">
+                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                        <i class="fas fa-check fencing-difference-icon"></i>
+                        <h4 class="fencing-difference-title">We purchase materials up front</h4>
+                        <p class="fencing-difference-copy">No delays. No excuses.</p>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                        <i class="fas fa-check fencing-difference-icon"></i>
+                        <h4 class="fencing-difference-title">Clear pricing before work begins</h4>
+                        <p class="fencing-difference-copy">Know what to expect.</p>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                        <i class="fas fa-check fencing-difference-icon"></i>
+                        <h4 class="fencing-difference-title">Professional installation</h4>
+                        <p class="fencing-difference-copy">Respect for your property.</p>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
+                        <i class="fas fa-check fencing-difference-icon"></i>
+                        <h4 class="fencing-difference-title">Local Middle Georgia contractor</h4>
+                        <p class="fencing-difference-copy">Our community. Our work.</p>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                    <i class="fas fa-check fencing-difference-icon"></i>
-                    <h4 class="fencing-difference-title">Clear pricing before work begins</h4>
-                    <p class="fencing-difference-copy">Know what to expect.</p>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                    <i class="fas fa-check fencing-difference-icon"></i>
-                    <h4 class="fencing-difference-title">Professional installation</h4>
-                    <p class="fencing-difference-copy">Respect for your property.</p>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                    <i class="fas fa-check fencing-difference-icon"></i>
-                    <h4 class="fencing-difference-title">Local Middle Georgia contractor</h4>
-                    <p class="fencing-difference-copy">Our community. Our work.</p>
-                </div>
-            </div>
-        </section>
+            </section>
+        {% endif %}
 
         {# 5. SOCIAL PROOF #}
         <section class="fencing-social-proof">

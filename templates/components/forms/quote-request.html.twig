@@ -58,15 +58,23 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-cta mt-3">Get Free Quote
-                        <span class="spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                        <span class="sr-only">Loading...</span>
-                    </button>
+                    {# Submit row: button + SSL badge share one line,
+                       vertically centered, with reasonable gap. On narrow
+                       viewports flex-wrap lets the badge drop below the
+                       button without overflowing the card. #}
+                    <div class="quote-card__submit-row">
+                        <button type="submit" class="btn btn-cta">Get Free Quote
+                            <span class="spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </button>
+                        <img class="quote-card__ssl" src="{{ asset('build/images/ssl-secure_70X70.png') }}" style="max-width: 55px; cursor: pointer;" data-toggle="modal" data-target="#sslIconModal" alt="secure site padlock">
+                    </div>
 
-
-                    <img class="d-inline-block float-right mt-2" src="{{ asset('build/images/ssl-secure_70X70.png') }}" style="max-width: 55px; cursor: pointer;" data-toggle="modal" data-target="#sslIconModal" alt="secure site padlock">
-
-                    <div class="d-flex justify-content-center mt-3" style="clear: both;">
+                    {# Turnstile row: own line directly beneath the submit
+                       row, left-aligned with the form content. Widget
+                       configuration (data-sitekey, loader script, server-
+                       side verification) is unchanged. #}
+                    <div class="quote-card__turnstile-row">
                         <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
                     </div>
 

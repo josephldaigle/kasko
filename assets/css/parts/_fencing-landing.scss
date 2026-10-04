@@ -30,15 +30,42 @@
     }
 
     .fencing-hero__inner {
-        max-width: 780px;
+        // Wider max-width to accommodate the two-column desktop layout
+        // (copy on the left, quote form card on the right). The .row
+        // inside handles column layout; at mobile/tablet the columns are
+        // col-12 and stack vertically.
+        max-width: 1200px;
         margin: 0 auto;
-        // Treat the hero content as one centered stack: headline, subheading,
-        // and CTA row line up on the same vertical axis regardless of their
-        // individual widths.
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    }
+
+    .fencing-hero__content {
         text-align: center;
+        // Gap between hero copy and the stacked form card at tablet and
+        // below. Reset to zero when the two-column layout kicks in.
+        margin-bottom: 2rem;
+
+        // Gold accent bar between the heading and the subtitle. Reuses
+        // the global .heading-accent (gold, 3px tall); widened here and
+        // given a bottom gap so the subtitle breathes. Centered to
+        // track the centered heading at mobile/tablet; left-aligned at
+        // desktop via the $media-break-large override below so it sits
+        // flush beneath the heading's left edge.
+        .heading-accent {
+            width: 80px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .fencing-hero__form {
+        // Lift the card off the dark hero background. Internal alignment
+        // (heading, gold underline, fields, submit row, Turnstile) is
+        // governed by the shared `.quote-card` rules in app.scss, so the
+        // fencing form matches the homepage reference exactly.
+        .quote-card {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
     }
 
     .fencing-hero__title {
@@ -56,49 +83,6 @@
         line-height: 1.5;
         max-width: 600px;
         margin: 0 0 1.5rem;
-    }
-
-    .fencing-hero__ctas {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 0.75rem;
-        margin: 0;
-    }
-
-    .fencing-cta-primary {
-        // Extends existing .btn-cta; only size it up for the hero and swap
-        // the label color to Kasko brass. Green background is preserved.
-        font-size: 1rem;
-        padding: 0.85rem 2rem;
-        min-width: 220px;
-        color: $kasko-brass;
-
-        &:hover,
-        &:focus {
-            color: $kasko-brass;
-        }
-    }
-
-    .fencing-cta-secondary {
-        color: $kasko-brass;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        font-size: 0.9rem;
-        text-decoration: none;
-        padding: 0.5rem 0.75rem;
-
-        &:hover,
-        &:focus {
-            color: $kasko-brass;
-            text-decoration: none;
-        }
-
-        i {
-            color: $kasko-brass;
-        }
     }
 
     // ----- SECTION HEADERS (shared) -----
@@ -313,31 +297,6 @@
         letter-spacing: 0.05em;
     }
 
-    // ----- QUOTE FORM SECTION — hosts the shared quote-request card -----
-    // Only lays out the section around the card; the card itself is
-    // rendered by templates/components/forms/quote-request.html.twig and
-    // styled by the existing .quote-card rules — untouched here.
-    .fencing-form {
-        padding: 2.5rem 1.25rem 3.5rem;
-        scroll-margin-top: 1rem;
-    }
-
-    // ----- CLOSING CTA — small, restrained -----
-    .fencing-closing-cta {
-        padding: 2rem 1.25rem 2.5rem;
-        text-align: center;
-        border-top: 1px solid rgba($kasko-black, 0.08);
-    }
-
-    .fencing-closing-cta__title {
-        color: $kasko-black;
-        font-size: 1.1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 0;
-    }
-
     // ----- RESPONSIVE -----
 
     // Tablet and up: larger hero, horizontal CTAs, side-by-side value strip already handled by col-md-4.
@@ -354,12 +313,6 @@
             font-size: 1.25rem;
         }
 
-        .fencing-hero__ctas {
-            flex-direction: row;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
         .fencing-section-title {
             font-size: 2rem;
         }
@@ -372,12 +325,44 @@
 
     // Desktop: full 4-column services grid handled by col-lg-3; add breathing room.
     @media (min-width: $media-break-large) {
+        // Hero switches to the two-column layout at this breakpoint
+        // (col-lg-7 / col-lg-5). Vertical padding trimmed because the
+        // form card contributes its own height.
         .fencing-hero {
-            padding: 8rem 2rem;
+            padding: 4rem 2rem;
         }
 
         .fencing-hero__title {
             font-size: 3.5rem;
+        }
+
+        // Left copy aligns to the left when it sits next to the form.
+        .fencing-hero__content {
+            text-align: left;
+            margin-bottom: 0;
+
+            // Accent bar tracks the heading: left-aligned at desktop.
+            .heading-accent {
+                margin-left: 0;
+            }
+        }
+
+        // Trim card width ~13% at desktop, then right-align it so the
+        // form's right edge mirrors the hero text's left edge. The hero
+        // text sits at hero__inner's content left (col-lg-7's padding
+        // and the row's -15/+15 margin/padding dance cancel out), so
+        // the hero text's inset from the hero's outer bounds is purely
+        // the section's padding-left (2rem). The hero section has a
+        // matching padding-right of 2rem, so pushing the card to
+        // col-lg-5's content right edge produces true left/right
+        // symmetry from the hero bounds. The negative margin-right
+        // offsets the 15px right padding on the .col-12 wrapper from
+        // the shared partial — this is structural, not a design value,
+        // and keeps the form width unchanged.
+        .fencing-hero__form .quote-card {
+            max-width: 87%;
+            margin-left: auto;
+            margin-right: -15px;
         }
 
         .fencing-services {

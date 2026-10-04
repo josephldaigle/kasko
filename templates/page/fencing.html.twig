@@ -10,23 +10,25 @@
        provided per-variant by the `services` map from the controller. #}
     {% set hero_image = 'build/images/hero.jpg' %}
 
-    {% set tel_href = 'tel:1-' ~ (company_phone | replace({'(': '', ') ': '', '-': '', ' ': ''})) %}
-    {# In-page anchor to the shared quote form embedded near the bottom. #}
-    {% set quote_href = '#quote' %}
-
     <div class="col-12 px-0 fencing-landing">
 
-        {# 1. HERO #}
+        {# 1. HERO — two-column at desktop: copy on the left, quote form
+             card on the right. Stacks vertically at tablet and below. The
+             form partial and its submission path are unchanged. #}
         <section class="fencing-hero"
                  style="background-image: linear-gradient(rgba(17,17,17,0.55), rgba(17,17,17,0.55)), url('{{ asset(hero_image) }}');">
             <div class="fencing-hero__inner">
-                <h1 class="fencing-hero__title">{{ hero.headline }}</h1>
-                <p class="fencing-hero__subtitle">{{ hero.subheading }}</p>
-                <div class="fencing-hero__ctas">
-                    <a href="{{ quote_href }}" class="btn btn-cta fencing-cta-primary">Get a Free Quote</a>
-                    <a href="{{ tel_href }}" class="fencing-cta-secondary">
-                        <i class="fas fa-phone mr-2"></i>Call or Text {{ company_phone }}
-                    </a>
+                <div class="row fencing-hero__row align-items-center">
+                    <div class="col-12 col-lg-7 fencing-hero__content">
+                        <h1 class="fencing-hero__title">{{ hero.headline }}</h1>
+                        <div class="heading-accent"></div>
+                        <p class="fencing-hero__subtitle">{{ hero.subheading }}</p>
+                    </div>
+                    <div id="quote" class="col-12 col-lg-5 fencing-hero__form">
+                        {% include 'components/forms/quote-request.html.twig' with {
+                            landing_type: fencing_landing_type
+                        } %}
+                    </div>
                 </div>
             </div>
         </section>
@@ -146,30 +148,6 @@
             {% else %}
                 {# TODO: no existing Kasko review found — populate with a real fencing customer review when available. #}
             {% endif %}
-        </section>
-
-        {# 6. CLOSING CTA — small, restrained. Quote-form + phone CTAs
-             removed; the form itself is immediately below this section. #}
-        <section class="fencing-closing-cta">
-            <h2 class="fencing-closing-cta__title">Ready to Get Started?</h2>
-        </section>
-
-        {# 7. QUOTE FORM — reuses the shared homepage form partial verbatim.
-             Renders the same card, uses the same #free-quote submit handler
-             (assets/js/quote-form.js), posts to the same /api/quotes endpoint
-             (Kasko\Controller\QuotesController::postFormLead), and persists
-             through the same FormLead entity + admin/customer email flow.
-             `landing_type` is only forwarded when a whitelisted variant is
-             on the URL, so requests from /fencing (default) are identical
-             to homepage submissions. #}
-        <section id="quote" class="fencing-form">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-8">
-                    {% include 'components/forms/quote-request.html.twig' with {
-                        landing_type: fencing_landing_type
-                    } %}
-                </div>
-            </div>
         </section>
 
     </div>

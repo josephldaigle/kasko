@@ -244,6 +244,11 @@
     border: 1px solid rgba($kasko-black, 0.08);
     color: $kasko-black;
     box-shadow: 0 2px 6px rgba($kasko-black, 0.06);
+    // Self-contained alignment. Keeps the card and everything inside
+    // (heading, accent bar, fields, submit row, Turnstile) left-aligned
+    // regardless of any `text-align: center` an ancestor may apply —
+    // e.g. .fencing-hero on the fencing landing pages.
+    text-align: left;
 
     h5 {
         color: $kasko-black;
@@ -275,6 +280,27 @@
 
     .btn-cta {
         width: auto;
+    }
+
+    // Site-wide bottom-of-form layout. Submit button + SSL badge share
+    // one horizontal row; Cloudflare Turnstile sits on its own row
+    // directly beneath. Rendered by components/forms/quote-request.html.twig
+    // so every page that includes the shared partial inherits the layout.
+    .quote-card__submit-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.25rem;
+        margin-top: 1rem;
+    }
+
+    .quote-card__ssl {
+        max-width: 55px;
+        cursor: pointer;
+    }
+
+    .quote-card__turnstile-row {
+        margin-top: 1rem;
     }
 }
 

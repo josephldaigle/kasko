@@ -98,15 +98,38 @@
                 {% endif %}
             </header>
 
+            {# Each default-page service card links to its corresponding
+                 fencing subpage via the `fencing_variant` route. Variant
+                 pages (fencing_landing_type is not null) show different
+                 item sets that don't map 1:1 to existing subpages, so
+                 their cards remain unlinked. #}
+            {% set service_card_route_types = {
+                'Privacy Fencing': 'privacy',
+                'Wood Fencing':    'wood',
+                'Chain Link':      'chain-link',
+                'Fence Repair':    'repair',
+            } %}
+
             <div class="row fencing-services-grid">
                 {% for item in services.items %}
-                    <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                        <div class="fencing-service__image"
-                             style="background-image: url('{{ asset(item.image) }}');"
-                             role="img" aria-label="{{ item.alt }}"></div>
-                        <h3 class="fencing-service__title">{{ item.title }}</h3>
-                        <p class="fencing-service__copy">{{ item.copy }}</p>
-                    </div>
+                    {% set card_route_type = (fencing_landing_type is null) ? service_card_route_types[item.title]|default(null) : null %}
+                    {% if card_route_type %}
+                        <a href="{{ path('fencing_variant', { type: card_route_type }) }}" class="col-12 col-sm-6 col-lg-3 fencing-service fencing-service--linked">
+                            <div class="fencing-service__image"
+                                 style="background-image: url('{{ asset(item.image) }}');"
+                                 role="img" aria-label="{{ item.alt }}"></div>
+                            <h3 class="fencing-service__title">{{ item.title }}</h3>
+                            <p class="fencing-service__copy">{{ item.copy }}</p>
+                        </a>
+                    {% else %}
+                        <div class="col-12 col-sm-6 col-lg-3 fencing-service">
+                            <div class="fencing-service__image"
+                                 style="background-image: url('{{ asset(item.image) }}');"
+                                 role="img" aria-label="{{ item.alt }}"></div>
+                            <h3 class="fencing-service__title">{{ item.title }}</h3>
+                            <p class="fencing-service__copy">{{ item.copy }}</p>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
 

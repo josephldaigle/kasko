@@ -4,6 +4,8 @@
 @import "global";
 @import "partials/type";
 @import "parts/fencing-landing";
+@import "parts/service-landing";
+@import "parts/services-landing";
 
 .hidden {
     display: none !important;
@@ -28,13 +30,27 @@
     color: $kasko-forest;
 }
 
+// Inline body-copy link utility. Matches the `p a` rule in
+// partials/_type.scss so templates that explicitly tag a link
+// with `.text-link` (privacy-policy, terms-of-service, about,
+// home) render identically to unclassed `<p>` links. Previously
+// forced black with no underline, which won on specificity
+// (0,0,1,0 vs. `p a`'s 0,0,0,2) and made inline links
+// indistinguishable from surrounding text.
 .text-link {
-    color: $kasko-black;
-    text-decoration: none;
-}
-
-.text-link:hover {
     color: $kasko-forest;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        color: $kasko-forest-light;
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $kasko-brass;
+        outline-offset: 2px;
+    }
 }
 
 // Rotate accordion buttons (icons in top-right corner)
@@ -123,11 +139,26 @@
         text-transform: uppercase;
         font-size: 1rem;
         letter-spacing: 0.04em;
-        border-bottom: 2px solid transparent;
+
+        // Gold underline beneath the nav label. The underline lives on
+        // the inner <span> (not the <a>), so it hugs the text and
+        // matches the label width exactly instead of spanning the
+        // link's full padded box. Color + thickness match the
+        // `.heading-accent` rule used beneath section headings
+        // ("A Better Experience" etc.). Transparent at rest so there
+        // is no visible bar; brass on hover/focus and active.
+        > span {
+            border-bottom: 3px solid transparent;
+            transition: border-color .15s ease-in-out;
+        }
 
         &:hover,
         &:focus {
             color: $kasko-white;
+        }
+
+        &:hover > span,
+        &:focus > span {
             border-bottom-color: $kasko-brass;
         }
     }
@@ -135,6 +166,10 @@
     .navbar-nav .nav-item.active > .nav-link,
     .navbar-nav .nav-link.active {
         color: $kasko-white;
+    }
+
+    .navbar-nav .nav-item.active > .nav-link > span,
+    .navbar-nav .nav-link.active > span {
         border-bottom-color: $kasko-brass;
     }
 
@@ -144,6 +179,198 @@
 
     .navbar-toggler-icon {
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    // ----- Services dropdown -----
+    // The <li> contains a plain `.nav-link` text (navigates to
+    // /services) and a sibling caret-only `<button>` that owns the
+    // Bootstrap dropdown toggle. The absolutely-positioned
+    // `.dropdown-menu` sits beneath both.
+    //
+    // Bootstrap's `.nav-link { display: block; }` would otherwise
+    // force the caret to wrap onto a new line, so the `<li>` is made
+    // a flex container to lay the two inline with a small gap. The
+    // dropdown-menu is `position: absolute` and therefore out of
+    // flex flow — its placement is driven by Bootstrap's existing
+    // `top: 100%; left: 0;` and remains anchored to the `<li>`.
+
+    .services-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 6px; // caret sits 6px to the right of "SERVICES"
+
+        .services-nav-item__link {
+            // Gap handles the space; the ad-hoc right padding is
+            // no longer needed.
+            padding-right: 0;
+        }
+    }
+
+    .services-nav-item__toggle {
+        // Inline chevron immediately beside "SERVICES" — no padding,
+        // no line box, no border, no background, no outline in any
+        // state. The button exists only to carry `data-toggle=
+        // "dropdown"`; visually it should read as a plain caret
+        // the same height/baseline as the label. `font: inherit`
+        // picks up the nav text metrics so Bootstrap's
+        // `.dropdown-toggle::after` triangle sizes to match the
+        // "SERVICES" cap-height; `line-height: 1` keeps the
+        // button's line-box as tight as the glyph. Vertical
+        // alignment with the label is handled by the parent flex
+        // container (`align-items: center`), so this element needs
+        // no padding of its own.
+        //
+        // `border: 0` and `:focus { outline: none; box-shadow: none; }`
+        // are suppressive — they ensure the browser's default
+        // button border and the default mouse-click focus ring do
+        // not render.
+        display: inline-flex;
+        align-items: center;
+        background-color: transparent;
+        border: 0;
+        padding: 0;
+        color: $kasko-white;
+        font: inherit;
+        line-height: 1;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        // Hide Bootstrap's `.dropdown-toggle::after` caret glyph
+        // entirely. The toggle button itself is kept in the DOM so
+        // Bootstrap's `data-toggle="dropdown"` wiring, the aria-
+        // expanded sync in `assets/js/services-dropdown.js`, and
+        // keyboard focus all continue to work; only the visible
+        // chevron is removed. Hover-to-open is driven by the
+        // parent-level `.services-nav-item:hover > .services-
+        // dropdown-menu { display: block }` rule below, not the
+        // caret, so dropdown hover functionality is unaffected.
+        &::after {
+            display: none;
+        }
+    }
+
+    // Hover anywhere on the Services nav item recolors BOTH the
+    // label and the caret to brass. Writing the rule on the parent
+    // keeps the two children in sync regardless of which one the
+    // pointer is currently over. Specificity equals the shared
+    // `.navbar-nav .nav-link:hover` rule above; source order wins.
+    .services-nav-item:hover > .services-nav-item__link,
+    .services-nav-item:hover > .services-nav-item__toggle,
+    .services-nav-item:focus-within > .services-nav-item__link,
+    .services-nav-item:focus-within > .services-nav-item__toggle {
+        color: $kasko-brass;
+    }
+
+    .services-dropdown-menu {
+        // Dark-forest surface matching the header. No borders at
+        // all — the subtle 1px all-sides edge and the brass top
+        // accent that previously lived here have both been removed
+        // per design. A soft drop shadow still lifts the menu off
+        // the content behind it so the panel reads as a distinct
+        // surface. Compact padding keeps the menu readable without
+        // excess weight. Flush against the parent (`margin-top: 0`)
+        // so the menu reads as directly connected to the Services
+        // item.
+        background-color: $kasko-forest;
+        border-radius: 2px;
+        box-shadow: 0 4px 12px rgba($kasko-black, 0.25);
+        padding: 0.5rem 0;
+        min-width: 220px;
+        margin-top: 0;
+
+        .dropdown-item {
+            color: $kasko-white;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            padding: 0.4rem 1.2rem;
+            background-color: transparent;
+
+            // Gold underline lives on the inner <span> so it hugs the
+            // item's text and matches the label width exactly. Color
+            // and thickness match the main-nav underline and the
+            // `.heading-accent` rule beneath section headings.
+            > span {
+                border-bottom: 3px solid transparent;
+                transition: border-color .15s ease-in-out;
+            }
+
+            // Hover + focus (both mouse and keyboard): gold text with
+            // the gold underline revealed on the inner span. Background
+            // stays transparent so only the dropdown's own forest
+            // surface is visible.
+            &:hover,
+            &:focus {
+                color: $kasko-brass;
+                background-color: transparent;
+            }
+
+            &:hover > span,
+            &:focus > span {
+                border-bottom-color: $kasko-brass;
+            }
+
+            &.active,
+            &:active {
+                color: $kasko-brass;
+                background-color: rgba($kasko-brass, 0.18);
+            }
+        }
+    }
+
+    // Desktop hover-open: at `sm+` (where the navbar is horizontal),
+    // showing the menu on hover of the parent <li> gives the
+    // expected desktop pattern without JS. Click + keyboard continue
+    // to work via Bootstrap's data-toggle; a small JS helper
+    // (assets/js/services-dropdown.js) mirrors the hover state onto
+    // aria-expanded so screen readers see the open state.
+    // Below sm the navbar collapses — hover doesn't apply there and
+    // the menu opens on tap via Bootstrap's existing click handling.
+    //
+    // No `:focus-within` branch here on purpose. Bootstrap 4's
+    // `dropdown('show')` moves focus to the toggle button and does
+    // not blur it on `hide`; a `:focus-within` rule would therefore
+    // keep the menu painted after the pointer leaves (and after
+    // Bootstrap removes `.show`). Keyboard access still works through
+    // Bootstrap's own `.dropdown-menu.show { display: block }` — the
+    // caret button carries `data-toggle="dropdown"` and Enter/Space
+    // adds `.show` for intentional keyboard opens.
+    @media (min-width: 576px) {
+        .services-nav-item:hover > .services-dropdown-menu {
+            display: block;
+        }
+
+        // Center the main nav group within its column. The template
+        // uses Bootstrap's `.mr-auto` on `.navbar-nav`, which pushes
+        // the list to the left of the collapse container. Pairing it
+        // with an auto left margin balances the two sides so the ul
+        // sits horizontally centered between the logo and the phone
+        // CTA. Items keep their own layout — only the ul moves — so
+        // link text and dropdown items stay left-aligned within
+        // their containers.
+        .navbar-nav {
+            margin-left: auto;
+        }
+    }
+
+    // Desktop (lg+): drop the logo/nav/CTA onto a shared bottom
+    // edge just above the gold border. `my-auto` on the logo column
+    // would otherwise override `align-items: flex-end` because auto
+    // top+bottom margins center a flex item regardless of the
+    // parent's align-items.
+    @media (min-width: $media-break-large) {
+        > .row {
+            align-items: flex-end;
+        }
+
+        .my-auto {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
     }
 }
 
@@ -200,6 +427,83 @@
     background-color: $kasko-brass;
 }
 
+// Responsive heading scale — mobile-first base sizes live in
+// partials/_variables.scss ($h1/$h2/$h3-font-size). The single rule
+// below bumps h1/h2 up to desktop targets at $media-break-medium
+// (768px+). H3 at 20px works at every breakpoint, so no override.
+// Per the site typography standard: h1 36px desktop, h2 28px desktop,
+// h3 20px, font-weight 500 (Bootstrap $headings-font-weight default).
+@media (min-width: $media-break-medium) {
+    h1, .h1 { font-size: 2.25rem; }  // 36px
+    h2, .h2 { font-size: 1.75rem; }  // 28px
+}
+
+// Shared service-card heading rule — the two card grids on the site
+// (`.services-card__title` on /services, `.fencing-service__title`
+// on the service landing pages) share identical typography per the
+// Kasko card-heading standard. Defined once at the top level so both
+// selectors emit the same compiled rule and no page-specific scope
+// can accidentally diverge. Gold underlines rendered by sibling
+// elements (`.services-card__accent` on /services) are preserved.
+.services-card__title,
+.fencing-service__title {
+    color: $kasko-black;
+    font-size: 1.25rem;      // 20px desktop + mobile (per card-heading standard)
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+}
+
+// Shared service-card gold accent — the short gold underline below
+// each card heading on /services (`.services-card__accent`) and on
+// every service landing page (`.fencing-service__accent`). Defined
+// once at the top level so both card grids render an identical rule.
+.services-card__accent,
+.fencing-service__accent {
+    width: 40px;
+    height: 3px;
+    background-color: $kasko-brass;
+    margin-bottom: 0.75rem;
+}
+
+// Shared service-card image placeholder — overlays
+// `.fencing-service__image` (4:3 padding-bottom tile) with a neutral
+// dashed-border tile and a centered "Image coming soon" label when
+// the controller supplies a service item without an image. Visual
+// pattern matches the /services card placeholder; one shared rule
+// serves every landing page via the layout's conditional branch.
+.fencing-service__image--placeholder {
+    position: relative;
+    background-color: rgba($kasko-black, 0.06);
+    border: 1px dashed rgba($kasko-black, 0.15);
+}
+
+.fencing-service__placeholder-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba($kasko-black, 0.5);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+// Shared service-card body copy — identical typography across both
+// card grids. The slightly dimmed black (`rgba($kasko-black, 0.72)`)
+// is the /fencing reference so the two grids read the same at every
+// breakpoint. Flex/margin properties that depend on whether a card
+// has a bottom affordance stay in their page-specific scopes.
+.services-card__copy,
+.fencing-service__copy {
+    color: rgba($kasko-black, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
 // Google Map embed
 #google-map-embed {
     width: 100%;
@@ -251,10 +555,12 @@
     text-align: left;
 
     h5 {
+        // Form heading ("Get Your Free Quote"). Title case from
+        // markup; semibold (600) per site standard. Gold accent
+        // underline below is preserved.
         color: $kasko-black;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 0.02em;
-        text-transform: uppercase;
     }
 
     .form-control {
@@ -291,16 +597,29 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 1.25rem;
-        margin-top: 1rem;
+        margin-top: 0.75rem;
     }
 
     .quote-card__ssl {
         max-width: 55px;
         cursor: pointer;
+        // Push the badge to the far right of the submit row. The
+        // row is already `display: flex` with `align-items: center`,
+        // so vertical alignment with the submit button is preserved
+        // and the button keeps its position/size at the left. The
+        // row's `flex-wrap: wrap` + `gap: 1.25rem` still cover the
+        // narrow-viewport case: if free space runs out the badge
+        // wraps beneath the button rather than overflowing, and the
+        // gap guarantees minimum spacing from the button.
+        margin-left: auto;
     }
 
+    // Turnstile is in invisible mode (see quote-request.html.twig), so
+    // the row has no visible footprint under normal operation. A tiny
+    // top margin keeps the row from collapsing against the submit row
+    // when Cloudflare reveals an interactive challenge inline.
     .quote-card__turnstile-row {
-        margin-top: 1rem;
+        margin-top: 0.25rem;
     }
 }
 
@@ -313,20 +632,16 @@
     box-shadow: none;
 
     h5 {
+        // Reviews-card heading ("Reviews"). Title case from markup;
+        // semibold (600) per site standard. Gold accent underline
+        // below is preserved.
         color: $kasko-black;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 0.02em;
-        text-transform: uppercase;
     }
 
     // Reviewer icon
     .fa-user-circle {
-        color: $kasko-black !important;
-    }
-
-    // Rating stars stay black on white this pass (per spec, no gold-on-white here)
-    .text-gold,
-    .fas.fa-star.text-gold {
         color: $kasko-black !important;
     }
 
@@ -336,6 +651,40 @@
 
     .blockquote-footer a {
         color: $kasko-black;
+    }
+}
+
+// ==========================================================================
+// HOMEPAGE — "A Better Experience" reviews card alignment
+// Mirrors the scoped hero quote-card alignment at lg+ so the Reviews
+// card's left edge lines up directly beneath the hero quote-card's
+// left edge above it. Same geometry as `.fencing-hero__form
+// .quote-card` in parts/_fencing-landing.scss: 87% max-width inside
+// its `.col-lg-5` wrapper, pushed right via `margin-left: auto`, with
+// a `-15px` right margin that cancels the inner `.col-12`'s right
+// Bootstrap column padding so the card's right edge meets the row's
+// outer content edge. Below lg the hero form is `.col-12` (full
+// width) and so is the testimonials column — alignment is natural
+// at those breakpoints, and this override simply doesn't fire.
+// Scoped to `.home-experience__reviews` so no other page using
+// `components/testimonials.html.twig` is affected.
+// ==========================================================================
+@media (min-width: $media-break-large) {
+    .home-experience__reviews .reviews-card {
+        max-width: 87%;
+        margin-left: auto;
+        margin-right: -15px;
+    }
+}
+
+// Review carousels — honor `prefers-reduced-motion`. The companion
+// JS in `assets/js/reviews-carousel.js` pauses the auto-advance timer
+// under the same media query; this rule kills the fade so there is
+// no residual motion if a user does navigate manually.
+@media (prefers-reduced-motion: reduce) {
+    #cg-review-carousel.carousel-fade .carousel-item,
+    #service-review-carousel.carousel-fade .carousel-item {
+        transition: none !important;
     }
 }
 

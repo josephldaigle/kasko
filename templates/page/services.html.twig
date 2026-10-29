@@ -1,0 +1,107 @@
+{# twig template — /services overview page #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Services — KasKo Construction & Remodeling{% endblock %}
+{% block page_meta_description %}Construction, landscaping, and property services from KasKo Construction & Remodeling — decks, docks, fencing, exterior repairs, and ongoing maintenance for homes and businesses throughout Middle Georgia.{% endblock %}
+
+{% block page_content %}
+
+    {# H1 and intro paragraph live at the base.html.twig row level,
+         using the same Bootstrap grid as the homepage's intro:
+           <div class="col-12">        <!-- H1 full-row -->
+           <div class="col-lg-8">      <!-- intro @ 2/3 at lg+ -->
+             <div class="row">
+               <div class="col-12">
+                 <p> …
+         Width, left alignment, and spacing therefore match home.html.twig
+         exactly. The `.services-page` wrapper below holds the services
+         grid + green quote block (which still need their edge-to-edge
+         treatment). #}
+    <div class="col-12">
+        <h1 class="text-left mt-5 mb-4 text-bold">Construction, Landscaping &amp; Property Services</h1>
+    </div>
+    <div class="w-100"></div>
+    <div class="col-lg-8">
+        <div class="row">
+            <div class="col-12">
+                <p>From new construction and outdoor living spaces to repairs and routine maintenance, Kasko delivers dependable craftsmanship for residential and commercial properties.</p>
+            </div>
+        </div>
+    </div>
+    <div class="w-100"></div>
+
+    <div class="col-12 px-0 services-page">
+
+        {# 1. SERVICES GRID — 3 columns at desktop, 2 at tablet, 1 at
+             mobile. Cards flow left-to-right in document order; an
+             incomplete final row is left-aligned and leaves the
+             trailing cell(s) empty rather than being re-centered. #}
+        <section class="services-grid">
+            <div class="row services-grid__row">
+                {% for item in services %}
+                    {% set col_classes = 'col-12 col-md-6 col-lg-4 services-card-col' %}
+                    {% if item.route is defined and item.route %}
+                        {# Optional `fragment` key appends `#anchor` to the
+                           resolved route so the destination page scrolls
+                           its H1 (or any id'd element) into view without
+                           any JS. #}
+                        {% set href = path(item.route) ~ (item.fragment is defined and item.fragment ? '#' ~ item.fragment : '') %}
+                    {% else %}
+                        {% set href = '#quote' %}
+                    {% endif %}
+                    <div class="{{ col_classes }}">
+                        <a class="services-card" href="{{ href }}">
+                            {% if item.image %}
+                                <div class="services-card__image"
+                                     style="background-image: url('{{ asset(item.image) }}');"
+                                     role="img" aria-label="{{ item.alt }}"></div>
+                            {% else %}
+                                <div class="services-card__image services-card__image--placeholder" role="img" aria-label="{{ item.alt }}">
+                                    <span class="services-card__placeholder-label">Image coming soon</span>
+                                </div>
+                            {% endif %}
+                            <div class="services-card__body">
+                                <h3 class="services-card__title">{{ item.title }}</h3>
+                                <div class="services-card__accent"></div>
+                                <p class="services-card__copy">{{ item.copy }}</p>
+                                <span class="services-card__cta">
+                                    <span class="services-card__cta-label">Learn More</span>
+                                    <span class="services-card__cta-caret" aria-hidden="true">&rsaquo;</span>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        {# 3. QUOTE SECTION — full-width forest green block directly
+             beneath the services grid. Left column: headline + copy.
+             Right column: shared quote form partial. The section carries
+             a small negative top margin so its top edge "peeks" into
+             view at the tail of the services grid without overlapping
+             the cards themselves (the grid has matching bottom padding
+             to reserve the peek space). #}
+        {# Fixed "GET QUOTE" CTA bar — see components/sticky-cta-bar.html.twig
+             for the full behavior docblock. On /services the anchor
+             target is the on-page `services-quote` <section> below. #}
+        {% include 'components/sticky-cta-bar.html.twig' %}
+
+        <section id="quote" class="services-quote">
+            <div class="services-quote__inner">
+                <div class="row">
+                    <div class="col-12 col-lg-6 services-quote__intro">
+                        <h2 class="services-quote__title">Have a Project in Mind?</h2>
+                        <div class="heading-accent services-quote__accent"></div>
+                        <p class="services-quote__copy">Whether you&rsquo;re planning something new or need repairs to an existing property, we&rsquo;d love to hear about it.</p>
+                    </div>
+                    <div class="col-12 col-lg-6 services-quote__form">
+                        {% include 'components/forms/quote-request.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,356 @@
+// ==========================================================================
+// /services — services overview page (scoped)
+// All rules nest under .services-page so nothing leaks to other pages.
+// Mirrors the fencing-landing structure: scoped wrapper, generous side
+// padding on sections, forest/gold accent colors from the shared palette.
+// ==========================================================================
+
+.services-page {
+    color: $kasko-black;
+    background-color: $kasko-white;
+
+    // Match .fencing-landing's edge-to-edge section bounds — sections
+    // live inside base.html.twig's `.row > .col-12` wrapper and set
+    // their own horizontal padding.
+    section {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    // ----- SERVICES GRID -----
+    // The grid stops short of the quote block below so the forest-green
+    // section has a visible "peek" at the bottom of the viewport as the
+    // user scrolls. The bottom padding here reserves that peek space
+    // without overlapping any card. The grid section inherits the shared
+    // `.services-page section` horizontal padding and uses no inner
+    // max-width. No `padding-top` — the gap between the introductory
+    // paragraph above and the first card is produced by the paragraph's
+    // own default bottom margin, matching the homepage's paragraph →
+    // next-element flow (home.html.twig: intro <p> → <div class="mb-3">
+    // carousel wrapper).
+    .services-grid {
+        padding-bottom: 2rem;
+    }
+
+    .services-grid__row {
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+    }
+
+    .services-card-col {
+        padding: 0.75rem;
+        display: flex;
+    }
+
+    // Each card is a block-level anchor: image on top, body below.
+    // Hover/focus lifts the card and adds a subtle shadow; focus-visible
+    // adds a forest ring for keyboard navigation.
+    .services-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: $kasko-white;
+        border: 1px solid rgba($kasko-black, 0.08);
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba($kasko-black, 0.04);
+        color: inherit;
+        text-decoration: none;
+        overflow: hidden;
+        transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
+
+        &:hover,
+        &:focus {
+            color: inherit;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba($kasko-black, 0.08);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $kasko-forest;
+            outline-offset: 3px;
+        }
+    }
+
+    // 16:9 image panel — padding-bottom technique keeps the aspect
+    // ratio regardless of card width. Falls back to a neutral tint if
+    // the image is missing.
+    .services-card__image {
+        width: 100%;
+        padding-bottom: 56.25%;
+        background-color: rgba($kasko-black, 0.08);
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    // Placeholder tile for cards that don't yet have a dedicated
+    // photo (controller sets `image: null`). Keeps the 16:9 slot
+    // sized and reads as intentionally empty — a dashed border and a
+    // centered "IMAGE COMING SOON" label — rather than a bare gray
+    // box. Visual pattern matches the placeholder treatment used
+    // previously on the service landing pages.
+    .services-card__image--placeholder {
+        position: relative;
+        background-color: rgba($kasko-black, 0.06);
+        border: 1px dashed rgba($kasko-black, 0.15);
+    }
+
+    .services-card__placeholder-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: rgba($kasko-black, 0.5);
+        font-size: 0.85rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 0 1rem;
+    }
+
+    .services-card__body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 1.1rem 1.1rem 1.25rem;
+    }
+
+    // `.services-card__title` typography lives in app.scss alongside
+    // `.fencing-service__title` as a single shared service-card
+    // heading rule so both card grids read identically. The gold
+    // `.services-card__accent` underline directly below is preserved
+    // in its own rule.
+
+    // `.services-card__accent` typography lives in app.scss alongside
+    // `.fencing-service__accent` as a single shared gold-underline
+    // rule — nothing to override here.
+
+    .services-card__copy {
+        // Color, font-size, and line-height live in the shared
+        // top-level rule in app.scss alongside `.fencing-service__copy`.
+        // Only the /services-specific layout bits — flex-grow (so the
+        // "Learn More ›" affordance can push to the bottom-right) and
+        // bottom margin — stay scoped here.
+        flex: 1;
+        margin-bottom: 1rem;
+    }
+
+    // "Learn More ›" affordance in the bottom-right of each card's
+    // content area. Lives inside the single card anchor so the whole
+    // card stays clickable. The outer `.services-card__cta` is an
+    // inline-flex container that aligns the label text and the gold
+    // caret on a shared baseline; the caret is `aria-hidden` so
+    // screen readers hear "Learn More" alongside the H3 title and
+    // description. `align-self: flex-end + margin-top: auto` pins the
+    // whole affordance to the bottom-right of the body regardless of
+    // description length — no absolute positioning, no fixed heights.
+    // Padding from the card's right/bottom edges comes from
+    // `.services-card__body`'s existing 1.1rem × 1.25rem padding.
+    .services-card__cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        align-self: flex-end;
+        margin-top: auto;
+        color: $kasko-brass;
+        transition: transform .15s ease-in-out, color .15s ease-in-out;
+    }
+
+    .services-card__cta-label {
+        color: $kasko-brass;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    .services-card__cta-caret {
+        color: $kasko-brass;
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+
+    // Subtle rightward slide on card hover/focus. Children inherit the
+    // transform so the label and caret move together. The parent
+    // anchor still owns the keyboard focus outline (defined on
+    // `.services-card:focus-visible`), so no separate focus style is
+    // needed on the affordance itself.
+    .services-card:hover .services-card__cta,
+    .services-card:focus .services-card__cta,
+    .services-card:focus-visible .services-card__cta {
+        transform: translateX(4px);
+    }
+
+    // ----- QUOTE SECTION -----
+    // Full-width forest-green block that reads as a natural continuation
+    // of the services grid. No sticky/fixed behavior — the "peek" is
+    // produced simply by the grid's bottom padding being smaller than
+    // typical section spacing, so the top of this block enters the
+    // viewport while the final cards are still visible.
+    .services-quote {
+        background-color: $kasko-forest;
+        color: $kasko-white;
+        padding: 3rem 1.25rem;
+        // Gold accent bar across the top edge of the section — matches
+        // the gold rule beneath the site header for visual continuity.
+        border-top: 4px solid $kasko-brass;
+    }
+
+    .services-quote__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .services-quote__intro {
+        margin-bottom: 2rem;
+    }
+
+    .services-quote__title {
+        // H2 inside the green quote block. Font-size + weight come
+        // from the shared Bootstrap heading scale (24px mobile,
+        // 28px desktop, weight 500). Only the white hero-overlay
+        // color + brand letter-spacing + margin live here.
+        color: $kasko-white;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.75rem;
+    }
+
+    .services-quote__accent {
+        width: 72px;
+        margin: 0 0 1rem;
+    }
+
+    .services-quote__copy {
+        color: rgba($kasko-white, 0.9);
+        font-size: 1.05rem;
+        line-height: 1.55;
+        margin: 0;
+        max-width: 480px;
+    }
+
+    // The quote-request partial already renders a `.quote-card`
+    // (white surface, forest CTA, SSL badge, Turnstile widget). No
+    // need to re-skin internals here — just ensure the card gets a
+    // soft shadow against the dark background.
+    .services-quote__form .quote-card {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    // ----- RESPONSIVE -----
+
+    @media (min-width: $media-break-medium) {
+        .services-grid {
+            padding-bottom: 2.5rem;
+        }
+
+        .services-quote {
+            padding: 4rem 2rem;
+        }
+    }
+
+    @media (min-width: $media-break-large) {
+        .services-grid {
+            // Bottom padding stays modest here so the forest-green
+            // quote block visibly peeks into view beneath the final
+            // row of cards as the user scrolls toward it.
+            padding-bottom: 3rem;
+        }
+
+        .services-quote__intro {
+            margin-bottom: 0;
+            padding-right: 2rem;
+        }
+    }
+}
+
+// ==========================================================================
+// FIXED "GET QUOTE" CTA BAR — site-wide shared component
+// ==========================================================================
+// Rendered via `templates/components/sticky-cta-bar.html.twig`. Opt-in
+// per page: /services includes it directly, service landing pages
+// include it from `templates/layouts/service-landing.html.twig` gated
+// on `landing_type != 'home'`. The companion JS at
+// `assets/js/services-cta.js` wires the smooth scroll + the
+// IntersectionObserver on #quote that toggles
+// `.services-cta-bar--hidden`.
+//
+// Styles live at the top level (previously nested under
+// `.services-page`) so the component applies on every page that
+// renders the bar, with no per-page CSS fork.
+//
+// Pinned to the bottom of the viewport while the user is scrolling
+// through page content. The outer wrap is position:fixed and spans
+// the full viewport width so the inner Bootstrap container
+// (container-fluid.col-md-10 > .row > .col-sm-12) can reproduce the
+// exact horizontal bounds of the site header from base.html.twig —
+// the bar visually aligns with the header at every breakpoint. The
+// wrap sets pointer-events:none so the empty area beside the bar
+// never blocks clicks on page content; the bar itself re-enables
+// pointer-events for its own hit area. z-index sits just above
+// Bootstrap's sticky-top (1020).
+.services-cta-bar-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    pointer-events: none;
+    // Respect the iOS home-indicator safe area so the clickable
+    // region never falls under the system gesture bar on mobile.
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.services-cta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    height: 55px;
+    background-color: $kasko-forest;
+    color: $kasko-white;
+    border-top: 3px solid $kasko-brass;
+    // Subtle lift away from the page — shadow casts upward only.
+    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.18);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    pointer-events: auto;
+    transition: transform .2s ease-in-out, opacity .2s ease-in-out, background-color .15s ease-in-out;
+
+    &:hover,
+    &:focus {
+        background-color: $kasko-forest-light;
+        color: $kasko-white;
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $kasko-brass;
+        outline-offset: -4px;
+    }
+}
+
+.services-cta-bar__label {
+    color: $kasko-white;
+}
+
+.services-cta-bar__caret {
+    color: $kasko-brass;
+    // Caret ▲ scaled up to read clearly beside the 18px label.
+    font-size: 1rem;
+    line-height: 1;
+}
+
+// Hidden state — slides the bar off-screen and disables pointer
+// events. Toggled by services-cta.js via IntersectionObserver on
+// the #quote element.
+.services-cta-bar--hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+}

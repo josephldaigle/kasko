@@ -6,6 +6,16 @@
 
     <p>A free quote was requested online by {{ formLead.name }}.</p>
 
+    {# Lead origin — identifies the service landing page the visitor
+       submitted from. Values come from the server-side service registry
+       in QuotesController (never from a client-posted URL / Referer). #}
+    {% if service_label is defined and service_label %}
+        <p><strong>Service:</strong> {{ service_label }}</p>
+    {% endif %}
+    {% if originating_url is defined and originating_url %}
+        <p><strong>Page:</strong> <a href="{{ originating_url }}">{{ originating_url }}</a></p>
+    {% endif %}
+
     <p><strong>Name:</strong> {{ formLead.name }}</p>
     <p><strong>Email:</strong> {{ formLead.email }}</p>
     <p><strong>Phone:</strong> {{ formLead.phoneNumber}}</p>

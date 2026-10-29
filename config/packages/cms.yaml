@@ -1,3 +1,5 @@
 services:
     Kasko\CMS\CMS:
         class: Kasko\CMS\CMS
+        arguments:
+            $reviewsService: '@Kasko\Services\Reviews\ReviewsService'

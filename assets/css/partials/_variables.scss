@@ -23,9 +23,13 @@ $theme-colors: (
         "forest":    $kasko-forest,
 );
 
-$h1-font-size: 1.5rem;
-$h2-font-size: 1.35rem;
-$h3-font-size: 1.25rem;
+// Heading scale — mobile-first base sizes. A single min-width:
+// $media-break-medium media query in app.scss bumps h1/h2 up to the
+// desktop targets (36px / 28px). Font-weight defaults to Bootstrap's
+// $headings-font-weight (500), matching the Kasko typography standard.
+$h1-font-size: 1.75rem;  // 28px mobile → 2.25rem (36px) at md+
+$h2-font-size: 1.5rem;   // 24px mobile → 1.75rem (28px) at md+
+$h3-font-size: 1.25rem;  // 20px at all breakpoints
 $h4-font-size: 1.1rem;
 $h5-font-size: 1rem;
 $h6-font-size: .90rem;

@@ -1,214 +1,22 @@
-{# twig template — /fencing Google Ads landing page #}
+{# twig template — /fencing landing page + 4 variant sub-pages.
+
+   Thin page shell. All structural markup lives in
+   templates/layouts/service-landing.html.twig. The controller
+   (DefaultController::getFencing) supplies all content variables
+   (hero_image, hero_headline, hero_subheading, services, services_*,
+   closing_prompt, trust_items, fencing_landing_type, landing_type,
+   etc.) that the layout consumes.
+
+   On the default page (`fencing_landing_type` null) the shared
+   services loop renders each service card as a full-card `<a>` to
+   its matching variant URL (controller supplies `item.href`). On
+   variant sub-pages the services loop renders decorative cards
+   (no href). #}
 {% extends 'base.html.twig' %}
 
 {% block page_title %}Fencing Contractor in Middle Georgia — KasKo Construction{% endblock %}
 {% block page_meta_description %}Professional fence installation and repair throughout Middle Georgia. Privacy, wood, chain link, and fence repair from a local contractor.{% endblock %}
 
 {% block page_content %}
-
-    {# Hero image is shared across variants. Service-card images are
-       provided per-variant by the `services` map from the controller. #}
-    {% set hero_image = 'build/images/hero.jpg' %}
-
-    <div class="col-12 px-0 fencing-landing">
-
-        {# 1. HERO — two-column at desktop: copy on the left, quote form
-             card on the right. Stacks vertically at tablet and below. The
-             form partial and its submission path are unchanged. #}
-        <section class="fencing-hero"
-                 style="background-image: linear-gradient(rgba(17,17,17,0.55), rgba(17,17,17,0.55)), url('{{ asset(hero_image) }}');">
-            <div class="fencing-hero__inner">
-                <div class="row fencing-hero__row align-items-center">
-                    <div class="col-12 col-lg-7 fencing-hero__content">
-                        <h1 class="fencing-hero__title">{{ hero.headline }}</h1>
-                        <div class="heading-accent"></div>
-                        <p class="fencing-hero__subtitle">{{ hero.subheading }}</p>
-                    </div>
-                    <div id="quote" class="col-12 col-lg-5 fencing-hero__form">
-                        {% include 'components/forms/quote-request.html.twig' with {
-                            landing_type: fencing_landing_type
-                        } %}
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {# 2. VALUE STRIP — trust-focused on the default /fencing page.
-             Sub-pages (fencing_landing_type is not null) keep the original
-             strip verbatim; we'll revisit those separately. #}
-        <section class="fencing-value-strip">
-            <div class="row no-gutters">
-                {% if fencing_landing_type is null %}
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-shield-alt fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">Licensed &amp; Insured</h3>
-                        <p class="fencing-value-copy">Professional coverage for every project.</p>
-                    </div>
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-handshake fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">$1M Bonded</h3>
-                        <p class="fencing-value-copy">Added protection and peace of mind.</p>
-                    </div>
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-hard-hat fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">Workers&apos; Comp Covered</h3>
-                        <p class="fencing-value-copy">Professional protection on the job site.</p>
-                    </div>
-                {% else %}
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-cube fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">Quality Materials</h3>
-                        <p class="fencing-value-copy">Fences built to last.</p>
-                    </div>
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-hammer fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">Professional Installation</h3>
-                        <p class="fencing-value-copy">Clean work. Done right.</p>
-                    </div>
-                    <div class="col-12 col-md-4 fencing-value-item">
-                        <i class="fas fa-tag fencing-value-icon"></i>
-                        <h3 class="fencing-value-title">Straightforward Pricing</h3>
-                        <p class="fencing-value-copy">No surprises.</p>
-                    </div>
-                {% endif %}
-            </div>
-        </section>
-
-        {# 3. FENCING SERVICES — content comes from the `services` variant
-             map in DefaultController::getFencing. Structure is identical
-             across variants; only the copy, intro paragraph, and optional
-             closing prompt differ. No route-name checks in this template. #}
-        <section class="fencing-services">
-            <header class="fencing-section-header">
-                {% if fencing_landing_type is null %}
-                    {# Default /fencing landing page overrides the controller
-                       heading/subheading with intent-oriented copy. Sub-page
-                       variants continue to use their controller-supplied
-                       heading, subheading, and optional intro paragraph. #}
-                    <h2 class="fencing-section-title">What Type of Fence Do You Need?</h2>
-                    <div class="heading-accent mx-auto"></div>
-                    <p class="fencing-section-subtitle">From privacy and security to repairs and custom wood fencing, we&apos;ll help you find the right fit for your property.</p>
-                {% else %}
-                    <h2 class="fencing-section-title">{{ services.heading }}</h2>
-                    <div class="heading-accent mx-auto"></div>
-                    <p class="fencing-section-subtitle">{{ services.subheading }}</p>
-                    {% if services.intro %}
-                        <p class="fencing-section-intro">{{ services.intro }}</p>
-                    {% endif %}
-                {% endif %}
-            </header>
-
-            {# Each default-page service card links to its corresponding
-                 fencing subpage via the `fencing_variant` route. Variant
-                 pages (fencing_landing_type is not null) show different
-                 item sets that don't map 1:1 to existing subpages, so
-                 their cards remain unlinked. #}
-            {% set service_card_route_types = {
-                'Privacy Fencing': 'privacy',
-                'Wood Fencing':    'wood',
-                'Chain Link':      'chain-link',
-                'Fence Repair':    'repair',
-            } %}
-
-            <div class="row fencing-services-grid">
-                {% for item in services.items %}
-                    {% set card_route_type = (fencing_landing_type is null) ? service_card_route_types[item.title]|default(null) : null %}
-                    {% if card_route_type %}
-                        <a href="{{ path('fencing_variant', { type: card_route_type }) }}" class="col-12 col-sm-6 col-lg-3 fencing-service fencing-service--linked">
-                            <div class="fencing-service__image"
-                                 style="background-image: url('{{ asset(item.image) }}');"
-                                 role="img" aria-label="{{ item.alt }}"></div>
-                            <h3 class="fencing-service__title">{{ item.title }}</h3>
-                            <p class="fencing-service__copy">{{ item.copy }}</p>
-                        </a>
-                    {% else %}
-                        <div class="col-12 col-sm-6 col-lg-3 fencing-service">
-                            <div class="fencing-service__image"
-                                 style="background-image: url('{{ asset(item.image) }}');"
-                                 role="img" aria-label="{{ item.alt }}"></div>
-                            <h3 class="fencing-service__title">{{ item.title }}</h3>
-                            <p class="fencing-service__copy">{{ item.copy }}</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            {% if services.closing_prompt %}
-                <div class="fencing-services__prompt">
-                    <h3 class="fencing-services__prompt-title">{{ services.closing_prompt.heading }}</h3>
-                    <p class="fencing-services__prompt-body">{{ services.closing_prompt.body }}</p>
-                    <a href="{{ services.closing_prompt.cta_href }}" class="btn btn-cta">{{ services.closing_prompt.cta_label }}</a>
-                </div>
-            {% endif %}
-        </section>
-
-        {# 4. THE KASKO DIFFERENCE — rendered only on /fencing/* variants
-             (fencing_landing_type is not null). Intentionally omitted on
-             the default /fencing landing page as part of the conversion
-             copy cleanup. The .fencing-difference* SCSS rules remain in
-             place because the sub-pages still render this section. #}
-        {% if fencing_landing_type is not null %}
-            <section class="fencing-difference">
-                <header class="fencing-section-header">
-                    <h2 class="fencing-section-title">The KasKo Difference</h2>
-                    <div class="heading-accent mx-auto"></div>
-                    <p class="fencing-section-subtitle">A Local Contractor You Can Count On.</p>
-                </header>
-
-                <div class="row fencing-difference-grid">
-                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                        <i class="fas fa-check fencing-difference-icon"></i>
-                        <h4 class="fencing-difference-title">We purchase materials up front</h4>
-                        <p class="fencing-difference-copy">No delays. No excuses.</p>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                        <i class="fas fa-check fencing-difference-icon"></i>
-                        <h4 class="fencing-difference-title">Clear pricing before work begins</h4>
-                        <p class="fencing-difference-copy">Know what to expect.</p>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                        <i class="fas fa-check fencing-difference-icon"></i>
-                        <h4 class="fencing-difference-title">Professional installation</h4>
-                        <p class="fencing-difference-copy">Respect for your property.</p>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3 fencing-difference-item">
-                        <i class="fas fa-check fencing-difference-icon"></i>
-                        <h4 class="fencing-difference-title">Local Middle Georgia contractor</h4>
-                        <p class="fencing-difference-copy">Our community. Our work.</p>
-                    </div>
-                </div>
-            </section>
-        {% endif %}
-
-        {# 5. SOCIAL PROOF #}
-        <section class="fencing-social-proof">
-            <header class="fencing-section-header">
-                <h2 class="fencing-section-title">What Our Clients Say</h2>
-                <div class="heading-accent mx-auto"></div>
-            </header>
-
-            {% set reviews = template_data.get('reviews') %}
-            {% if reviews is not empty %}
-                {% set review = reviews|first %}
-                <figure class="fencing-review">
-                    <div class="fencing-review__stars" aria-label="{{ review.reviewScore }} out of {{ review.reviewScale }} stars">
-                        {% for i in 1..review.reviewScale %}
-                            <i class="fas fa-star {% if loop.index <= review.reviewScore %}text-gold{% endif %}"></i>
-                        {% endfor %}
-                    </div>
-                    <blockquote class="fencing-review__quote">
-                        &ldquo;{{ review.reviewText }}&rdquo;
-                    </blockquote>
-                    <figcaption class="fencing-review__attribution">
-                        {% if review.reviewerName %}{{ review.reviewerName }}{% else %}{{ review.sourceName }}{% endif %}
-                        {% if review.reviewerLocation %} &middot; {{ review.reviewerLocation }}{% endif %}
-                    </figcaption>
-                </figure>
-            {% else %}
-                {# TODO: no existing Kasko review found — populate with a real fencing customer review when available. #}
-            {% endif %}
-        </section>
-
-    </div>
-
+    {% include 'layouts/service-landing.html.twig' %}
 {% endblock %}

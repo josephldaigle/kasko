@@ -27,3 +27,32 @@
 .blockquote-footer::before {
   content: initial;
 }
+
+// Inline hyperlinks within paragraph/body text.
+//
+// Scoped to `p a` so these styles apply only to body copy —
+// navigation links (`.nav-link`), buttons (`.btn`, `.btn-cta`),
+// dropdown items (`.dropdown-item`), card-wide links
+// (`.fencing-service--linked`), and footer link lists (`.site-footer a`
+// in anchored menus) are not inside `<p>` and remain untouched.
+//
+// Forest green on cream/white gives ~8:1 contrast — well above WCAG
+// AA. Hover shifts to `$kasko-forest-light` (the same hover token
+// used by `.btn-cta`) for a recognizable brand hover pattern.
+// `:focus-visible` paints a brass outline so keyboard users see
+// focus distinctly without the mouse-click focus ring being painted
+// on every click.
+p a {
+  color: $kasko-forest;
+  text-decoration: underline;
+
+  &:hover {
+    color: $kasko-forest-light;
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $kasko-brass;
+    outline-offset: 2px;
+  }
+}

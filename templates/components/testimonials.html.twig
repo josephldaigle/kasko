@@ -12,7 +12,7 @@
 
                     {# Carousel #}
                     <div class="col-12">
-                        <div id="cg-review-carousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+                        <div id="cg-review-carousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="6000" data-pause="hover">
                             <ol class="carousel-indicators">
 
                                {# {% for i in 1..(template_data.get('reviews') | length) %}#}
@@ -36,7 +36,7 @@
                                             <p class="mt-3">{{ review.reviewText }}</p>
 
                                             <footer class="blockquote-footer text-right">
-                                                <a href="{{ review.sourceUrl }}"><span class="text-primary">{{ review.reviewerName }} in</span> {{ review.reviewerLocation }}</a>
+                                                <a href="{{ review.sourceUrl ?: '#' }}" {% if review.sourceUrl %}target="_blank" rel="noopener noreferrer"{% endif %}><span class="text-primary">{{ review.reviewerName }}{% if review.reviewerLocation %} in{% endif %}</span>{% if review.reviewerLocation %} {{ review.reviewerLocation }}{% endif %}{% if review.sourceName %} &middot; {{ review.sourceName }}{% endif %}</a>
                                             </footer>
                                         </blockquote>
 

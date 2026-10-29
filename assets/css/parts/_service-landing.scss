@@ -1,0 +1,529 @@
+// ==========================================================================
+// Shared project-gallery SCSS used by every Kasko service landing page.
+//
+// Rules are top-level (no wrapper scope) so the gallery renders
+// identically regardless of which page-specific wrapper class the
+// containing template uses (`.service-landing`, `.fencing-landing`,
+// legacy `.decking-landing`, etc.). Classes are specific enough
+// (`.service-landing__gallery*`) that no scope is needed to prevent
+// cross-component bleed.
+//
+// Image tiles use the same 4:3 aspect ratio as the service-category
+// cards (`.fencing-service__image`) so the two card grids read
+// consistently on every landing page — the primary motivation for
+// this consolidation.
+// ==========================================================================
+
+.service-landing__gallery {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+}
+
+.service-landing__gallery-grid {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    margin-bottom: 0;
+}
+
+.service-landing__gallery-item {
+    padding: 0.75rem;
+}
+
+.service-landing__gallery-image {
+    width: 100%;
+    padding-bottom: 75%;  // 4:3 — matches .fencing-service__image
+    background-color: rgba($kasko-black, 0.08);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+}
+
+@media (min-width: $media-break-large) {
+    .service-landing__gallery {
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+}
+
+// ==========================================================================
+// Shared closing CTA block for service landing pages. Centered title,
+// gold accent bar, short prompt, and a forest `btn-cta` that returns
+// the user to the hero quote form via the `#quote` anchor. Lives
+// outside the page-scoped wrappers (`.service-landing`, `.fencing-
+// landing`) so markup can place the section anywhere in the page
+// without needing a parent scope.
+// ==========================================================================
+
+.service-landing__cta {
+    padding: 3rem 1.25rem;
+    text-align: center;
+}
+
+.service-landing__cta-title {
+    color: $kasko-black;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+}
+
+.service-landing__cta-accent {
+    margin: 0 auto 1rem;
+}
+
+.service-landing__cta-copy {
+    color: rgba($kasko-black, 0.72);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 560px;
+    margin: 0 auto 1.5rem;
+}
+
+@media (min-width: $media-break-large) {
+    .service-landing__cta {
+        padding: 4rem 2rem;
+    }
+}
+
+// ==========================================================================
+// Click-to-load YouTube facade.
+//
+// Renders a static thumbnail with a centered play button; the actual
+// YouTube iframe is injected on click by assets/js/youtube-facade.js so
+// no third-party player code loads on page view. Markup pairs the
+// facade button with Bootstrap 4's `.embed-responsive-16by9` wrapper
+// so the frame stays 16:9 at every width without extra SCSS.
+// Top-level (unscoped) so the pattern can be reused on other pages if
+// needed; selector names are specific enough to avoid cross-component
+// bleed.
+// ==========================================================================
+
+.youtube-facade {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background-color: $kasko-black;
+    cursor: pointer;
+    overflow: hidden;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $kasko-brass;
+        outline-offset: 2px;
+    }
+}
+
+.youtube-facade__thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .2s ease-in-out;
+
+    .youtube-facade:hover & {
+        transform: scale(1.03);
+    }
+}
+
+.youtube-facade__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background-color: rgba($kasko-black, 0.72);
+    color: $kasko-white;
+    font-size: 1.75rem;
+    pointer-events: none; // clicks go through to the parent button
+    transition: background-color .15s ease-in-out, transform .15s ease-in-out;
+
+    .youtube-facade:hover & {
+        background-color: rgba($kasko-forest, 0.9);
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+// ==========================================================================
+// /gutter-cleaning — paid-search landing scope. Modifier class applied
+// to both top-level wrappers in templates/layouts/service-landing.html.twig
+// via `page_wrapper_class`. Scope is intentionally narrow — only
+// /gutter-cleaning opts in, so unrelated service landings continue to
+// render with the shared defaults.
+//
+// Alignment with the homepage visual language is the primary goal of
+// this scope. Where the shared service-landing SCSS runs a wider,
+// looser landing-page rhythm, these rules pull the page back toward
+// the homepage's reading-column width and Bootstrap-utility rhythm
+// (mt-5 / mb-4) using existing design tokens — Bootstrap's heading
+// scale ($h1-font-size, $headings-font-weight), the Kasko media-break
+// variables, and the Bootstrap `mt-5` / `mb-4` spacing units — rather
+// than one-off magic numbers.
+//
+// Changes under this scope:
+//   1. All headings (section titles, service-card titles, why-choose
+//      titles, CTA title) drop the custom letter-spacing used by the
+//      landing template, matching the homepage's clean type.
+//   2. Section padding + section-header margins run on a 3rem / 1.5rem
+//      rhythm — the Bootstrap `mt-5` / `mb-4` pair the homepage uses.
+//   3. Text-bearing blocks (section-header wrapper + the centered
+//      support/review paragraphs) cap at ~800px so copy reads at a
+//      comfortable line length. Grid wrappers and card/image
+//      containers are intentionally NOT capped — services, why-
+//      choose, and their images span the full section width.
+//   4. Final CTA is left-aligned (heading, gold accent, description,
+//      button all flush with the services-section left edge) and the
+//      copy paragraph caps at ~800px. Horizontal padding is also
+//      pinned at lg+ to match `.fencing-services` since the shared
+//      `.service-landing__cta` jumps to 2rem at that breakpoint.
+//   5. No gold accent beneath service-card titles — the gold stays on
+//      major section headings only (`.heading-accent` is untouched).
+//   6. Equal card heights across the 3-card services grid via flex,
+//      so trailing copy of different lengths doesn't stair-step.
+//   7. Hero quote card runs on a slightly larger ~32px internal
+//      padding rhythm. Shared component is untouched; the override
+//      is scoped to this page's `.fencing-hero__form .quote-card`.
+//   8. "Why Choose Kasko" is a two-row layout: full-width header
+//      above a video + benefits two-column.
+//
+// Hero H1 and hero subtitle intentionally pick up the shared
+// landing-page defaults from parts/_fencing-landing.scss so this page's
+// hero reads identically to /decking, /docks, and /fencing.
+//
+// `$gutter-content-max` approximates the homepage's `.col-lg-8` width
+// inside `.container-fluid.col-md-10` at 1440px — ~800px of reading
+// column. Declared as a local SCSS variable (not inline magic number)
+// so the "homepage column width" dimension can be adjusted once and
+// propagates to every section that uses it.
+// ==========================================================================
+
+$gutter-content-max: 800px;
+
+.service-landing--gutter-cleaning {
+
+    // ----- 1. Drop custom letter-spacing on headings -----
+    // The homepage headings carry no letter-spacing. These overrides
+    // zero the spacing the landing-page SCSS adds to every heading
+    // tier (section titles, service-card titles, why-choose titles,
+    // CTA title), aligning the page's type color/texture.
+
+    .fencing-section-title,
+    .fencing-service__title,
+    .fencing-difference-title,
+    .service-landing__cta-title {
+        letter-spacing: 0;
+    }
+
+    // ----- 2. Section rhythm on the homepage's `mt-5 / mb-4` cadence -----
+    // All sections run 3rem top (mt-5) and 1.5rem bottom (mb-4) at
+    // every breakpoint. Stacked sections produce a consistent 4.5rem
+    // gap identical to homepage H1-to-H1 rhythm.
+
+    .fencing-services,
+    .fencing-difference,
+    .service-landing__cta {
+        padding-top: 3rem;    // mt-5
+        padding-bottom: 1.5rem; // mb-4
+    }
+
+    .fencing-section-header {
+        margin: 0 0 1.5rem; // mb-4 — matches homepage heading rhythm
+    }
+
+    // ----- 3. Text-block reading width -----
+    // Only text-bearing wrappers get the reading cap — paragraphs
+    // read at a comfortable line length while the services grid,
+    // the why-choose grid, and their card/image containers continue
+    // to span the full section (the previous iteration capped the
+    // grids too, which collapsed images and cards to a narrow
+    // column; that was too aggressive).
+    //
+    // Left-aligned caps (header + section-header subtitle sit in a
+    // single wrapper that holds the H2 and the intro paragraph):
+
+    .fencing-section-header {
+        max-width: $gutter-content-max;
+    }
+
+    // Left-aligned cap on the review figure. The shared
+    // `.service-landing .fencing-review` rule already uses
+    // `margin: 0` (left-aligned); gutter-cleaning previously
+    // centered the figure with auto margins, which pushed stars /
+    // quote / author ~175px to the right of the section heading
+    // (the heading stays flush at `margin: 0`). Switching to
+    // `margin-left: 0 / margin-right: 0` keeps the 800px reading
+    // cap while anchoring the figure's left edge to the section
+    // content edge, matching the heading. Stars/quote/attribution
+    // are block-level descendants with no `text-align` override,
+    // so they inherit this left edge automatically.
+    //
+    // Fencing / decking / docks already use the shared base rule
+    // (`margin: 0`), so they're left-aligned too; this scoped
+    // override only had to be undone for gutter-cleaning.
+
+    .fencing-review {
+        max-width: $gutter-content-max;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    // ----- 4. Final CTA — left-aligned to match the services section -----
+    // The shared `.service-landing__cta` block is centered by default
+    // (`text-align: center`, `margin: 0 auto` on the gold accent and
+    // the copy paragraph). Under /gutter-cleaning we left-align the
+    // whole block so its heading, accent, description, and button
+    // sit flush with the services-section left edge.
+    //
+    // Horizontal padding is also pinned to 1.25rem at lg+ because
+    // the shared `.service-landing__cta` jumps to 2rem horizontally
+    // at that breakpoint while `.fencing-services` stays at 1.25rem
+    // from the base `.service-landing section` rule — without this
+    // override the CTA content would sit ~12px further inside than
+    // the services section at desktop.
+
+    .service-landing__cta {
+        text-align: left;
+    }
+
+    .service-landing__cta-accent {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .service-landing__cta-copy {
+        max-width: $gutter-content-max;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @media (min-width: $media-break-large) {
+        .service-landing__cta {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+    }
+
+    // ----- 5. No gold accent under individual service-card titles -----
+    // The gold stays on major section headings only; cards read
+    // closer to the homepage's icon + h4 + copy pattern.
+
+    .fencing-service__accent {
+        display: none;
+    }
+
+    // ----- 6. Equal card heights for the 3-card services grid -----
+    // The Bootstrap `.row` already renders as flex; stretching the
+    // column + card content prevents stair-stepping with varied copy.
+
+    .fencing-services-grid {
+        align-items: stretch;
+    }
+
+    .fencing-service {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fencing-service__copy {
+        flex: 1 0 auto;
+    }
+
+    // ----- 7. Hero quote card — slightly larger internal padding -----
+    // The shared `quote-request.html.twig` component uses Bootstrap
+    // utility padding on its inner elements (`h5.pt-3.pl-4`,
+    // `.heading-accent.ml-4`, `.card-body.pt-2.pb-2` on top of
+    // Bootstrap's default 1.25rem card-body horizontal padding).
+    // Gutter-cleaning calls for a slightly larger ~32px even
+    // rhythm; the override lives here so the shared component is
+    // untouched and no other page's hero form changes. `!important`
+    // is required because Bootstrap utility classes carry
+    // `!important` themselves; scoping to
+    // `.service-landing--gutter-cleaning .fencing-hero__form` keeps
+    // the rule from bleeding to other quote cards (homepage reviews
+    // card, other service pages).
+
+    .fencing-hero__form .quote-card {
+        > h5 {
+            padding: 2rem 2rem 0.5rem !important;
+        }
+
+        > .heading-accent {
+            margin-left: 2rem !important;
+        }
+
+        > .card-body {
+            padding: 0.75rem 2rem 2rem !important;
+        }
+    }
+
+    // ----- 8. "Why Choose" — video + benefits two-column layout -----
+    // Right column is left-aligned (heading, gold accent, intro, and
+    // the vertical benefits list). The gold `.heading-accent` is
+    // flushed to the left edge of its column (the shared rule centers
+    // it via `mx-auto` in other sections). Icon + title + copy run
+    // as a flex row inside each benefit; icons use `$kasko-forest`
+    // to match the site's green brand action color.
+
+    .gutter-why-choose__title {
+        margin-bottom: 1rem;
+    }
+
+    .gutter-why-choose__accent {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .gutter-why-choose__intro {
+        margin: 1rem 0 1.75rem;
+    }
+
+    .gutter-benefits {
+        margin: 0;
+        padding: 0;
+    }
+
+    .gutter-benefit {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 0.9rem 0;
+
+        // Drop the leading top-padding on the first benefit so its
+        // icon + heading sit flush with the column's top edge,
+        // aligning with the top of the video in the sibling column.
+        // Between-benefit spacing is unchanged — the 0.9rem bottom
+        // on item N plus the 0.9rem top on item N+1 still produces
+        // the same 1.8rem gap for pairs 1-2 and 2-3.
+        &:first-child {
+            padding-top: 0;
+        }
+
+        + .gutter-benefit {
+            border-top: 1px solid rgba($kasko-black, 0.08);
+        }
+    }
+
+    .gutter-benefit__icon {
+        flex: 0 0 2rem;
+        color: $kasko-forest;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        text-align: center;
+        padding-top: 0.15rem;
+    }
+
+    .gutter-benefit__body {
+        flex: 1 1 auto;
+    }
+
+    .gutter-benefit__title {
+        color: $kasko-black;
+        font-size: 1.05rem;
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: 0;
+        margin: 0 0 0.25rem;
+    }
+
+    .gutter-benefit__copy {
+        color: rgba($kasko-black, 0.72);
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin: 0;
+    }
+
+    // ----- 9. Testimonial section — stable carousel height -----
+    //
+    // Section padding is intentionally NOT overridden here. The
+    // shared `.service-landing .fencing-social-proof` rule from
+    // `_fencing-landing.scss` (base: `padding-top: 1rem` /
+    // `padding-bottom: 4rem`; lg+: `padding-top: 0` /
+    // `padding-bottom: 5rem`) matches /docks exactly and keeps the
+    // review attribution ~96px above the footer at lg+, well clear
+    // of the sticky "GET QUOTE" bar's ~58px overlap zone. A prior
+    // version of this scope reduced `padding-bottom` to 2rem for a
+    // tighter 48px gap, but that left the attribution behind the
+    // sticky bar during normal scrolling; the override was removed.
+    //
+    // Only the carousel grid-stacking below is scoped here — height
+    // stability is a /gutter-cleaning concern because this page is
+    // the only one that embeds the review carousel's `#service-
+    // review-carousel` instance under conditions where a one-line
+    // review (Ken) alternates with a multi-line review (Tara).
+
+    // Section-above gap matching /docks. The gutter-cleaning
+    // Why-Choose section is compressed to `padding-bottom: 1.5rem`
+    // (section 2), so combined with the shared `.fencing-social-proof`
+    // padding-top (1rem base, 0 lg+) the heading sits closer to the
+    // preceding section than on /docks — where the services section
+    // provides 2rem/2.5rem padding-bottom plus 0.5rem card margin.
+    //
+    // A scoped `margin-top` on the testimonial section — external,
+    // not the testimonial's internal padding — restores the /docks
+    // gap at both breakpoints without touching the testimonial's
+    // own spacing or any sibling section:
+    //   base: 1.5rem (preceding) + 1rem (this margin) + 1rem
+    //         (shared padding-top) = ~56px, matches /docks base
+    //         (2rem services padding + 0.5rem card margin + 1rem
+    //         social-proof padding = ~56px).
+    //   lg+ : 1.5rem (preceding) + 1.5rem (this margin) + 0
+    //         (shared padding-top) = ~48px, matches /docks lg+
+    //         (2.5rem services padding + 0.5rem card margin + 0 =
+    //         ~48px).
+    //
+    // The testimonial section's padding + alignment and every other
+    // element on the page are untouched.
+
+    .fencing-social-proof {
+        margin-top: 1rem;
+    }
+
+    @media (min-width: $media-break-large) {
+        .fencing-social-proof {
+            margin-top: 1.5rem;
+        }
+    }
+
+    // Carousel height stability — stack all review items in a single
+    // CSS grid cell so the inner container's intrinsic height
+    // tracks the TALLEST review in the rotation rather than only the
+    // ACTIVE review. Prevents the section's vertical footprint (and
+    // the position of the footer below it) from jumping when the
+    // carousel cycles between a one-line review and a multi-line
+    // review. No `min-height`, no fixed height — the parent sizes
+    // naturally to its tallest child.
+    //
+    // Bootstrap 4's `.carousel-fade` opacity transition is preserved
+    // in full: inactive items keep `opacity: 0`, the active item
+    // keeps `opacity: 1`, and the JS-driven class churn
+    // (`.carousel-item-left`, `.carousel-item-next`, etc.) still
+    // fires. Only Bootstrap's item POSITIONING (`float: left` +
+    // `margin-right: -100%` + `display: none` on inactive items) is
+    // replaced; grid stacking does the same stacking job in a way
+    // that lets every item contribute to the container's height.
+    //
+    // Scoped to `.fencing-review__carousel` so the homepage's
+    // `#cg-review-carousel` is unaffected (it keeps Bootstrap's
+    // default sizing).
+
+    .fencing-review__carousel .carousel-inner {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .fencing-review__carousel .carousel-item {
+        grid-row: 1;
+        grid-column: 1;
+        float: none;
+        margin-right: 0;
+        display: block;
+    }
+}

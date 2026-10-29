@@ -1,0 +1,104 @@
+{# twig template — /gutter-cleaning paid-search landing page.
+
+   Thin page shell: all structural markup lives in
+   templates/layouts/service-landing.html.twig. The controller
+   (DefaultController::getGutterCleaning) supplies the content
+   variables (hero_headline, hero_paragraphs, services, why_choose,
+   final_cta_*, landing_type, etc.) that the layout consumes.
+
+   Overrides applied here:
+
+     service_landing_hero_content        — multi-paragraph hero copy
+     service_landing_additional_sections — "Why Choose Kasko" + final CTA
+
+   Scope is strictly gutter cleaning — other Kasko services are not
+   referenced from this template to keep paid traffic focused. #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Gutter Cleaning in Middle Georgia | Kasko Construction{% endblock %}
+{% block page_meta_description %}Professional gutter cleaning for homes, businesses, and apartment communities in Middle Georgia. Residential, commercial, and multistory service.{% endblock %}
+
+{% block page_content %}
+    {% embed 'layouts/service-landing.html.twig' %}
+
+        {# Hero copy — H1 plus a two-paragraph description. The default
+             `hero_subheading` slot in the shared layout emits only a
+             single <p>, so this override renders the paragraphs loop. #}
+        {% block service_landing_hero_content %}
+            <h1 class="fencing-hero__title">{{ hero_headline }}</h1>
+            {% for paragraph in hero_paragraphs %}
+                <p class="fencing-hero__subtitle">{{ paragraph }}</p>
+            {% endfor %}
+        {% endblock %}
+
+        {# Page-specific sections injected after the service grid:
+             1. "Why Choose Kasko" — two-column layout. Left column
+                is a lazy-loaded YouTube video (facade thumbnail +
+                centered play button; the iframe is injected only on
+                click by assets/js/youtube-facade.js). Right column
+                is the heading + gold accent + intro + three
+                vertical benefits with green icons.
+             2. Final CTA — closing prompt that returns the user to
+                the hero quote form via the `#quote` anchor. #}
+        {% block service_landing_additional_sections %}
+            {% if why_choose is defined and why_choose %}
+                <section class="fencing-difference gutter-why-choose">
+                    {# Row 1 — full-width header: heading, gold accent,
+                       and intro paragraph. Left-aligned via the existing
+                       `.gutter-why-choose__*` SCSS. On mobile this row
+                       stacks naturally above Row 2 so the reading order
+                       is header → intro → video → benefits. #}
+                    <div class="row">
+                        <div class="col-12 gutter-why-choose__content">
+                            <h2 class="fencing-section-title gutter-why-choose__title">{{ why_choose_heading }}</h2>
+                            <div class="heading-accent gutter-why-choose__accent"></div>
+                            {% if why_choose_intro is defined and why_choose_intro %}
+                                <p class="fencing-section-subtitle gutter-why-choose__intro">{{ why_choose_intro }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# Row 2 — two-column video + benefits. Columns top-align
+                       (Bootstrap's default `align-items: stretch` behavior)
+                       so the top of the video and the top of the first
+                       benefit's icon + heading sit on the same baseline.
+                       Below lg the columns stack (video first, then
+                       benefits) with `mb-4 mb-lg-0` providing the stacked
+                       gap. #}
+                    <div class="row">
+                        <div class="col-12 col-lg-6 gutter-why-choose__media mb-4 mb-lg-0">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <button type="button"
+                                        class="embed-responsive-item youtube-facade"
+                                        data-video-id="{{ why_choose_video_id }}"
+                                        aria-label="Play video: {{ why_choose_heading }}">
+                                    <img class="youtube-facade__thumb"
+                                         src="https://i.ytimg.com/vi/{{ why_choose_video_id }}/hqdefault.jpg"
+                                         alt=""
+                                         loading="lazy">
+                                    <span class="youtube-facade__play" aria-hidden="true">
+                                        <i class="fas fa-play"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <ul class="gutter-benefits list-unstyled">
+                                {% for item in why_choose %}
+                                    <li class="gutter-benefit">
+                                        <i class="{{ item.icon }} gutter-benefit__icon" aria-hidden="true"></i>
+                                        <div class="gutter-benefit__body">
+                                            <h3 class="gutter-benefit__title">{{ item.title }}</h3>
+                                            <p class="gutter-benefit__copy">{{ item.copy }}</p>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        {% endblock %}
+
+    {% endembed %}
+{% endblock %}

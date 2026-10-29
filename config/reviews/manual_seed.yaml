@@ -1,0 +1,69 @@
+# Manual review seed — read by `php bin/console app:reviews:import`.
+#
+# -----------------------------------------------------------------------------
+# WHY THIS FILE EXISTS
+# -----------------------------------------------------------------------------
+# Reviews stored here are hand-curated and intentionally invisible to the
+# Google reviews sync (`app:reviews:sync`). The sync's diff query filters
+# `external_id IS NOT NULL`, so entries seeded with `external_id: null`
+# are never updated or deleted by a sync run. This matches the convention
+# set by migration Version20261016122909, which backfilled pre-sync rows
+# the same way and documents the rule in its docblock.
+#
+# -----------------------------------------------------------------------------
+# HAND-OFF TO THE SYNC LATER
+# -----------------------------------------------------------------------------
+# To hand ownership of a row to the sync, replace `null` here with the
+# review's real Google `reviewId`. The next `app:reviews:sync` run will
+# classify and manage it like any API-sourced row (updating when
+# Google's updateTime is newer, deleting when Google no longer returns
+# it). Keep `null` to retain full editorial control from this file.
+#
+# -----------------------------------------------------------------------------
+# IDEMPOTENCY
+# -----------------------------------------------------------------------------
+# Re-running the import yields NO DB writes unless an entry's content
+# differs from the stored row. The match key is:
+#   - entries with `external_id` set     → (source, external_id)   [unique index]
+#   - entries with `external_id: null`   → (source, reviewer_name, review_text)
+#
+# Changing `reviewer_name` or `review_text` on a null-external_id entry
+# therefore creates a new row rather than updating the old one. Prefer
+# editing other fields in place; if a reviewer renames, remove the
+# stale row manually.
+#
+# All timestamps are UTC (RFC 3339). `external_updated_at` is used
+# only to order the testimonials carousel (newest first); it is not
+# displayed on the frontend. Edit freely to control display order.
+
+reviews:
+
+    - source:              google
+      external_id:         null
+      reviewer_name:       'Tara Sherman'
+      review_text:         >-
+          Some trees had to be removed & i was terrified it would break
+          the bank. Not only did Kasko offer the best deal, the service
+          was quick & efficient and the results were clean & neat. I
+          could tell the fellas were detail oriented & my yard looks
+          great now. I will definitely choose them when it’s time to
+          convert the back porch into a studio the family can enjoy.
+      review_score:        5
+      review_scale:        5
+      city:                null
+      state:               null
+      source_name:         'Google'
+      source_url:          null
+      external_updated_at: '2025-08-01T00:00:00+00:00'
+
+    - source:              google
+      external_id:         null
+      reviewer_name:       'Ken Asbury'
+      review_text:         'Great bang for the buck'
+      review_score:        5
+      review_scale:        5
+      city:                null
+      state:               null
+      source_name:         'Google'
+      source_url:          null
+      external_updated_at: '2025-03-01T00:00:00+00:00'

@@ -213,3 +213,89 @@ docker compose exec app cat /usr/local/etc/php-fpm.d/zz-docker.conf
 |---------|-----|
 | Site    | http://localhost |
 | MySQL   | localhost:3306 (internal only; not exposed on droplet) |
+
+---
+
+## Reviews sync (Google Business Profile)
+
+The `app:reviews:sync` command replaces local review rows from
+Google. It is designed for weekly cron plus occasional manual
+runs.
+
+### One-time: provision credentials
+
+Add these keys to `.env.prod` on the droplet (never to the
+committed `.env`). The OAuth refresh token comes from an
+offline-access authorization flow against the Google Cloud
+Console; the account and location IDs come from the Business
+Profile API's `accounts.list` / `accounts.locations.list`
+responses.
+
+```
+GOOGLE_OAUTH_CLIENT_ID=<from Google Cloud OAuth client>
+GOOGLE_OAUTH_CLIENT_SECRET=<same>
+GOOGLE_OAUTH_REFRESH_TOKEN=<offline access token>
+GOOGLE_BUSINESS_ACCOUNT_ID=<numeric account id>
+GOOGLE_BUSINESS_LOCATION_ID=<numeric location id>
+GOOGLE_BUSINESS_REVIEWS_URL=<public reviews-page URL for the business>
+```
+
+### Manual run
+
+```bash
+docker compose exec app php bin/console app:reviews:sync
+# dry-run (no DB writes) — useful for verifying creds + diff:
+docker compose exec app php bin/console app:reviews:sync --dry-run
+```
+
+The command prints an inserted/updated/deleted/unchanged
+summary and exits non-zero on any provider error. A failed run
+leaves local rows untouched — no row is ever deleted after an
+incomplete API response.
+
+### Weekly schedule — host crontab (Friday 23:00 America/New_York)
+
+The droplet runs a single Vixie-cron / cronie entry. The
+`CRON_TZ` variable makes the schedule DST-correct without
+host-level timezone games:
+
+```cron
+# /etc/cron.d/kasko-reviews
+CRON_TZ=America/New_York
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+0 23 * * 5 deploy  cd /opt/kasko && /usr/bin/docker compose exec -T app php bin/console app:reviews:sync >> /var/log/kasko-reviews-sync.log 2>&1
+```
+
+Install with:
+
+```bash
+sudo install -o root -g root -m 0644 docs/kasko-reviews.cron /etc/cron.d/kasko-reviews
+sudo systemctl reload cron || sudo service cron reload
+sudo touch /var/log/kasko-reviews-sync.log
+sudo chown deploy:deploy /var/log/kasko-reviews-sync.log
+```
+
+Replace `deploy` with the user that owns `/opt/kasko` and is a
+member of the `docker` group. The leading `0 23 * * 5` means
+every Friday at 23:00 in `America/New_York`, which maps to
+04:00 UTC during EST and 03:00 UTC during EDT — handled
+transparently by `CRON_TZ`.
+
+### Rotate the log
+
+Append a small logrotate rule so the sync log doesn't grow
+without bound:
+
+```
+# /etc/logrotate.d/kasko-reviews
+/var/log/kasko-reviews-sync.log {
+    weekly
+    rotate 8
+    compress
+    missingok
+    notifempty
+    copytruncate
+}
+```

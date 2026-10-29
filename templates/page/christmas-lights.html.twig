@@ -1,0 +1,17 @@
+{# twig template — /christmas-lights seasonal landing page.
+
+   Thin page shell: all structural markup lives in
+   templates/layouts/service-landing.html.twig. The controller
+   (DefaultController::getChristmasLights) supplies the content
+   variables + opts into the lights-supply question and opts out of
+   the project-description textarea. No hero image today — the
+   layout's dark CSS fallback is in place until a Kasko-captured
+   installation photo is added. #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Christmas Light Installation | Kasko Construction{% endblock %}
+{% block page_meta_description %}Professional Christmas light installation for homes and businesses in Warner Robins, Macon, Byron, and Middle Georgia. Residential rooflines, commercial displays, customer- or Kasko-supplied lights, and January removal.{% endblock %}
+
+{% block page_content %}
+    {% embed 'layouts/service-landing.html.twig' %}{% endembed %}
+{% endblock %}

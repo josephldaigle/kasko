@@ -2,16 +2,25 @@
 {# QUOTE FORM #}
 <div class="col-12">
     <div class="card quote-card">
-        <h5 class="mb-2 pt-4 pl-4">Get Your Free Quote</h5>
+        <h5 class="mb-2 pt-3 pl-4">{{ form_heading|default('Get Free Quote') }}</h5>
         <div class="heading-accent ml-4"></div>
-        <div class="card-body pt-2">
+        {# `pb-2` mirrors the explicit `pt-2`: both land at 0.5rem,
+             so the card-body shrink-wraps the form instead of leaving
+             the ~1.25rem of default Bootstrap `.card-body` bottom
+             padding visible beneath the Turnstile row. No height /
+             min-height is set anywhere on `.quote-card`, so the
+             container naturally sizes to its content once the
+             asymmetric bottom padding is removed. Hero layouts
+             continue to drive their own height — the smaller form
+             simply reveals more of the hero background. #}
+        <div class="card-body pt-2 pb-2">
             {# QUOTE FORM CONTAINER #}
             <div class="">
                 <form id="free-quote" class="needs-validation" data-url="{{ absolute_url(path('quotes')) }}" data-method="POST" novalidate>
                     {# TODO: Convert to vue element for reactive-data binding #}
                     <div class="alert d-none" role="alert"></div>
 
-                    <div class="form-row my-2 input-group">
+                    <div class="form-row my-1 input-group">
                         <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
                         <div class="valid-feedback">
                             Ok.
@@ -20,7 +29,7 @@
                             Please provide your name.
                         </div>
                     </div>
-                    <div class="form-row my-2 input-group">
+                    <div class="form-row my-1 input-group">
                         <input type="text" class="form-control" id="email" name="email" placeholder="john_doe@example.com" maxlength="64" pattern=".+@.+.com" required>
                         <div class="valid-feedback">
                             Ok.
@@ -29,8 +38,8 @@
                             Please provide a valid email address.
                         </div>
                     </div>
-                    <div class="form-row my-2 input-group">
-                        <input type="text" class="form-control" id="address" name="address" placeholder="555 Mayweather Ln, Warner Robins, GA 31088" required>
+                    <div class="form-row my-1 input-group">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="{{ address_placeholder|default('555 Mayweather Ln, Warner Robins, GA 31088') }}" required>
                         <div class="valid-feedback">
                             Ok.
                         </div>
@@ -38,7 +47,7 @@
                             Please provide a valid address.
                         </div>
                     </div>
-                    <div class="form-row my-2 input-group">
+                    <div class="form-row my-1 input-group">
                         <input type="tel" class="form-control" id="phone" name="phone_number" placeholder="(478) 555-5555" maxlength="10" pattern="^\d{10}$" required>
                         <div class="valid-feedback">
                             Ok.
@@ -47,58 +56,108 @@
                             Please provide a valid phone number.
                         </div>
                     </div>
-                    <div class="form-row my-2 input-group">
-                        <label for="project_description" class="sr-only">Project Description</label>
-                        <textarea class="form-control" id="project_description" name="project_description" rows="5" maxlength="2000" placeholder="Tell us a little about your project, what you'd like done, and any important details."></textarea>
-                        <div class="valid-feedback">
-                            Ok.
+                    {# Optional, opt-in field — rendered only when the
+                       including template passes `include_lights_question`
+                       (currently just the /christmas-lights hero). All
+                       other forms (homepage, fencing, decking, docks,
+                       gutter-cleaning, services) are byte-identical to
+                       today because this block never fires without the
+                       flag. The answer is folded into project_description
+                       server-side by QuotesController. #}
+                    {% if include_lights_question is defined and include_lights_question %}
+                        <div class="form-row my-1 input-group">
+                            <label for="lights_supply" class="sr-only">Will you provide the Christmas lights?</label>
+                            <select class="form-control" id="lights_supply" name="lights_supply">
+                                <option value="">Will you provide the Christmas lights? (optional)</option>
+                                <option value="has-lights">I already have lights</option>
+                                <option value="kasko-supply">I'd like Kasko to supply them</option>
+                                <option value="not-sure">Not sure yet</option>
+                            </select>
                         </div>
-                        <div class="invalid-feedback">
-                            Please keep your project description under 2,000 characters.
+                    {% endif %}
+                    {# Optional, opt-OUT textarea. Default is to render.
+                       Pages that want a shorter form (currently just
+                       /christmas-lights) pass `include_description: false`.
+                       The condition explicitly checks for `false`
+                       because Twig's `|default()` treats `false` as
+                       empty and would wrongly fall back to the default
+                       — `include_description|default(true)` returns
+                       `true` even when the caller passed `false`.
+                       Server-side QuotesController already tolerates a
+                       missing field — `project_description` defaults
+                       to '' and is normalized to null. #}
+                    {% if include_description is not defined or include_description %}
+                        <div class="form-row my-1 input-group">
+                            <label for="project_description" class="sr-only">Project Description</label>
+                            <textarea class="form-control" id="project_description" name="project_description" rows="2" maxlength="2000" placeholder="{{ description_placeholder|default('Tell us a little about your project, what you\'d like done, and any important details.') }}"></textarea>
+                            <div class="valid-feedback">
+                                Ok.
+                            </div>
+                            <div class="invalid-feedback">
+                                Please keep your project description under 2,000 characters.
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
 
-                    {# Submit row: button + SSL badge share one line,
-                       vertically centered, with reasonable gap. On narrow
-                       viewports flex-wrap lets the badge drop below the
-                       button without overflowing the card. #}
+                    {# Submit row: button + optional SSL badge share one
+                       line, vertically centered, with reasonable gap. On
+                       narrow viewports flex-wrap lets the badge drop
+                       below the button without overflowing the card.
+                       The badge (and its explanatory modal below) is
+                       opt-out via `show_ssl_badge: false` — defaults to
+                       rendering so pages that already include this
+                       partial are byte-identical. Removing the badge
+                       does NOT affect Turnstile or any security
+                       functionality — the badge is a trust marker only. #}
                     <div class="quote-card__submit-row">
-                        <button type="submit" class="btn btn-cta">Get Free Quote
+                        <button type="submit" class="btn btn-cta">{{ submit_label|default('GET FREE QUOTE') }}
                             <span class="spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             <span class="sr-only">Loading...</span>
                         </button>
-                        <img class="quote-card__ssl" src="{{ asset('build/images/ssl-secure_70X70.png') }}" style="max-width: 55px; cursor: pointer;" data-toggle="modal" data-target="#sslIconModal" alt="secure site padlock">
+                        {% if show_ssl_badge is not defined or show_ssl_badge %}
+                            <img class="quote-card__ssl" src="{{ asset('build/images/ssl-secure_70X70.png') }}" style="max-width: 55px; cursor: pointer;" data-toggle="modal" data-target="#sslIconModal" alt="secure site padlock">
+                        {% endif %}
                     </div>
 
-                    {# Turnstile row: own line directly beneath the submit
-                       row, left-aligned with the form content. Widget
-                       configuration (data-sitekey, loader script, server-
-                       side verification) is unchanged. #}
+                    {# Turnstile row: own line beneath the submit row.
+                       Widget runs in `data-size="invisible"` mode so
+                       no visible checkbox is rendered when challenges
+                       auto-pass (the common case). Cloudflare will
+                       temporarily reveal an interactive challenge
+                       inline if a user is flagged — recovery is
+                       handled by `window.turnstile.reset()` in the
+                       AJAX error callback. The hidden
+                       `cf-turnstile-response` input is still populated
+                       and verified server-side by QuotesController;
+                       the test site key `1x00000000000000000000AA`
+                       continues to always pass in local dev. #}
                     <div class="quote-card__turnstile-row">
-                        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+                        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-size="invisible"></div>
                     </div>
 
-                    <div class="modal fade" id="sslIconModal" tabindex="-1" role="dialog" aria-labelledby="sslIconModalTitle" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="sslIconModalTitle">We Don't Take Privacy Lightly.</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>That's why we've invested our energy into making sure your data is protected when you use our website.</p>
-                                    <p>We secure our site by encrypting the communications between your browser and our site. This means that anytime you are on our site, the information shared is protected from those snoopy internet bad guys.</p>
-                                    <p>We don't sell or disseminate any of your personal information to anyone who does not have a need in the course of doing regular business with KasKo Construction & Remodeling. We may share your information with third-party service providers, who provide KasKo with critical back-office support, like book-keeping or banking services. However, we only provide what is absolutely necessary to perform the service in question, and we only work with reputable and trustworthy providers.</p>
-                                    <p>As you can see, we believe in providing convenient, quality services at great prices, while keeping your safety, security, and experience at the center of our attention.</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    {% if show_ssl_badge is not defined or show_ssl_badge %}
+                        <div class="modal fade" id="sslIconModal" tabindex="-1" role="dialog" aria-labelledby="sslIconModalTitle" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="sslIconModalTitle">We Don't Take Privacy Lightly.</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>That's why we've invested our energy into making sure your data is protected when you use our website.</p>
+                                        <p>We secure our site by encrypting the communications between your browser and our site. This means that anytime you are on our site, the information shared is protected from those snoopy internet bad guys.</p>
+                                        <p>We don't sell or disseminate any of your personal information to anyone who does not have a need in the course of doing regular business with KasKo Construction & Remodeling. We may share your information with third-party service providers, who provide KasKo with critical back-office support, like book-keeping or banking services. However, we only provide what is absolutely necessary to perform the service in question, and we only work with reputable and trustworthy providers.</p>
+                                        <p>As you can see, we believe in providing convenient, quality services at great prices, while keeping your safety, security, and experience at the center of our attention.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
 
                     <input type="hidden" name="token" value="{{ csrf_token('free-quote') }}"/>
                     <input type="hidden" name="form-name" value="{{ 'free-quote' | raw }}"/>

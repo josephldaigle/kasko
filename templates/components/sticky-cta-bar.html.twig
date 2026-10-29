@@ -1,0 +1,39 @@
+{# Fixed "GET QUOTE" bottom-of-viewport CTA bar.
+
+   Pinned to the bottom of the viewport while the on-page quote form
+   (#quote) is below the fold. The outer `.services-cta-bar-wrap` is
+   position:fixed, 100vw, pointer-events:none; the inner
+   container-fluid.col-md-10 > row > col-sm-12 structure mirrors the
+   wrapper the site header uses in base.html.twig, so the bar's outer
+   width matches the header's at every breakpoint. The anchor's click
+   is intercepted by assets/js/services-cta.js for smooth scroll; an
+   IntersectionObserver on #quote toggles .services-cta-bar--hidden
+   to slide the bar off-screen once the quote form enters view.
+
+   Included from:
+     - templates/page/services.html.twig (anchor target is the on-page
+       services-quote <section>)
+     - templates/layouts/service-landing.html.twig (anchor target is
+       the hero form column, gated on `landing_type != 'home'` so the
+       homepage never renders the bar).
+
+   The JS no-ops when `.services-cta-bar` isn't in the DOM, so
+   including this partial is the only switch required to opt a page in. #}
+<div class="services-cta-bar-wrap">
+    <div class="container-fluid col-md-10">
+        <div class="row">
+            {# `.px-0` zeroes the default 15px column padding so the
+               bar's rendered width exactly matches the site footer
+               (`col-12 px-0 site-footer` in components/footer.html.twig).
+               Negative row margins + zero column padding together
+               extend both the bar and the footer to the full width
+               of `.container-fluid.col-md-10` at every breakpoint. #}
+            <div class="col-12 px-0">
+                <a id="services-cta-bar" class="services-cta-bar" href="#quote" aria-label="Jump to Get Quote form">
+                    <span class="services-cta-bar__label">Get Quote</span>
+                    <span class="services-cta-bar__caret" aria-hidden="true">&#x25B2;</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

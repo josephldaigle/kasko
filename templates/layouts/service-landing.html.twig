@@ -1,0 +1,318 @@
+{# twig template — shared layout for Kasko service landing pages.
+
+   Follows the same architectural pattern as layouts/right-sidebar.html.twig:
+   the layout owns the structural chrome (section wrappers, grid,
+   section headers, trust-strip + social-proof defaults) and exposes
+   Twig blocks that pages override for page-specific extensions.
+   Pages set page-level variables and `{% embed %}` this layout; the
+   layout composes the page.
+
+   The introductory paragraph sits at the base.html.twig row level
+   (as a direct sibling to the service-landing wrapper), identical
+   in grid position to the homepage's intro paragraph produced by
+   layouts/right-sidebar.html.twig: `col-lg-8 > row > col-12 > <p>`.
+
+   Expected variables (set by the page or passed via `with {...}`):
+
+     hero_image               (string, optional)   build/images/... path
+     hero_headline            (string)             H1 copy
+     hero_subheading          (string, optional)   paragraph under H1 in hero
+     landing_type             (string, optional)   form attribution
+     include_lights_question  (bool,   optional)   adds opt-in field to quote form
+     intro_copy               (string, optional)   homepage-style intro paragraph
+     services                 (array,  optional)   {title, copy, image, alt} items
+     services_heading_id      (string, optional)   id anchor on services H2
+     services_heading         (string, optional)   services H2 copy
+     services_intro           (string, optional)   services subtitle
+     gallery                  (array,  optional)   {image, alt} tiles
+     gallery_heading          (string, optional)   gallery H2 copy
+     gallery_intro            (string, optional)   gallery subtitle
+
+   Pages can additionally override these blocks:
+
+     service_landing_hero_content         replace H1/subheading markup
+     service_landing_hero_form            replace the quote-form include
+     service_landing_intro                replace the <p> intro paragraph
+     service_landing_trust_strip          replace the Licensed/Bonded/Workers'-Comp row
+     service_landing_services_grid        replace the 3-column service-cards loop
+     service_landing_additional_sections  inject custom <section>s after services
+     service_landing_gallery_grid         replace the 3-column gallery loop
+     service_landing_social_proof         replace the review block
+#}
+
+{# WRAPPER 1 — HERO. Edge-to-edge dark background with the split
+     copy / quote-form two-column layout. #}
+<div class="col-12 px-0 service-landing{% if page_wrapper_class is defined and page_wrapper_class %} {{ page_wrapper_class }}{% endif %}">
+
+    {# Hero overlay is per-page configurable via `hero_overlay`. The
+         default is the uniform dark dim historically used by every
+         service landing page; pages that need something stronger or
+         more directional (e.g. /decking's horizontal fade) pass the
+         full `linear-gradient(...)` CSS value as the controller
+         variable. Rendering only applies when the page also supplies
+         `hero_image`; without it, the SCSS default (`$kasko-black`
+         solid background) still provides contrast. #}
+    {% set hero_overlay = (hero_overlay is defined and hero_overlay) ? hero_overlay : 'linear-gradient(rgba(17,17,17,0.55), rgba(17,17,17,0.55))' %}
+    <section class="fencing-hero"
+             {% if hero_image is defined and hero_image %}style="background-image: {{ hero_overlay }}, url('{{ asset(hero_image) }}');"{% endif %}>
+        <div class="fencing-hero__inner">
+            <div class="row fencing-hero__row align-items-center">
+                <div class="col-12 col-lg-7 fencing-hero__content">
+                    {% block service_landing_hero_content %}
+                        <h1 class="fencing-hero__title">{{ hero_headline }}</h1>
+                        {% if hero_subheading is defined and hero_subheading %}
+                            <p class="fencing-hero__subtitle">{{ hero_subheading }}</p>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                <div id="quote" class="col-12 col-lg-5 fencing-hero__form">
+                    {% block service_landing_hero_form %}
+                        {% include 'components/forms/quote-request.html.twig' with {
+                            landing_type: landing_type|default(''),
+                            include_lights_question: include_lights_question|default(false),
+                            form_heading: form_heading|default('Get Free Quote'),
+                            submit_label: submit_label|default('GET FREE QUOTE'),
+                            address_placeholder: address_placeholder|default('555 Mayweather Ln, Warner Robins, GA 31088'),
+                            description_placeholder: description_placeholder|default('Tell us a little about your project, what you\'d like done, and any important details.'),
+                            show_ssl_badge: show_ssl_badge is defined ? show_ssl_badge : true,
+                        } %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{# 2. INTRO PARAGRAPH — direct child of base.html.twig's `.row.py-4`,
+     identical in grid position + CSS classes to the homepage's intro:
+     base-row > col-lg-8 > row > col-12 > <p>. Same width (≈ 2/3 of
+     the container at lg+, full width below), same left alignment.
+     Rendered only when the page provides `intro_copy`; pages that
+     put their intro paragraph inside the hero (via `hero_subheading`)
+     omit `intro_copy` and the entire scaffolding is skipped so no
+     empty col-lg-8 wrapper + row breaks sit between the hero and
+     the trust strip. #}
+{% if intro_copy is defined and intro_copy %}
+    <div class="w-100"></div>
+    <div class="col-lg-8">
+        <div class="row">
+            <div class="col-12">
+                {% block service_landing_intro %}
+                    <p>{{ intro_copy }}</p>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="w-100"></div>
+{% endif %}
+
+{# WRAPPER 2 — TRUST STRIP + SERVICES + ADDITIONAL + GALLERY + SOCIAL PROOF #}
+<div class="col-12 px-0 service-landing{% if page_wrapper_class is defined and page_wrapper_class %} {{ page_wrapper_class }}{% endif %}">
+
+    {# 3. TRUST STRIP — Licensed/Bonded/Workers'-Comp row by default.
+         Data-driven via `trust_items`: when the page supplies its own
+         array of {icon, title, copy} entries the strip renders those
+         (used by /fencing variant sub-pages). Default items are the
+         three site-wide Kasko trust cues. #}
+    {% block service_landing_trust_strip %}
+        {% set trust_items = trust_items|default([
+            { icon: 'fas fa-shield-alt', title: 'Licensed & Insured', copy: 'Professional coverage for every project.' },
+            { icon: 'fas fa-handshake',  title: '$1M Bonded',          copy: 'Added protection and peace of mind.' },
+            { icon: 'fas fa-hard-hat',   title: "Workers' Comp Covered", copy: 'Professional protection on the job site.' },
+        ]) %}
+        <section class="fencing-value-strip">
+            <div class="row no-gutters">
+                {% for item in trust_items %}
+                    <div class="col-12 col-md-4 fencing-value-item">
+                        <i class="{{ item.icon }} fencing-value-icon"></i>
+                        <h3 class="fencing-value-title">{{ item.title }}</h3>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endblock %}
+
+    {# 4. SERVICES — rendered when the page provides a `services` array.
+         Content comes from the page controller so entries can be added
+         or edited without changing markup. #}
+    {% if services is defined and services %}
+        <section class="fencing-services">
+            <header class="fencing-section-header">
+                <h2 id="{{ services_heading_id|default('services') }}" class="fencing-section-title">{{ services_heading }}</h2>
+                <div class="heading-accent mx-auto"></div>
+                {% if services_intro is defined and services_intro %}
+                    <p class="fencing-section-subtitle">{{ services_intro }}</p>
+                {% endif %}
+                {# Optional longer explanatory paragraph — used by
+                   /fencing variant pages that need more context under
+                   the services subtitle. Rendered only when supplied. #}
+                {% if services_intro_long is defined and services_intro_long %}
+                    <p class="fencing-section-intro">{{ services_intro_long }}</p>
+                {% endif %}
+            </header>
+
+            {# Service card loop. Each item renders as:
+                 - `<a class="fencing-service fencing-service--linked" href="…">`
+                   when `item.href` is supplied (navigates to another page
+                   or anchor; whole card becomes clickable with the hover
+                   lift + focus outline defined in _fencing-landing.scss).
+                 - `<div class="fencing-service">` otherwise (decorative
+                   card — current pattern on /decking, /docks,
+                   /gutter-cleaning, /christmas-lights, and the /fencing
+                   variant sub-pages). #}
+            {% block service_landing_services_grid %}
+                <div class="row fencing-services-grid">
+                    {% for item in services %}
+                        {% set has_image = item.image is defined and item.image %}
+                        {% if item.href is defined and item.href %}
+                            <a class="col-12 col-sm-6 col-lg-4 fencing-service fencing-service--linked" href="{{ item.href }}">
+                                {% if has_image %}
+                                    <div class="fencing-service__image"
+                                         style="background-image: url('{{ asset(item.image) }}');"
+                                         role="img" aria-label="{{ item.alt }}"></div>
+                                {% else %}
+                                    <div class="fencing-service__image fencing-service__image--placeholder" role="img" aria-label="{{ item.alt }}">
+                                        <span class="fencing-service__placeholder-label">Image coming soon</span>
+                                    </div>
+                                {% endif %}
+                                <h3 class="fencing-service__title">{{ item.title }}</h3>
+                                <div class="fencing-service__accent"></div>
+                                <p class="fencing-service__copy">{{ item.copy }}</p>
+                            </a>
+                        {% else %}
+                            <div class="col-12 col-sm-6 col-lg-4 fencing-service">
+                                {% if has_image %}
+                                    <div class="fencing-service__image"
+                                         style="background-image: url('{{ asset(item.image) }}');"
+                                         role="img" aria-label="{{ item.alt }}"></div>
+                                {% else %}
+                                    <div class="fencing-service__image fencing-service__image--placeholder" role="img" aria-label="{{ item.alt }}">
+                                        <span class="fencing-service__placeholder-label">Image coming soon</span>
+                                    </div>
+                                {% endif %}
+                                <h3 class="fencing-service__title">{{ item.title }}</h3>
+                                <div class="fencing-service__accent"></div>
+                                <p class="fencing-service__copy">{{ item.copy }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endblock %}
+
+            {# Optional closing-prompt CTA inside the services section
+               (used by /fencing variant sub-pages). Rendered only when
+               the page supplies `closing_prompt`
+               (heading / body / cta_label / cta_href). #}
+            {% if closing_prompt is defined and closing_prompt %}
+                <div class="fencing-services__prompt">
+                    <h3 class="fencing-services__prompt-title">{{ closing_prompt.heading }}</h3>
+                    <p class="fencing-services__prompt-body">{{ closing_prompt.body }}</p>
+                    <a href="{{ closing_prompt.cta_href }}" class="btn btn-cta">{{ closing_prompt.cta_label }}</a>
+                </div>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    {# 5. ADDITIONAL PAGE-SPECIFIC SECTIONS — e.g., /christmas-lights
+         inserts a pricing section + CTA banner here. #}
+    {% block service_landing_additional_sections %}{% endblock %}
+
+    {# 6. PROJECT GALLERY — rendered when the page provides a `gallery`
+         array. Tiles use unified `.service-landing__gallery*` classes
+         so pages don't need their own per-page gallery SCSS. #}
+    {% if gallery is defined and gallery %}
+        <section class="service-landing__gallery">
+            <header class="fencing-section-header">
+                <h2 class="fencing-section-title">{{ gallery_heading }}</h2>
+                <div class="heading-accent mx-auto"></div>
+                {% if gallery_intro is defined and gallery_intro %}
+                    <p class="fencing-section-subtitle">{{ gallery_intro }}</p>
+                {% endif %}
+            </header>
+
+            {% block service_landing_gallery_grid %}
+                <div class="row service-landing__gallery-grid">
+                    {% for photo in gallery %}
+                        <div class="col-12 col-sm-6 col-lg-4 service-landing__gallery-item">
+                            <div class="service-landing__gallery-image"
+                                 {% if photo.image %}style="background-image: url('{{ asset(photo.image) }}');"{% endif %}
+                                 role="img" aria-label="{{ photo.alt }}"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endblock %}
+        </section>
+    {% endif %}
+
+    {# 7. SOCIAL PROOF — shared review block pulled from `template_data`.
+         The entire <section> is gated on `reviews` being non-empty so
+         pages render no "What Our Clients Say" heading, no gold accent,
+         and no vertical spacing when the Google Reviews provider has
+         not yet synced any live reviews. Google integration remains
+         unchanged — this is purely a markup gate. #}
+    {% block service_landing_social_proof %}
+        {% set reviews = template_data.get('reviews') %}
+        {% if reviews is not empty %}
+            <section class="fencing-social-proof">
+                <header class="fencing-section-header">
+                    <h2 class="fencing-section-title">What Our Clients Say</h2>
+                    <div class="heading-accent mx-auto"></div>
+                </header>
+                {# Rotating review carousel. Each `.fencing-review` figure
+                   sits in its own `.carousel-item`; the existing figure
+                   markup, typography, and attribution gating are unchanged.
+                   Bootstrap 4 drives the 6s auto-cycle and the hover-pause
+                   via `data-ride` / `data-interval` / `data-pause`.
+                   `.carousel-fade` swaps the default slide for the subtle
+                   cross-fade. assets/js/reviews-carousel.js disables the
+                   auto-advance under `prefers-reduced-motion: reduce`
+                   (CSS kills the fade transition in the same case). #}
+                <div id="service-review-carousel" class="carousel slide carousel-fade fencing-review__carousel" data-ride="carousel" data-interval="6000" data-pause="hover">
+                    <div class="carousel-inner">
+                        {% for review in reviews %}
+                            <div class="carousel-item{% if loop.first %} active{% endif %}">
+                                {# Wrap the review in a link to its provider's reviews
+                                   page when available (Google doesn't emit per-review
+                                   URLs — see src/Services/Reviews/Google/GoogleReviewsProvider.php).
+                                   `target="_blank" rel="noopener noreferrer"` applied only
+                                   when a URL is present; without one the markup degrades
+                                   to a plain <figure>. #}
+                                {% if review.sourceUrl %}
+                                    <a class="fencing-review__link" href="{{ review.sourceUrl }}" target="_blank" rel="noopener noreferrer">
+                                {% endif %}
+                                <figure class="fencing-review">
+                                    <div class="fencing-review__stars" aria-label="{{ review.reviewScore }} out of {{ review.reviewScale }} stars">
+                                        {% for i in 1..review.reviewScale %}
+                                            <i class="fas fa-star {% if loop.index <= review.reviewScore %}text-gold{% endif %}"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <blockquote class="fencing-review__quote">
+                                        &ldquo;{{ review.reviewText }}&rdquo;
+                                    </blockquote>
+                                    <figcaption class="fencing-review__attribution">
+                                        {% if review.reviewerName %}{{ review.reviewerName }}{% else %}{{ review.sourceName }}{% endif %}
+                                        {% if review.reviewerLocation %} &middot; {{ review.reviewerLocation }}{% endif %}
+                                    </figcaption>
+                                </figure>
+                                {% if review.sourceUrl %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    {% endblock %}
+
+    {# 8. STICKY "GET QUOTE" CTA BAR — fixed to the bottom of the
+         viewport until the hero quote form (#quote above) comes back
+         into view. Rendered on every service landing page that uses
+         this layout EXCEPT the homepage, which carries
+         `landing_type: 'home'` and intentionally opts out. #}
+    {% if landing_type is defined and landing_type != 'home' %}
+        {% include 'components/sticky-cta-bar.html.twig' %}
+    {% endif %}
+
+</div>

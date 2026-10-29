@@ -1,47 +1,108 @@
-{# twig template #}
+{# twig template — Kasko homepage.
+
+   Reuses `templates/layouts/service-landing.html.twig` so the hero,
+   quote form, and trust strip match the rest of the site's landing
+   pattern. The controller (DefaultController::getHome) supplies the
+   hero variables (hero_image, hero_headline, hero_subheading); the
+   intro paragraph is folded into the hero's `hero_subheading` slot
+   rather than a standalone intro row.
+
+   Overrides applied here:
+
+     service_landing_additional_sections — "A Better Experience" (two
+                                           columns: copy + testimonials)
+                                           followed by "The KasKo
+                                           Difference" (full-width three-
+                                           column trust grid).
+     service_landing_social_proof        — suppressed; the Google
+                                           reviews now appear inside
+                                           "A Better Experience"
+                                           (`components/testimonials`),
+                                           so the shared single-review
+                                           block below would duplicate.
+
+   The previous standalone image carousel on the homepage is removed:
+   its dock photo is now the full-bleed hero background. #}
 {% extends 'base.html.twig' %}
 
 {% block page_content %}
+    {% embed 'layouts/service-landing.html.twig' %}
 
-    {% embed 'layouts/right-sidebar.html.twig' %}
+        {# Suppress the shared layout's one-review social-proof block —
+             reviews now sit in the two-column "A Better Experience"
+             section below (via `components/testimonials.html.twig`),
+             preserving existing review functionality in a different
+             location. #}
+        {% block service_landing_social_proof %}{% endblock %}
 
-        {% block layout_page_title %}
-            {{ 'Construction & Remodeling in Middle Georgia' }}
-        {% endblock %}
+        {% block service_landing_additional_sections %}
 
-        {% block layout_main_content %}
-            <div class="col-12">
+            {# "A Better Experience" — two columns at lg+:
+                 Left: section heading + existing homepage copy +
+                       project-showcase callout. `col-lg-7` mirrors
+                       the hero's text column.
+                 Right: testimonials carousel. `col-lg-5` mirrors the
+                       hero's quote-form column, so the reviews card
+                       sits directly beneath the form above.
+                 Columns top-align via `.align-items-start` and stack
+                 vertically below lg. The `.fencing-services` wrapper
+                 inherits the shared service-landing section padding
+                 and horizontal padding, matching other sections. #}
+            {# Inline vertical padding pins the two gaps on either
+                 side of this section to exactly 64px at every
+                 breakpoint, overriding the shared
+                 `.fencing-services`'s 4rem/5rem top + 2rem/2.5rem
+                 bottom defaults. `padding-top: 4rem` is the gap
+                 from the trust bar above (the trust bar contributes
+                 no bottom margin). `padding-bottom: 2rem` pairs
+                 with the next section's `padding-top: 2rem` to
+                 total 4rem = 64px. Horizontal padding (1.25rem)
+                 from `.service-landing section` is untouched. #}
+            <section class="fencing-services" style="padding-top: 4rem; padding-bottom: 2rem;">
+                <div class="row align-items-start">
+                    <div class="col-12 col-lg-7 mb-4 mb-lg-0">
+                        <h2 class="fencing-section-title">A Better Experience</h2>
+                        <div class="heading-accent mb-4"></div>
+                        <p>Hiring a contractor shouldn’t mean wondering when they’ll show up, whether they’ll call you back, or what the job is going to cost when it’s finished.</p>
+                        <p>At KasKo, we believe good construction starts with good communication. We show up, talk through the work with you, provide a clear quote, and keep you informed as the project moves forward. And when we’re finished, we want the quality of the work to be the reason you call us for the next project.</p>
+                        <p>Whether we’re repairing a deck or transforming an outdoor space, we treat each project like something we’re putting our name on—because we are.</p>
 
-                <p>From repairs and renovations to decks, outdoor living spaces, and larger construction projects, KasKo delivers quality work with straightforward communication from start to finish. We proudly serve homeowners in Byron, Warner Robins, Macon, Perry, Fort Valley, and surrounding communities.</p>
+                        <div class="bg-light rounded p-3 d-flex align-items-center mb-0">
+                            <div class="mr-3 d-flex align-items-center justify-content-center rounded-circle bg-primary text-white"
+                                 style="width: 42px; height: 42px; flex: 0 0 42px;">
+                                <i class="fas fa-camera"></i>
+                            </div>
 
-                <div class="mb-3">
-                    {% include 'components/image-carousel.html.twig' %}
-                </div>
-
-                <h1 class="text-left mt-5 mb-4 text-bold">A Better Experience</h1>
-                <p>Hiring a contractor shouldn’t mean wondering when they’ll show up, whether they’ll call you back, or what the job is going to cost when it’s finished. </p>
-                <p>At KasKo, we believe good construction starts with good communication. We show up, talk through the work with you, provide a clear quote, and keep you informed as the project moves forward. And when we’re finished, we want the quality of the work to be the reason you call us for the next project.</p>
-                <p>Whether we’re repairing a deck or transforming an outdoor space, we treat each project like something we’re putting our name on—because we are.</p>
-
-                <div class="bg-light rounded p-3 d-flex align-items-center mb-4">
-                    <div class="mr-3 d-flex align-items-center justify-content-center rounded-circle bg-primary text-white"
-                         style="width: 42px; height: 42px; flex: 0 0 42px;">
-                        <i class="fas fa-camera"></i>
+                            <div>
+                                Take a look at some of the projects we’ve completed for Middle Georgia homeowners. <a class="text-link text-forest font-weight-bold" href="" data-toggle="modal" data-target="">View our recently completed projects.</a>
+                            </div>
+                        </div>
                     </div>
-
-                    <div>
-                        Take a look at some of the projects we’ve completed for Middle Georgia homeowners. <a class="text-link text-forest font-weight-bold" href="" data-toggle="modal" data-target="">View our recently completed projects.</a>
+                    <div class="col-12 col-lg-5 home-experience__reviews">
+                        {% include 'components/testimonials.html.twig' %}
                     </div>
                 </div>
+            </section>
 
-                {# Trust section #}
-                <div class="d-flex align-items-center mb-3">
-                    <hr class="flex-grow-1 mr-3">
-                    <h1 class="mb-0 text-bold">The KasKo Difference</h1>
-                    <hr class="flex-grow-1 ml-3">
-                </div>
+            {# "The KasKo Difference" — full-width three-column trust
+                 grid. Columns distribute evenly at md+ (`.col-md-4`
+                 × 3 = 12), stack vertically below md with `.mb-4
+                 .mb-md-0` on columns 1 and 2. Vertical separators
+                 preserved via `.border-left` on columns 2 and 3.
+                 Icons, titles, and copy are preserved verbatim. #}
+            {# Inline vertical padding pins this section's top gap
+                 to 2rem; combined with the preceding section's
+                 `padding-bottom: 2rem` it produces the full 64px
+                 gap between the two sections at every breakpoint.
+                 `padding-bottom: 2rem` keeps the section's own
+                 bottom gap tight (down from the 2rem/2.5rem
+                 default). Horizontal padding (1.25rem) from
+                 `.service-landing section` is untouched. #}
+            <section class="fencing-services" style="padding-top: 2rem; padding-bottom: 2rem;">
+                <h2 class="fencing-section-title">The KasKo Difference</h2>
+                <div class="heading-accent mb-4"></div>
 
-                <div class="row mt-4 mb-4">
+                <div class="row">
                     <div class="col-md-4 mb-4 mb-md-0 px-md-4">
                         <div class="d-flex align-items-start mb-2">
                             <i class="fa fa-check text-forest mr-3 mt-1 flex-shrink-0"></i>
@@ -72,17 +133,9 @@
                         </p>
                     </div>
                 </div>
+            </section>
 
-            </div>
-
-        {% endblock %}
-
-        {% block layout_sbr %}
-            {% include 'components/forms/quote-request.html.twig' %}
-            <div class="w-100 mb-3"></div>
-            {% include 'components/testimonials.html.twig' %}
         {% endblock %}
 
     {% endembed %}
-
 {% endblock %}

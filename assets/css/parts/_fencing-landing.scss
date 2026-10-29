@@ -1,8 +1,17 @@
 // ==========================================================================
-// /fencing — Google Ads landing page (scoped)
-// All rules nest under .fencing-landing so nothing leaks to other pages.
+// /fencing — service-landing SCSS (scoped)
+// Originally built for /fencing and later reused by the other service
+// landing pages via a shared `.fencing-landing` wrapper. The top-level
+// selector is now aliased: `.service-landing, .fencing-landing` so
+// pages migrated to templates/layouts/service-landing.html.twig
+// (which carries the `.service-landing` class name) pick up the same
+// styles with zero duplication. All internal class names (`.fencing-
+// hero`, `.fencing-service`, etc.) still work under both scopes. The
+// legacy `.fencing-landing` selector is retained so unmigrated pages
+// continue to render unchanged until Phase 2.
 // ==========================================================================
 
+.service-landing,
 .fencing-landing {
     color: $kasko-black;
     background-color: $kasko-white;
@@ -25,8 +34,13 @@
         background-position: center center;
         background-repeat: no-repeat;
         color: $kasko-white;
-        padding: 4rem 1.25rem;
-        text-align: center;
+        // Padding tightened to let the hero shrink naturally once the
+        // quote form is compact. No fixed heights — the hero continues
+        // to size to the taller of the hero copy and the quote-card.
+        // Tightened further at desktop (see min-width:$media-break-large
+        // override below) so the header + hero + trust strip share
+        // the initial 1440×900 fold.
+        padding: 1.5rem 1.25rem;
     }
 
     .fencing-hero__inner {
@@ -39,23 +53,13 @@
     }
 
     .fencing-hero__content {
-        text-align: center;
         // Gap between hero copy and the stacked form card at tablet and
-        // below. Reset to zero when the two-column layout kicks in.
+        // below. Reset to zero when the two-column layout kicks in at
+        // $media-break-large (see override below). Hero copy is
+        // left-aligned at every breakpoint — the previous centered-at-
+        // mobile / left-at-desktop toggle was removed as part of the
+        // site-wide typography standardization.
         margin-bottom: 2rem;
-
-        // Gold accent bar between the heading and the subtitle. Reuses
-        // the global .heading-accent (gold, 3px tall); widened here and
-        // given a bottom gap so the subtitle breathes. Centered to
-        // track the centered heading at mobile/tablet; left-aligned at
-        // desktop via the $media-break-large override below so it sits
-        // flush beneath the heading's left edge.
-        .heading-accent {
-            width: 80px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 1rem;
-        }
     }
 
     .fencing-hero__form {
@@ -69,34 +73,45 @@
     }
 
     .fencing-hero__title {
+        // Hero H1 typography is defined explicitly here (not inherited
+        // from the global h1 scale) so service landing pages can run a
+        // tighter display size independent of the site-wide 36px
+        // desktop heading. 26px mobile → 30px at md+, weight 400 reads
+        // as the display face Kasko uses for marketing landings.
+        // `overflow-wrap` is a safety belt — long single-word headlines
+        // (brand/service names) break at the container edge instead of
+        // overflowing the hero column.
         color: $kasko-white;
-        font-size: 2.25rem;
-        font-weight: 800;
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-        margin: 0 0 1rem;
+        font-size: 1.625rem; // 26px mobile
+        font-weight: 400;
+        line-height: 1.25;
+        letter-spacing: 0;
+        margin: 0 0 1rem;    // 16px gap to subtitle
+        overflow-wrap: break-word;
     }
 
     .fencing-hero__subtitle {
         color: rgba($kasko-white, 0.92);
-        font-size: 1.15rem;
+        font-size: 1rem;     // 16px
         line-height: 1.5;
         max-width: 600px;
         margin: 0 0 1.5rem;
+        overflow-wrap: break-word;
     }
 
     // ----- SECTION HEADERS (shared) -----
     .fencing-section-header {
-        text-align: center;
         max-width: 720px;
-        margin: 0 auto 2.5rem;
+        margin: 0 0 2.5rem;
     }
 
     .fencing-section-title {
+        // H2 section heading. Font-size, font-family, and font-weight
+        // come from the shared Bootstrap heading scale ($h2-font-size
+        // + the min-width:md override in app.scss → 24px mobile,
+        // 28px desktop, weight 500). Only brand-specific color,
+        // letter-spacing, and margin live here.
         color: $kasko-black;
-        font-size: 1.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: 0.03em;
         margin-bottom: 1rem;
     }
@@ -121,18 +136,17 @@
 
     // Optional "not sure which style?" prompt below the service cards.
     .fencing-services__prompt {
-        text-align: center;
         max-width: 640px;
-        margin: 1.5rem auto 0;
+        margin: 1.5rem 0 0;
         padding-top: 1.5rem;
         border-top: 1px solid rgba($kasko-black, 0.08);
     }
 
     .fencing-services__prompt-title {
+        // H3 subsection heading inside the "Not sure which style?"
+        // prompt (fencing variant pages). Font-size + weight come
+        // from the shared Bootstrap H3 scale (20px, weight 500).
         color: $kasko-black;
-        font-size: 1rem;
-        font-weight: 700;
-        text-transform: uppercase;
         letter-spacing: 0.04em;
         margin-bottom: 0.5rem;
     }
@@ -144,44 +158,63 @@
         margin-bottom: 1rem;
     }
 
-    // Center the shared gold heading accent inside these section headers.
+    // Left-align the shared gold heading accent beneath each section
+    // heading. Section header markup still carries `.mx-auto` on the
+    // accent div across the unmigrated page templates; Bootstrap's
+    // `.mx-auto` uses `!important`, so this scoped override must also
+    // use `!important` to win. Removing the override from markup is a
+    // follow-up cleanup — the scoped rule makes it harmless until then.
     .fencing-section-header .heading-accent {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 
     // ----- VALUE STRIP -----
+    // Minimal trust row: each item renders just an icon and a short
+    // heading, laid out side-by-side and vertically centered. No
+    // descriptive subtitles — the markup only emits icon + h3.
     .fencing-value-strip {
         background-color: $kasko-cream;
-        padding: 2rem 1.25rem;
+        padding: 1rem 1.25rem;
         border-top: 1px solid rgba($kasko-black, 0.06);
         border-bottom: 1px solid rgba($kasko-black, 0.06);
     }
 
     .fencing-value-item {
-        text-align: center;
-        padding: 1rem 1.25rem;
+        // Flex row of icon + title. `align-items: center` keeps the
+        // two vertically aligned on the item's cross-axis; the new
+        // `justify-content: center` centers the icon + title group
+        // as a unit horizontally within each column (both the mobile
+        // col-12 and the desktop col-md-4). The existing `gap`
+        // preserves the icon-to-title spacing. Column vertical
+        // separators are defined on `.fencing-value-item +
+        // .fencing-value-item` at md+ and are unaffected.
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.9rem;
+        padding: 0.5rem 1.25rem;
     }
 
     .fencing-value-icon {
         color: $kasko-forest;
-        font-size: 1.5rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.375rem; // 22px
+        flex-shrink: 0;
+        line-height: 1;
+        margin-bottom: 0;
     }
 
     .fencing-value-title {
+        // H3 trust-strip title (`Licensed & Insured`, `$1M Bonded`,
+        // `Workers' Comp Covered`). Explicit font-size (18px) runs
+        // one step smaller than the global h3 scale (20px) so the
+        // strip reads as a quieter trust row, not a section heading.
         color: $kasko-black;
-        font-size: 0.95rem;
-        font-weight: 700;
-        text-transform: uppercase;
+        font-size: 1.125rem; // 18px
+        font-weight: 500;
         letter-spacing: 0.04em;
-        margin-bottom: 0.35rem;
-    }
-
-    .fencing-value-copy {
-        color: rgba($kasko-black, 0.7);
-        font-size: 0.95rem;
         margin-bottom: 0;
+        overflow-wrap: break-word;
     }
 
     // ----- SERVICES -----
@@ -211,19 +244,14 @@
         margin-bottom: 0.9rem;
     }
 
-    .fencing-service__title {
-        color: $kasko-black;
-        font-size: 1.05rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        margin-bottom: 0.4rem;
-    }
+    // `.fencing-service__title` typography lives in app.scss alongside
+    // `.services-card__title` as a single shared service-card heading
+    // rule so both card grids read identically.
 
     .fencing-service__copy {
-        color: rgba($kasko-black, 0.72);
-        font-size: 0.95rem;
-        line-height: 1.5;
+        // Color, font-size, and line-height live in the shared
+        // top-level rule in app.scss alongside `.services-card__copy`.
+        // Only the fencing-specific bottom margin stays scoped here.
         margin-bottom: 0;
     }
 
@@ -251,6 +279,19 @@
         }
     }
 
+    // Respect user `prefers-reduced-motion` — drop the hover
+    // transform/transition on linked cards.
+    @media (prefers-reduced-motion: reduce) {
+        a.fencing-service--linked {
+            transition: none;
+        }
+
+        a.fencing-service--linked:hover,
+        a.fencing-service--linked:focus {
+            transform: none;
+        }
+    }
+
     // ----- KASKO DIFFERENCE -----
     .fencing-difference {
         background-color: $kasko-cream;
@@ -262,7 +303,6 @@
     }
 
     .fencing-difference-item {
-        text-align: center;
         padding: 0.75rem 1.25rem;
         margin-bottom: 0.5rem;
     }
@@ -274,9 +314,9 @@
     }
 
     .fencing-difference-title {
+        // H3 KasKo Difference item title (fencing variant pages).
+        // Font-size + weight come from the shared Bootstrap H3 scale.
         color: $kasko-black;
-        font-size: 1rem;
-        font-weight: 700;
         margin-bottom: 0.35rem;
     }
 
@@ -287,15 +327,43 @@
     }
 
     // ----- SOCIAL PROOF -----
+    // `padding-top` is intentionally tight so the gap between the
+    // last service card and the "What Our Clients Say" heading lands
+    // around 48px once the card margin-bottom (0.5rem) and
+    // `.fencing-services` padding-bottom (2rem base / 2.5rem lg+) are
+    // added. `padding-bottom` controls spacing to the next section
+    // (footer) and is left unchanged.
     .fencing-social-proof {
-        padding-top: 4rem;
+        padding-top: 1rem;
         padding-bottom: 4rem;
     }
 
     .fencing-review {
         max-width: 720px;
-        margin: 0 auto;
-        text-align: center;
+        margin: 0;
+    }
+
+    // External-link wrapper around the social-proof review. Produced
+    // by the shared layout only when `review.sourceUrl` is present
+    // (Google emits a single business-level reviews URL). The link
+    // is purely a navigational affordance — not a visual element —
+    // so it inherits typography/color and shows no underline. Keyboard
+    // focus still produces a visible outline for a11y.
+    .fencing-review__link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $kasko-forest;
+            outline-offset: 3px;
+        }
     }
 
     .fencing-review__stars {
@@ -315,10 +383,10 @@
     }
 
     .fencing-review__attribution {
+        // Review byline (figcaption). Reads as body copy; title case
+        // from markup data (reviewer name / location).
         color: rgba($kasko-black, 0.65);
         font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
     }
 
     // ----- RESPONSIVE -----
@@ -326,20 +394,20 @@
     // Tablet and up: larger hero, horizontal CTAs, side-by-side value strip already handled by col-md-4.
     @media (min-width: $media-break-medium) {
         .fencing-hero {
-            padding: 6rem 2rem;
+            padding: 2rem 2rem;
         }
 
+        // Hero H1 scales up to its desktop size at this breakpoint.
+        // Set explicitly to 30px rather than inheriting the global
+        // h1 36px rule in app.scss — the landing-page hero uses a
+        // tighter display size than the rest of the site.
         .fencing-hero__title {
-            font-size: 3rem;
+            font-size: 1.875rem; // 30px
         }
 
-        .fencing-hero__subtitle {
-            font-size: 1.25rem;
-        }
-
-        .fencing-section-title {
-            font-size: 2rem;
-        }
+        // Hero subtitle stays at 16px (set in the base rule); no
+        // tablet-step scale change. Section H2s continue to pick
+        // up the shared 28px scale via the global rule in app.scss.
 
         // Value strip items get vertical dividers between columns on tablet+.
         .fencing-value-item + .fencing-value-item {
@@ -350,25 +418,17 @@
     // Desktop: full 4-column services grid handled by col-lg-3; add breathing room.
     @media (min-width: $media-break-large) {
         // Hero switches to the two-column layout at this breakpoint
-        // (col-lg-7 / col-lg-5). Vertical padding trimmed because the
-        // form card contributes its own height.
+        // (col-lg-7 / col-lg-5). Vertical padding kept tight so the
+        // header + hero + trust strip fit the 1440×900 fold; the form
+        // card still drives overall hero height.
         .fencing-hero {
-            padding: 4rem 2rem;
+            padding: 1.5rem 2rem;
         }
 
-        .fencing-hero__title {
-            font-size: 3.5rem;
-        }
-
-        // Left copy aligns to the left when it sits next to the form.
+        // Hero copy sits next to the form at this breakpoint, so the
+        // tablet stacking margin is dropped. Alignment stays left.
         .fencing-hero__content {
-            text-align: left;
             margin-bottom: 0;
-
-            // Accent bar tracks the heading: left-aligned at desktop.
-            .heading-accent {
-                margin-left: 0;
-            }
         }
 
         // Trim card width ~13% at desktop, then right-align it so the
@@ -400,7 +460,12 @@
         }
 
         .fencing-social-proof {
-            padding-top: 5rem;
+            // Trimmed from 5rem so the lg+ gap above the heading
+            // (card margin + `.fencing-services` padding-bottom
+            // 2.5rem + this padding-top) totals ~48px. Bottom
+            // padding preserved so the section floats the same
+            // distance above the footer as before.
+            padding-top: 0;
             padding-bottom: 5rem;
         }
     }

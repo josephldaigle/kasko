@@ -24,11 +24,40 @@ contact:
     path: /contact
     controller: Kasko\Controller\DefaultController::getContact
     methods: GET
+# Services — overview page listing all residential and commercial offerings
+services:
+    path: /services
+    controller: Kasko\Controller\DefaultController::getServices
+    methods: GET
 # Fencing — Google Ads landing page (default/general)
 fencing:
     path: /fencing
     controller: Kasko\Controller\DefaultController::getFencing
     methods: GET
+# Decking — organic SEO + Google Ads landing page
+decking:
+    path: /decking
+    controller: Kasko\Controller\DefaultController::getDecking
+    methods: GET
+# Gutter Cleaning — organic SEO + Google Ads landing page
+gutter-cleaning:
+    path: /gutter-cleaning
+    controller: Kasko\Controller\DefaultController::getGutterCleaning
+    methods: GET
+# Docks — organic SEO + Google Ads landing page
+docks:
+    path: /docks
+    controller: Kasko\Controller\DefaultController::getDocks
+    methods: GET
+# Christmas Light Installation — temporarily disabled. The route is
+# commented out so /christmas-lights returns 404; the controller
+# method (DefaultController::getChristmasLights), the page template,
+# the service copy, and all referenced images are preserved. Restore
+# the service by un-commenting the four lines below.
+#christmas-lights:
+#    path: /christmas-lights
+#    controller: Kasko\Controller\DefaultController::getChristmasLights
+#    methods: GET
 # Fencing — variant landing pages. The `type` requirement is a strict
 # whitelist so /fencing/garbage returns 404 rather than rendering the
 # default page. Adding a new variant means updating both this regex

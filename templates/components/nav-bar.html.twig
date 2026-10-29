@@ -10,17 +10,63 @@
         </button>
 
         <div class="collapse navbar-collapse" id="cg-navbar">
-            <ul class="navbar-nav mx-auto">
+            <ul class="navbar-nav mr-auto">
 
                 {% for menu_item in template_data.get('menus').get('header_menu') %}
 
-                    <li class="nav-item text-left text-sm-center">
-                        <a class="nav-link" href="{{ path(menu_item.routeName) }}">{{ menu_item.displayText }}
-                            {# add screen-reader indicator to first item #}
-                            {# indicator will move to correct position via js on docReady #}
-                            {% if loop.index == 0 %}<span class="sr-only">(current)</span>{% endif %}
-                        </a>
-                    </li>
+                    {% if menu_item.routeName == 'services' %}
+
+                        {# Services dropdown. The parent "Services" text
+                             remains a plain link to /services (keyboard
+                             + click navigates). A sibling caret button
+                             owns the dropdown-toggle behavior so the
+                             two concerns don't fight — Bootstrap 4's
+                             `data-toggle="dropdown"` on the button
+                             manages aria-expanded, outside-click, and
+                             Escape to close. Hover-to-open at desktop
+                             is wired by assets/js/services-dropdown.js
+                             (and gracefully degrades to click-only if
+                             JS is unavailable). #}
+                        <li class="nav-item dropdown text-left text-sm-center services-nav-item">
+                            <a class="nav-link services-nav-item__link" href="{{ path(menu_item.routeName) }}"><span>{{ menu_item.displayText }}</span></a>
+                            <button type="button"
+                                    id="servicesDropdownToggle"
+                                    class="dropdown-toggle services-nav-item__toggle"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    aria-controls="servicesDropdownMenu"
+                                    aria-label="Open services menu">
+                                <span class="sr-only">Open services menu</span>
+                            </button>
+                            <div id="servicesDropdownMenu"
+                                 class="dropdown-menu services-dropdown-menu"
+                                 aria-labelledby="servicesDropdownToggle">
+                                <a class="dropdown-item" href="{{ path('decking') }}"><span>Decks</span></a>
+                                <a class="dropdown-item" href="{{ path('docks') }}"><span>Docks</span></a>
+                                <a class="dropdown-item" href="{{ path('fencing') }}"><span>Fencing</span></a>
+                                {# Fascia & Soffit, Landscaping, and
+                                   Pressure Washing & Painting are
+                                   intentionally omitted until they have
+                                   dedicated routes (or anchored sections
+                                   on /services). Add them back here
+                                   when the pages or anchors exist. #}
+                                <a class="dropdown-item" href="{{ path('gutter-cleaning') }}"><span>Gutter Cleaning</span></a>
+                                {# Christmas Lights intentionally omitted
+                                   while the /christmas-lights route is
+                                   disabled in config/routes.yaml. Restore
+                                   the dropdown-item link here when the
+                                   route is re-enabled. #}
+                            </div>
+                        </li>
+
+                    {% else %}
+
+                        <li class="nav-item text-left text-sm-center">
+                            <a class="nav-link" href="{{ path(menu_item.routeName) }}"><span>{{ menu_item.displayText }}{% if loop.index == 0 %}<span class="sr-only">(current)</span>{% endif %}</span></a>
+                        </li>
+
+                    {% endif %}
 
                 {% endfor %}
             </ul>

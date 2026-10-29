@@ -1,0 +1,15 @@
+{# twig template — /docks landing page.
+
+   Thin page shell: all structural markup lives in
+   templates/layouts/service-landing.html.twig. The controller
+   (DefaultController::getDocks) supplies the content variables
+   (hero_image, hero_headline, hero_subheading, services, gallery,
+   landing_type, etc.) that the layout consumes. #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Dock Construction & Repair in Middle Georgia — KasKo Construction{% endblock %}
+{% block page_meta_description %}Dock construction, repair, resurfacing, and routine maintenance throughout Middle Georgia. New wood docks, structural repair, railings, stairs, and inspections from a local contractor.{% endblock %}
+
+{% block page_content %}
+    {% embed 'layouts/service-landing.html.twig' %}{% endembed %}
+{% endblock %}

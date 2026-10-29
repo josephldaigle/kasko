@@ -1,0 +1,17 @@
+{# twig template — /decking landing page.
+
+   Thin page shell: all structural markup lives in
+   templates/layouts/service-landing.html.twig. The controller
+   (DefaultController::getDecking) supplies the content variables
+   (hero_image, hero_headline, intro_copy, services, services_heading_*,
+   gallery, gallery_heading, gallery_intro, landing_type) that the
+   layout consumes. The quote form is included inside the layout's
+   hero and already carries `landing_type: 'decking'`. #}
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Deck Construction & Repair in Middle Georgia — KasKo Construction{% endblock %}
+{% block page_meta_description %}Deck construction, repair, resurfacing, and composite decking throughout Middle Georgia. New deck builds, structural repair, stairs, railings, and inspections from a local contractor.{% endblock %}
+
+{% block page_content %}
+    {% embed 'layouts/service-landing.html.twig' %}{% endembed %}
+{% endblock %}

@@ -7,28 +7,44 @@
 
 namespace Kasko\CMS;
 
-use Kasko\CMS\Model\Menu\MenuItem;
-use Kasko\Entity\CustomerReview;
 use Ds\Map;
+use Kasko\CMS\Model\Menu\MenuItem;
+use Kasko\Services\Reviews\ReviewsService;
 
 /**
  * CMS.
  *
  * Facade for the CMS module.
  *
+ * `getCustomerReviews()` previously returned two hardcoded objects
+ * built inside this class. The reviews-sync system now populates
+ * `customer_review` from Google Business Profile on a weekly cron
+ * (see `app:reviews:sync`), and this method delegates to
+ * ReviewsService so the DB is the single source of truth. The
+ * public shape (array of CustomerReview) and call sites
+ * (HtmlPageDataCompiler) are preserved.
+ *
  * @package Kasko\CMS
  */
 class CMS
 {
+    public function __construct(
+        private readonly ReviewsService $reviewsService,
+    ) {
+    }
+
 	/**
 	 * @return Map
 	 */
 	public function getMenuMap()
 	{
 		$menuMap = new Map();
-		// compile header menu
+		// compile header menu. "Home" is intentionally omitted — the
+		// logo links to the homepage (see components/header/logo.html.twig
+		// and the mobile navbar-brand in components/nav-bar.html.twig),
+		// so a redundant "Home" nav item is not needed.
 		$headerMenu = new Map([
-			'home' => new MenuItem('home', 'Home'),
+			'services' => new MenuItem('services', 'Services'),
 			'about-us' => new MenuItem('about-us', 'About Us'),
 			'frequently-asked-questions' => new MenuItem('frequently-asked-questions', 'FAQ'),
 			'contact-us' => new MenuItem('contact', 'Contact'),
@@ -47,32 +63,11 @@ class CMS
 		return $menuMap;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getCustomerReviews()
-	{
-		$reviews = [];
-		$reviews[] = (new CustomerReview())
-            ->setId(0)
-            ->setReviewScore(5)
-            ->setReviewScale(5)
-            ->setSourceName('Tara')
-            ->setReviewerLocation('Perry, GA')
-            ->setReviewText('Kasko removed six huge trees from my yard, opening the space just in time for summer. Highly professional and will definitely use again.')
-            ->setSourceName('Google')
-            ->setSourceUrl('');
-
-		$reviews[] = (new CustomerReview())
-            ->setId(0)
-            ->setReviewScore(5)
-            ->setReviewScale(5)
-            ->setReviewerName('Collena')
-            ->setReviewerLocation('Warner Robins, GA')
-            ->setReviewText('Kasko built a beautiful deck for us. They were very professional and did a great job. I would highly recommend them.')
-            ->setSourceName('Google')
-            ->setSourceUrl('');
-
-		return $reviews;
-	}
+    /**
+     * @return \Kasko\Entity\CustomerReview[]
+     */
+    public function getCustomerReviews(): array
+    {
+        return $this->reviewsService->all();
+    }
 }
